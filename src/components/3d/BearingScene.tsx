@@ -1,0 +1,136 @@
+import { MutableRefObject, useCallback, useRef } from 'react';
+import * as THREE from 'three';
+import { StageContext, StageHandle, ThreeStage } from './SceneCanvas';
+import { createIndustrialLights } from './sceneUtils';
+import { RollerShape, createBearing } from './BearingModel';
+import { createStudioEnvironment } from './StudioEnvironment';
+import { createEngineeringGrid } from './EngineeringGrid';
+import { createFloatingParticles } from './FloatingParticles';
+import { createTechRings } from './TechRings';
+import { createCameraRig } from './CameraRig';
+import { NumSource, readNum } from '../../utils/three';
+
+export interface BearingSceneProps {
+  className?: string;
+  explode?: NumSource;
+  scan?: NumSource;
+  spin?: NumSource;
+  rings?: NumSource;
+  cameraZ?: NumSource;
+  cameraY?: NumSource;
+  pointer?: MutableRefObject<{x: number;y: number;}>;
+  rollerShape?: RollerShape;
+  grid?: boolean;
+  particles?: boolean;
+  scale?: number;
+  modelX?: number;
+  fov?: number;
+  /** Starting camera position — used to continue the loader's push-in shot. */
+  initialCamera?: [number, number, number];
+  /** Camera damping — higher follows the target faster. */
+  cameraLambda?: number;
+  fallbackLabel?: string;
+}
+
+/** The site-wide bearing stage. Every section reuses this same visual language. */
+export function BearingScene({
+  className,
+  explode,
+  scan,
+  spin = 0.32,
+  rings,
+  cameraZ = 4.8,
+  cameraY = 1.1,
+  pointer,
+  rollerShape = 'ball',
+  grid = true,
+  particles = true,
+  scale = 1,
+  modelX = 0,
+  fov = 38,
+  initialCamera = [0, 1.1, 4.8],
+  cameraLambda = 2.4,
+  fallbackLabel
+}: BearingSceneProps) {
+  const props = useRef({ explode, scan, spin, rings, cameraZ, cameraY, pointer, cameraLambda });
+  props.current = { explode, scan, spin, rings, cameraZ, cameraY, pointer, cameraLambda };
+
+  const setup = useCallback(
+    (ctx: StageContext): StageHandle => {
+      ctx.scene.fog = new THREE.FogExp2('#050505', 0.055);
+      ctx.scene.add(createIndustrialLights(ctx.shadows));
+
+      const env = createStudioEnvironment(ctx.renderer);
+      ctx.scene.environment = env.texture;
+
+      const bearing = createBearing({
+        quality: ctx.tier,
+        rollerShape,
+        scale,
+        castShadow: ctx.shadows
+      });
+      bearing.group.position.x = modelX;
+      ctx.scene.add(bearing.group);
+
+      const techRings = createTechRings(ctx.tier);
+      ctx.scene.add(techRings.group);
+
+      if (grid) ctx.scene.add(createEngineeringGrid({ receiveShadow: ctx.shadows }));
+
+      const particleCount = ctx.tier === 'low' ? 0 : ctx.tier === 'medium' ? 90 : 220;
+      const field =
+      particles && particleCount > 0 ?
+      createFloatingParticles({ count: particleCount, paused: ctx.reduced }) :
+      null;
+      if (field) ctx.scene.add(field.points);
+
+      const rig = createCameraRig(ctx.camera);
+
+      return {
+        update(delta, elapsed) {
+          const p = props.current;
+          bearing.update(
+            {
+              explode: readNum(p.explode, 0),
+              scan: readNum(p.scan, 0),
+              spin: readNum(p.spin, 0.32),
+              pointer: p.pointer?.current,
+              reduced: ctx.reduced
+            },
+            delta
+          );
+          techRings.update(readNum(p.rings, 0), delta);
+          field?.update(delta, elapsed);
+          rig.update(
+            {
+              z: readNum(p.cameraZ, 4.8),
+              y: readNum(p.cameraY, 1.1),
+              pointer: p.pointer?.current,
+              parallax: ctx.reduced ? 0 : 0.32,
+              lambda: p.cameraLambda
+            },
+            delta
+          );
+        },
+        dispose() {
+          env.dispose();
+          bearing.dispose();
+          techRings.dispose();
+          field?.dispose();
+          ctx.scene.environment = null;
+        }
+      };
+    },
+    [rollerShape, grid, particles, scale, modelX]
+  );
+
+  return (
+    <ThreeStage
+      className={className}
+      cameraPosition={initialCamera}
+      fov={fov}
+      setup={setup}
+      fallbackLabel={fallbackLabel} />);
+
+
+}

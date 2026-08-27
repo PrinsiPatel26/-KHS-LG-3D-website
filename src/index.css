@@ -1,0 +1,91 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: #050505;
+}
+body {
+  color: #F5F5F5;
+  font-family: Inter, system-ui, sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: #FFF58A;
+  color: #050505;
+}
+/* Technical hairline grid used behind dark industrial sections */
+.industrial-grid {
+  background-image: linear-gradient(to right, rgba(140, 140, 140, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(140, 140, 140, 0.08) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+.measure-marks {
+  background-image: repeating-linear-gradient(
+    to right,
+    rgba(255, 245, 138, 0.55) 0 1px,
+    transparent 1px 14px
+  );
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes bearing-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.bearing-spin {
+  transform-origin: 50% 50%;
+  animation: bearing-rotate 34s linear infinite;
+  transition: animation-duration 300ms linear;
+}
+.group:hover .bearing-spin,
+.group:focus-visible .bearing-spin {
+  animation-duration: 9s;
+}
+.bearing-spin-reverse {
+  transform-origin: 50% 50%;
+  animation: bearing-rotate 52s linear infinite reverse;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bearing-spin,
+  .bearing-spin-reverse {
+    animation: none !important;
+  }
+}
+*:focus-visible {
+  outline: 2px solid #FFF58A;
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+canvas {
+  display: block;
+  touch-action: pan-y;
+}
