@@ -23,13 +23,14 @@ export interface SeoOptions {
   title: string;
   description: string;
   path: string;
+  image?: string;
   /** Optional JSON-LD structured data for this page. */
   structuredData?: Record<string, unknown>;
 }
 
 const ORIGIN = 'https://khslg.com';
 
-export function useSeo({ title, description, path, structuredData }: SeoOptions): void {
+export function useSeo({ title, description, path, image, structuredData }: SeoOptions): void {
   const ld = structuredData ? JSON.stringify(structuredData) : null;
 
   useEffect(() => {
@@ -42,6 +43,7 @@ export function useSeo({ title, description, path, structuredData }: SeoOptions)
       content: description
     });
     upsertMeta('meta[property="og:type"]', { property: 'og:type', content: 'website' });
+    if (image) upsertMeta('meta[property="og:image"]', { property: 'og:image', content: image });
     upsertMeta('meta[property="og:url"]', { property: 'og:url', content: `${ORIGIN}${path}` });
     upsertMeta('meta[name="twitter:card"]', {
       name: 'twitter:card',
@@ -59,5 +61,5 @@ export function useSeo({ title, description, path, structuredData }: SeoOptions)
     return () => {
       if (script && script.parentNode) script.parentNode.removeChild(script);
     };
-  }, [title, description, path, ld]);
+  }, [title, description, path, image, ld]);
 }

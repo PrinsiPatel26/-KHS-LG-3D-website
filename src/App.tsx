@@ -7,13 +7,21 @@ import { PageLoader } from './components/layout/PageLoader';
 import { Home } from './pages/Home';
 import { Products } from './pages/Products';
 import { ProductDetail } from './pages/ProductDetail';
+import { ProductFamily } from './pages/ProductFamily';
 import { Industries } from './pages/Industries';
 import { Applications } from './pages/Applications';
 import { Technology } from './pages/Technology';
 import { Quality } from './pages/Quality';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
+import { Blog } from './pages/Blog';
+import { BlogArticle } from './pages/BlogArticle';
+import { Careers } from './pages/Careers';
+import { Catalogue } from './pages/Catalogue';
+import { CatalogueDetail } from './pages/CatalogueDetail';
 import { NotFound } from './pages/NotFound';
+import { OurBrands } from './pages/OurBrands';
+import { BrandPage } from './pages/BrandPage';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 
 export interface AppProps {
@@ -62,13 +70,28 @@ function Site() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-          <Route path="/products/:slug" element={<ProductDetail />} />
+          <Route path="/products/:slug" element={<ProductFamily />} />
           <Route path="/industries" element={<Industries />} />
           <Route path="/applications" element={<Applications />} />
           <Route path="/technology" element={<Technology />} />
           <Route path="/quality" element={<Quality />} />
+          <Route path="/our-brands" element={<OurBrands />} />
+          <Route path="/our-brands/:slug" element={<BrandPage />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogArticle />} />
+          <Route path="/careers" element={<Careers />} />
+          <Route path="/downloads" element={<Catalogue />} />
+          <Route path="/downloads/catalogue" element={<Catalogue />} />
+          <Route path="/downloads/catalogue/bearings" element={<Catalogue />} />
+          <Route path="/downloads/catalogue/bearings/:slug" element={<CatalogueDetail />} />
+          <Route path="/downloads/catalogue/v-belts" element={<Catalogue />} />
+          <Route path="/downloads/catalogue/v-belts/:slug" element={<CatalogueDetail />} />
+          <Route path="/catalogue" element={<Catalogue />} />
+          <Route path="/catalogue/bearings" element={<Catalogue />} />
+          <Route path="/catalogue/v-belts" element={<Catalogue />} />
+          <Route path="/catalogue/:slug" element={<CatalogueDetail />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

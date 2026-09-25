@@ -1,4 +1,5 @@
 import { Hero3D } from '../components/sections/Hero3D';
+import { BearingSearch } from '../components/sections/BearingSearch';
 import { MotionSection } from '../components/sections/MotionSection';
 import { StatsSection } from '../components/sections/StatsSection';
 import { Products3D } from '../components/sections/Products3D';
@@ -35,6 +36,7 @@ export function Home() {
   return (
     <main>
       <Hero3D />
+      <BearingSearch />
       <MotionSection />
       <StatsSection />
       <Products3D limit={6} />

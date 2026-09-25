@@ -7,6 +7,8 @@ import { CTASection } from '../components/sections/CTASection';
 import { Reveal } from '../components/ui/RevealText';
 import { TechnicalLabel } from '../components/ui/SectionHeading';
 import { BearingGlyph } from '../components/ui/BearingGlyph';
+import { DealerNetworkSection } from '../components/network/DealerNetworkSection';
+import { ExportFootprintSection } from '../components/network/ExportFootprintSection';
 import { company, timeline } from '../data/company';
 import { useSeo } from '../hooks/useSeo';
 
@@ -83,6 +85,8 @@ export function About() {
       </section>
 
       <StatsSection />
+      <DealerNetworkSection />
+      <ExportFootprintSection />
       <GlobalPresence />
       <CTASection />
     </main>);

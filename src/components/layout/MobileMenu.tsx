@@ -1,13 +1,17 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { XIcon, ArrowUpRightIcon } from 'lucide-react';
+import { XIcon } from 'lucide-react';
 import { NAV_ITEMS } from '../../data/navigation';
 import { company } from '../../data/company';
 import { cn } from '../../utils/cn';
+import { ProductMobileMenu } from './ProductMegaMenu';
+import { BrandMobileMenu } from './BrandMegaMenu';
 
 export function MobileMenu({ open, onClose }: {open: boolean;onClose: () => void;}) {
   const { pathname } = useLocation();
+  const [productsExpanded, setProductsExpanded] = useState(false);
+  const [brandsExpanded, setBrandsExpanded] = useState(false);
 
   useEffect(() => {
     if (open) onClose();
@@ -64,7 +68,27 @@ export function MobileMenu({ open, onClose }: {open: boolean;onClose: () => void
               }}
               className="border-b border-ink-700">
               
-                  <NavLink
+                  {item.to === '/products' ? <>
+                    <button
+                    type="button"
+                    onClick={() => setProductsExpanded((value) => !value)}
+                    aria-expanded={productsExpanded}
+                    className="flex w-full items-center justify-between py-4 font-display text-3xl font-semibold uppercase tracking-[0.04em] text-steel-50">
+                      <span>{item.label}</span>
+                      <span className={cn('h-1.5 w-1.5 rounded-full', productsExpanded ? 'bg-signal' : 'bg-ink-600')} aria-hidden />
+                    </button>
+                    {productsExpanded && <div className="pb-4 pl-2"><ProductMobileMenu onNavigate={onClose} /></div>}
+                    </> : item.to === '/our-brands' ? <>
+                    <button
+                    type="button"
+                    onClick={() => setBrandsExpanded((value) => !value)}
+                    aria-expanded={brandsExpanded}
+                    className="flex w-full items-center justify-between py-4 font-display text-3xl font-semibold uppercase tracking-[0.04em] text-steel-50">
+                      <span>{item.label}</span>
+                      <span className={cn('h-1.5 w-1.5 rounded-full', brandsExpanded ? 'bg-signal' : 'bg-ink-600')} aria-hidden />
+                    </button>
+                    {brandsExpanded && <div className="pb-4 pl-2"><BrandMobileMenu onNavigate={onClose} /></div>}
+                    </> : <NavLink
                 to={item.to}
                 onClick={onClose}
                 className={({ isActive }) =>
@@ -85,20 +109,12 @@ export function MobileMenu({ open, onClose }: {open: boolean;onClose: () => void
                   
                       </>
                 }
-                  </NavLink>
+                  </NavLink>}
                 </motion.li>
             )}
             </ul>
 
             <div className="mt-10 space-y-4">
-              <NavLink
-              to="/contact"
-              onClick={onClose}
-              className="flex w-full items-center justify-center gap-2 bg-signal py-4 font-display text-base font-bold uppercase tracking-[0.16em] text-ink-950">
-              
-                Request a Quote
-                <ArrowUpRightIcon className="h-4 w-4" aria-hidden />
-              </NavLink>
               <div className="space-y-1 font-mono text-[11px] uppercase tracking-[0.12em] text-steel-500">
                 <a className="block" href={`mailto:${company.email}`}>
                   {company.email}

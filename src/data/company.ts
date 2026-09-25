@@ -18,9 +18,13 @@ export const company = {
   experience: '50+ years of experience',
   certification: 'ISO 9001:2015',
   email: 'info@khsbearings.com',
-  phone: '+91 02269786110',
+  phone: '+91 9175275964',
   website: 'https://khslg.com/'
 };
+
+export const COMPANY_PHONE = '+91 9175275964';
+export const COMPANY_PHONE_RAW = '919175275964';
+export const COMPANY_WHATSAPP_URL = `https://wa.me/${COMPANY_PHONE_RAW}`;
 
 export const stats: Stat[] = [
 { value: 12000, suffix: '+', label: 'OEMs', note: 'Served across industries' },

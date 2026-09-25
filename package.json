@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
+    "@svg-maps/india": "^2.0.0",
+    "d3-geo": "^3.1.1",
     "framer-motion": "^11.5.4",
     "lenis": "latest",
     "lucide-react": "0.522.0",
@@ -18,13 +20,16 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "tailwind-merge": "latest",
-    "three": "^0.170.0"
+    "three": "^0.170.0",
+    "topojson-client": "^3.1.0",
+    "world-atlas": "^2.0.2"
   },
   "devDependencies": {
     "@types/node": "^20.11.18",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",
     "@types/three": "^0.185.4",
+    "@types/topojson-client": "^3.1.5",
     "@typescript-eslint/eslint-plugin": "^8.68.0",
     "@typescript-eslint/parser": "^8.68.0",
     "@typescript-eslint/typescript-estree": "^8.68.0",

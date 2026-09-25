@@ -1,10 +1,14 @@
-import { useEffect, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { MenuIcon } from 'lucide-react';
+import { MenuIcon, MoonIcon, SearchIcon, SunIcon, XIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
 import { MobileMenu } from './MobileMenu';
+import { ProductMegaMenu } from './ProductMegaMenu';
+import { BrandMegaMenu } from './BrandMegaMenu';
 import { NAV_ITEMS } from '../../data/navigation';
+import { getLatestPosts, searchPosts } from '../../data/blog';
+import { useTheme } from '../../hooks/useTheme';
 
 
 export function Logo({ className }: {className?: string;}) {
@@ -19,14 +23,33 @@ export function Logo({ className }: {className?: string;}) {
       <img
         src="/khslogo2-removebg-preview.png"
         alt="KHS-LG"
-        className="h-12 w-40 origin-left object-contain sm:h-20 sm:w-60 sm:scale-x-150" />
+        className="khs-logo h-12 w-40 origin-left object-contain sm:h-20 sm:w-60 sm:scale-x-150"
+        />
     </Link>);
 
 }
 
 export function Navbar() {
+  const location = useLocation();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [brandsOpen, setBrandsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const searchRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const productsCloseTimer = useRef<number | null>(null);
+  const brandsCloseTimer = useRef<number | null>(null);
+  const { theme, toggleTheme } = useTheme();
+  const searchResults = searchQuery.trim() ? searchPosts(searchQuery).slice(0, 5) : getLatestPosts().slice(0, 5);
+
+  useEffect(() => {
+    setProductsOpen(false);
+    setBrandsOpen(false);
+    if (productsCloseTimer.current) window.clearTimeout(productsCloseTimer.current);
+    if (brandsCloseTimer.current) window.clearTimeout(brandsCloseTimer.current);
+  }, [location.pathname, location.search]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -35,6 +58,48 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!searchOpen) return;
+    searchInputRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setSearchOpen(false);
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (!searchRef.current?.contains(event.target as Node)) setSearchOpen(false);
+    };
+    document.addEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
+  }, [searchOpen]);
+
+  const openSearch = () => {
+    setSearchOpen(true);
+    setSearchQuery('');
+  };
+
+  const openProducts = () => {
+    if (productsCloseTimer.current) window.clearTimeout(productsCloseTimer.current);
+    setProductsOpen(true);
+  };
+
+  const scheduleProductsClose = () => {
+    if (productsCloseTimer.current) window.clearTimeout(productsCloseTimer.current);
+    productsCloseTimer.current = window.setTimeout(() => setProductsOpen(false), 180);
+  };
+
+  const openBrands = () => {
+    if (brandsCloseTimer.current) window.clearTimeout(brandsCloseTimer.current);
+    setBrandsOpen(true);
+  };
+
+  const scheduleBrandsClose = () => {
+    if (brandsCloseTimer.current) window.clearTimeout(brandsCloseTimer.current);
+    brandsCloseTimer.current = window.setTimeout(() => setBrandsOpen(false), 180);
+  };
+
   return (
     <>
       <motion.header
@@ -42,7 +107,7 @@ export function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
         className={cn(
-          'fixed inset-x-0 top-0 z-[90] border-b transition-[background-color,border-color,height,backdrop-filter] duration-300 ease-precision',
+          'fixed inset-x-0 top-0 z-[10000] border-b transition-[background-color,border-color,height,backdrop-filter] duration-300 ease-precision',
           scrolled ?
           'h-16 border-signal/20 bg-ink-950/80 backdrop-blur-md lg:h-[70px]' :
           'h-20 border-steel-500/10 bg-transparent lg:h-24'
@@ -56,9 +121,14 @@ export function Navbar() {
 
           <ul className="hidden items-center gap-6 xl:flex 2xl:gap-8">
             {NAV_ITEMS.map((item) =>
-            <li key={item.to}>
+            <li key={item.to} className={item.to === '/products' || item.to === '/our-brands' ? 'relative' : undefined} onMouseEnter={item.to === '/products' ? openProducts : item.to === '/our-brands' ? openBrands : undefined} onMouseLeave={item.to === '/products' ? scheduleProductsClose : item.to === '/our-brands' ? scheduleBrandsClose : undefined}>
+              {item.to === '/products' ? <>
                 <NavLink
                 to={item.to}
+                onClick={(event) => { event.preventDefault(); productsOpen ? setProductsOpen(false) : openProducts(); }}
+                data-product-menu-trigger="true"
+                aria-expanded={productsOpen}
+                aria-haspopup="true"
                 className={({ isActive }) =>
                 cn(
                   'group relative whitespace-nowrap font-display text-[13px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ease-precision',
@@ -79,18 +149,76 @@ export function Navbar() {
                     </>
                 }
                 </NavLink>
+                <ProductMegaMenu open={productsOpen} onClose={() => setProductsOpen(false)} scrolled={scrolled} />
+                </> :
+                item.to === '/our-brands' ? <>
+                <NavLink
+                to={item.to}
+                onClick={(event) => { event.preventDefault(); brandsOpen ? setBrandsOpen(false) : openBrands(); }}
+                data-brand-menu-trigger="true"
+                aria-expanded={brandsOpen}
+                aria-haspopup="true"
+                className={({ isActive }) =>
+                cn(
+                  'group relative whitespace-nowrap font-display text-[13px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ease-precision',
+                  isActive ? 'text-signal' : 'text-steel-300 hover:text-steel-50'
+                )
+                }>
+                  {({ isActive }) => <>
+                    <span className="2xl:hidden">{item.short}</span>
+                    <span className="hidden 2xl:inline">{item.label}</span>
+                    <span className={cn('absolute -bottom-1.5 left-0 h-px bg-signal transition-[width] duration-300 ease-precision', isActive ? 'w-full' : 'w-0 group-hover:w-full')} />
+                  </>}
+                </NavLink>
+                <BrandMegaMenu open={brandsOpen} onClose={() => setBrandsOpen(false)} scrolled={scrolled} />
+                </> :
+                <NavLink
+                to={item.to}
+                className={({ isActive }) =>
+                cn(
+                  'group relative whitespace-nowrap font-display text-[13px] font-semibold uppercase tracking-[0.14em] transition-colors duration-200 ease-precision',
+                  isActive ? 'text-signal' : 'text-steel-300 hover:text-steel-50'
+                )
+                }>
+                  {({ isActive }) => <>
+                    <span className="2xl:hidden">{item.short}</span>
+                    <span className="hidden 2xl:inline">{item.label}</span>
+                    <span className={cn('absolute -bottom-1.5 left-0 h-px bg-signal transition-[width] duration-300 ease-precision', isActive ? 'w-full' : 'w-0 group-hover:w-full')} />
+                  </>}
+                </NavLink>}
               </li>
             )}
           </ul>
 
           <div className="flex items-center gap-3">
-            <Link
-              to="/contact"
-              data-cursor="open"
-              className="hidden whitespace-nowrap border border-signal px-5 py-2.5 font-display text-[13px] font-semibold uppercase tracking-[0.14em] text-signal transition-colors duration-200 ease-precision hover:bg-signal hover:text-ink-950 xl:inline-block">
-              
-              Request a Quote
-            </Link>
+            <div ref={searchRef} className="relative flex items-center gap-1">
+              <button
+                type="button"
+                onClick={openSearch}
+                aria-label="Search articles"
+                aria-expanded={searchOpen}
+                className="flex h-10 w-10 items-center justify-center border border-transparent text-steel-300 transition-colors hover:border-signal/30 hover:text-signal">
+                <SearchIcon className="h-4 w-4" aria-hidden />
+              </button>
+              <button
+                type="button"
+                onClick={toggleTheme}
+                aria-label="Toggle light and dark theme"
+                className="flex h-10 w-10 items-center justify-center border border-transparent text-steel-300 transition-colors hover:border-signal/30 hover:text-signal">
+                {theme === 'dark' ? <SunIcon className="h-4 w-4" aria-hidden /> : <MoonIcon className="h-4 w-4" aria-hidden />}
+              </button>
+              {searchOpen && <div className="absolute right-0 top-[calc(100%+12px)] z-[120] w-[min(92vw,440px)] border border-ink-600 bg-ink-950 p-3 shadow-2xl">
+                <div className="flex items-center gap-3 border border-ink-600 px-3 focus-within:border-signal">
+                  <SearchIcon className="h-4 w-4 shrink-0 text-signal" aria-hidden />
+                  <input ref={searchInputRef} value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search articles..." aria-label="Search articles" className="min-w-0 flex-1 bg-transparent py-3 font-mono text-sm text-steel-50 placeholder:text-steel-500 outline-none" />
+                  <button type="button" onClick={() => setSearchOpen(false)} aria-label="Close article search" className="text-steel-500 hover:text-signal"><XIcon className="h-4 w-4" aria-hidden /></button>
+                </div>
+                <div className="mt-3 max-h-[min(52vh,360px)] overflow-y-auto">
+                  <p className="px-2 pb-2 font-mono text-[9px] uppercase tracking-tech text-steel-500">{searchQuery.trim() ? `${searchResults.length} matching articles` : 'Latest articles'}</p>
+                  {searchResults.length > 0 ? searchResults.map((post) => <Link key={post.slug} to={`/blog/${post.slug}`} onClick={() => setSearchOpen(false)} className="block border-t border-ink-700 px-2 py-3 transition-colors hover:bg-ink-800"><span className="block font-display text-base font-semibold uppercase leading-tight text-steel-50">{post.title}</span><span className="mt-1 block font-mono text-[9px] uppercase tracking-tech text-steel-500"><span className="text-signal">{post.category}</span> / {post.date}</span></Link>) : <p className="border-t border-ink-700 px-2 py-5 font-mono text-xs text-steel-500">No articles found</p>}
+                </div>
+              </div>}
+            </div>
             <button
               type="button"
               onClick={() => setMenuOpen(true)}

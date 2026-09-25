@@ -6,6 +6,7 @@ import { TechnicalLabel } from '../components/ui/SectionHeading';
 import { company } from '../data/company';
 import { products } from '../data/products';
 import { useSeo } from '../hooks/useSeo';
+import { useSearchParams } from 'react-router-dom';
 
 type Status = 'idle' | 'submitting' | 'success' | 'error';
 
@@ -28,7 +29,11 @@ const EMPTY: FormState = {
 };
 
 export function Contact() {
-  const [form, setForm] = useState<FormState>(EMPTY);
+  const [searchParams] = useSearchParams();
+  const requestedBrand = searchParams.get('brand');
+  const requestedProduct = searchParams.get('product') ?? searchParams.get('category');
+  const requestedRequirement = requestedBrand && requestedProduct ? `${requestedBrand} — ${requestedProduct}` : null;
+  const [form, setForm] = useState<FormState>(() => requestedRequirement ? { ...EMPTY, requirement: requestedRequirement, message: `I am interested in ${requestedRequirement}. Please share availability, specifications and quotation.` } : EMPTY);
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
 
@@ -168,6 +173,7 @@ export function Contact() {
                   onChange={update('requirement')}
                   className="mt-2 w-full border border-ink-700 bg-ink-900 px-4 py-3 text-sm text-steel-50 outline-none transition-colors focus:border-signal">
                   
+                  {requestedRequirement && <option value={requestedRequirement}>{requestedRequirement}</option>}
                   {products.map((p) =>
                   <option key={p.slug} value={p.name}>
                       {p.name}

@@ -13,10 +13,12 @@ const COLUMNS: {title: string;links: {label: string;to: string;}[];}[] = [
 {
   title: 'Company',
   links: [
+    { label: 'Catalogue', to: '/catalogue' },
   ...industries.map((i) => ({ label: i.name, to: '/industries' })),
   { label: 'Applications', to: '/applications' },
   { label: 'Technology', to: '/technology' },
   { label: 'Quality', to: '/quality' },
+  { label: 'Careers', to: '/careers' },
   { label: 'About KHS-LG', to: '/about' }]
 
 }];
