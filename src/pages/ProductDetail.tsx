@@ -62,7 +62,7 @@ export function ProductDetail() {
 
   return (
     <main className="bg-ink-950">
-      <section className="relative border-b border-ink-700 pt-28 pb-16 sm:pt-36 lg:pt-40">
+      <section className="relative border-b border-ink-700 pb-12 pt-16 sm:pb-16 sm:pt-20 lg:pb-20 lg:pt-24">
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
           <Link
@@ -73,7 +73,7 @@ export function ProductDetail() {
             All Products
           </Link>
 
-          <div className="mt-8 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          <div className="mt-6 grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
             <ProductViewer rollerShape={SHAPE[product.slug] ?? 'ball'} />
 
             <div>

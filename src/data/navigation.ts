@@ -2,7 +2,6 @@ export const NAV_ITEMS = [
   { label: 'Products', short: 'Products', to: '/products' },
   { label: 'Catalogue', short: 'Catalogue', to: '/catalogue' },
   { label: 'Applications', short: 'Applications', to: '/applications' },
-  { label: 'Industries', short: 'Industries', to: '/industries' },
   { label: 'Technology', short: 'Technology', to: '/technology' },
   { label: 'Quality', short: 'Quality', to: '/quality' },
   { label: 'Our Brands', short: 'Brands', to: '/our-brands' },

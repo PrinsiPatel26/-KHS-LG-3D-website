@@ -51,7 +51,7 @@ export function Hero3D() {
     <section
       ref={wrap}
       aria-label="KHS-LG precision bearings"
-      className="relative h-[300vh] w-full bg-ink-950">
+      className="relative h-[220vh] w-full bg-ink-950">
       
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         <div className="industrial-grid absolute inset-0 opacity-40" aria-hidden />
@@ -76,7 +76,7 @@ export function Hero3D() {
           }} />
         
         <div
-          className="pointer-events-none absolute inset-0 z-[2] cursor-grab"
+          className="pointer-events-auto absolute inset-0 z-[2] cursor-grab"
           data-cursor="drag"
           aria-hidden />
         
@@ -84,7 +84,7 @@ export function Hero3D() {
         {/* Hero copy */}
         <motion.div
           style={{ opacity: reduced ? 1 : heroOpacity, y: reduced ? 0 : heroY }}
-          className="pointer-events-none absolute inset-0 z-[3] flex flex-col justify-end pb-16 sm:pb-20">
+          className="pointer-events-none absolute inset-0 z-[3] flex flex-col justify-end pb-10 sm:pb-14">
           
           <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
             <div className="pointer-events-auto max-w-3xl">

@@ -36,6 +36,16 @@ export default {
       transitionTimingFunction: {
         precision: 'cubic-bezier(0.23, 1, 0.32, 1)',
       },
+      zIndex: {
+        navigation: '50',
+        'menu-backdrop': '60',
+        'menu-panel': '70',
+        'mobile-menu': '80',
+        loader: '100',
+        modal: '130',
+        'skip-link': '130',
+        cursor: '140',
+      },
     },
   },
   plugins: [],

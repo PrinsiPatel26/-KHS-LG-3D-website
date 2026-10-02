@@ -76,7 +76,7 @@ export function BearingSearch() {
   };
 
   return (
-    <section aria-labelledby="bearing-search-heading" className="relative overflow-hidden border-y border-ink-700 bg-ink-900 py-20 lg:py-28" data-bearing-search>
+    <section aria-labelledby="bearing-search-heading" className="relative overflow-hidden border-y border-ink-700 bg-ink-900 py-14 lg:py-18" data-bearing-search>
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
       <div className="pointer-events-none absolute -right-28 top-16 h-80 w-80 rounded-full border border-signal/10 opacity-50" aria-hidden />
       <div className="pointer-events-none absolute -right-16 top-28 h-56 w-56 rounded-full border border-signal/10 opacity-50" aria-hidden />

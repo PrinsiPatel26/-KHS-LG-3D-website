@@ -107,10 +107,10 @@ export function ExportFootprintSection() {
         </div>
 
         <div className="mt-10 grid gap-8 lg:grid-cols-[1.7fr_0.9fr] lg:items-stretch">
-          <div className="rounded-[22px] border border-ink-700 bg-ink-950/70 p-4 sm:p-5">
-            <div className="relative overflow-hidden rounded-[18px] border border-ink-700 bg-[#070b10] p-3 sm:p-5">
+          <div className="rounded-[22px] border border-ink-700 bg-ink-950/70 p-2 sm:p-5">
+            <div className="relative overflow-hidden rounded-[18px] border border-ink-700 bg-[#070b10] p-2 sm:p-5">
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(255,245,138,0.08),transparent_30%),radial-gradient(circle_at_56%_70%,rgba(255,245,138,0.05),transparent_32%)]" aria-hidden />
-              <svg viewBox={`0 0 ${WORLD_WIDTH} ${WORLD_HEIGHT}`} preserveAspectRatio="xMidYMid meet" className="relative z-10 h-[360px] w-full" role="img" aria-label="World export footprint map">
+              <svg viewBox={`0 0 ${WORLD_WIDTH} ${WORLD_HEIGHT}`} preserveAspectRatio="xMidYMid meet" className="relative z-10 h-[360px] w-full md:h-[400px] lg:h-[400px] xl:h-[min(560px,40vw)]" role="img" aria-label="World export footprint map">
                 <defs>
                   <filter id="export-map-glow" x="-100%" y="-100%" width="300%" height="300%">
                     <feGaussianBlur stdDeviation="5" result="blur" />

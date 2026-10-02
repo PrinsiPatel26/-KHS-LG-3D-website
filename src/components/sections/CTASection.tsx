@@ -24,7 +24,7 @@ export function CTASection() {
     <section
       ref={ref}
       aria-label="Contact KHS-LG"
-      className="relative flex min-h-[92vh] items-center overflow-hidden border-t border-ink-700 bg-ink-950 py-24">
+      className="relative flex min-h-[440px] items-center overflow-hidden border-t border-ink-700 bg-ink-950 py-14 lg:min-h-[500px] lg:py-18">
       
       {near &&
       <BearingScene
@@ -66,14 +66,14 @@ export function CTASection() {
             <MagneticButton to="/contact" variant="yellow">
               Request a Quote
             </MagneticButton>
-            <MagneticButton href={`mailto:${company.email}`} variant="ghost" icon={<MailIcon className="h-4 w-4" aria-hidden />}>
+            <MagneticButton href={company.emailHref} variant="ghost" icon={<MailIcon className="h-4 w-4" aria-hidden />}>
               {company.email}
             </MagneticButton>
           </div>
         </Reveal>
         <Reveal delay={0.26}>
           <a
-            href={`tel:${company.phone.replace(/\s/g, '')}`}
+            href={company.phoneHref}
             className="mt-8 inline-flex items-center gap-2.5 font-mono text-[11px] uppercase tracking-[0.16em] text-steel-500 transition-colors hover:text-signal">
             
             <PhoneIcon className="h-3.5 w-3.5 text-signal" aria-hidden />

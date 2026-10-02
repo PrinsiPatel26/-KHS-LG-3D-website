@@ -30,11 +30,11 @@ const PILLARS = [
 }];
 
 
-export function TechnologySection() {
+export function TechnologySection({ code = '07 / Technology' }: { code?: string }) {
   return (
     <section
       aria-label="Technology"
-      className="relative overflow-hidden border-t border-ink-700 bg-ink-900 py-24 lg:py-32">
+      className="relative overflow-hidden border-t border-ink-700 bg-ink-900 py-12 lg:py-18">
       
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden />
       {/* Slow yellow inspection sweep across the facility grid */}
@@ -52,12 +52,12 @@ export function TechnologySection() {
 
       <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <SectionHeading
-          code="07 / Technology"
+          code={code}
           eyebrow="Engineering behind the range"
           lines={['Precision is', 'A process']} />
         
 
-        <div className="mt-14 grid gap-px border border-ink-700 bg-ink-700 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="mt-8 grid gap-px border border-ink-700 bg-ink-700 sm:grid-cols-2 xl:grid-cols-4">
           {PILLARS.map((pillar, i) =>
           <Reveal key={pillar.code} delay={i * 0.05} className="h-full">
               <article className="group relative flex h-full flex-col bg-ink-950 p-7 lg:p-9">

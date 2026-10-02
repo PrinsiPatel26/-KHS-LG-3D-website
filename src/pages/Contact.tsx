@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2Icon, MailIcon, PhoneIcon, AlertCircleIcon, Loader2Icon } from 'lucide-react';
+import { CheckCircle2Icon, MailIcon, PhoneIcon, AlertCircleIcon, Loader2Icon, MapPinIcon, ArrowUpRightIcon } from 'lucide-react';
 import { PageHero } from '../components/layout/PageHero';
 import { MagneticButton } from '../components/ui/MagneticButton';
 import { TechnicalLabel } from '../components/ui/SectionHeading';
@@ -36,6 +36,7 @@ export function Contact() {
   const [form, setForm] = useState<FormState>(() => requestedRequirement ? { ...EMPTY, requirement: requestedRequirement, message: `I am interested in ${requestedRequirement}. Please share availability, specifications and quotation.` } : EMPTY);
   const [status, setStatus] = useState<Status>('idle');
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>({});
+  const mapDestination = company.factoryOffice.split('\n').slice(1).map((line) => line.replace(/,$/, '')).join(', ');
 
   useSeo({
     title: 'Contact',
@@ -85,13 +86,13 @@ export function Contact() {
       <section className="bg-ink-900 py-20 lg:py-28">
         <div className="mx-auto grid w-full max-w-[1600px] gap-14 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
-            <TechnicalLabel code="Direct">Talk to the team</TechnicalLabel>
+            <TechnicalLabel code="Direct">Get in touch</TechnicalLabel>
             <ul className="mt-8 space-y-px border border-ink-700 bg-ink-700">
               <li className="bg-ink-950 p-6">
                 <p className="font-mono text-[9px] uppercase tracking-tech text-steel-500">Email</p>
                 <a
                   className="mt-2 flex items-center gap-2.5 font-display text-lg font-semibold uppercase text-steel-50 transition-colors hover:text-signal"
-                  href={`mailto:${company.email}`}>
+                  href={company.emailHref}>
                   
                   <MailIcon className="h-4 w-4 text-signal" aria-hidden />
                   {company.email}
@@ -101,7 +102,7 @@ export function Contact() {
                 <p className="font-mono text-[9px] uppercase tracking-tech text-steel-500">Phone</p>
                 <a
                   className="mt-2 flex items-center gap-2.5 font-display text-lg font-semibold uppercase text-steel-50 transition-colors hover:text-signal"
-                  href={`tel:${company.phone.replace(/\s/g, '')}`}>
+                  href={company.phoneHref}>
                   
                   <PhoneIcon className="h-4 w-4 text-signal" aria-hidden />
                   {company.phone}
@@ -118,6 +119,45 @@ export function Contact() {
                 </p>
               </li>
             </ul>
+            <div className="mt-8 space-y-px border border-ink-700 bg-ink-700">
+              {([
+                ['Factory Office / Correspondence Address', company.factoryOffice],
+                ['Registered Office', company.registeredOffice],
+                ['Corporate Office', company.corporateOffice]
+              ] as const).map(([label, address]) => (
+                <section key={label} className="bg-ink-950 p-6">
+                  <h2 className="font-mono text-[9px] uppercase tracking-tech text-steel-500">{label}</h2>
+                  <p className="mt-2 whitespace-pre-line break-words text-sm leading-relaxed text-steel-300">{address}</p>
+                </section>
+              ))}
+              <section className="bg-ink-950 p-6">
+                <h2 className="font-mono text-[9px] uppercase tracking-tech text-steel-500">Zonal Offices</h2>
+                <p className="mt-2 text-sm leading-relaxed text-steel-300">{company.zonalOffices.join(' · ')}</p>
+              </section>
+              <section className="bg-ink-950 p-6">
+                <h2 className="font-mono text-[9px] uppercase tracking-tech text-steel-500">Sales</h2>
+                <a className="mt-2 inline-flex max-w-full break-all text-sm text-steel-300 transition-colors hover:text-signal" href={company.salesEmailHref}>{company.salesEmail}</a>
+              </section>
+            </div>
+            <div className="mt-8 overflow-hidden border border-ink-700 bg-ink-950">
+              <iframe
+                title="Map to KHS Innovation & Engineering LLP factory office in Sonale, Bhiwandi"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(mapDestination)}&output=embed`}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="aspect-[4/3] w-full border-0"
+              />
+              <a
+                href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapDestination)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center gap-2 border-t border-ink-700 px-5 py-4 font-mono text-[10px] uppercase tracking-tech text-steel-300 transition-colors hover:text-signal"
+              >
+                <MapPinIcon className="h-4 w-4 text-signal" aria-hidden />
+                Get directions
+                <ArrowUpRightIcon className="ml-auto h-3.5 w-3.5" aria-hidden />
+              </a>
+            </div>
           </div>
 
           <form onSubmit={submit} noValidate className="border border-ink-700 bg-ink-950 p-6 sm:p-9">

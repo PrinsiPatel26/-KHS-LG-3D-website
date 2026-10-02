@@ -5,7 +5,7 @@ import { BearingGlyph } from '../ui/BearingGlyph';
 import { performanceAxes } from '../../data/applications';
 
 /** Built for performance — rotation and indicators driven by scroll position. */
-export function PerformanceSection() {
+export function PerformanceSection({ code = '08 / Performance' }: { code?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -21,11 +21,11 @@ export function PerformanceSection() {
     <section
       ref={ref}
       aria-label="Performance"
-      className="relative overflow-hidden border-t border-ink-700 bg-ink-950 py-24 lg:py-32">
+      className="relative overflow-hidden border-t border-ink-700 bg-ink-950 py-16 lg:py-24">
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <SectionHeading
-          code="08 / Performance"
+          code={code}
           eyebrow="What we engineer for"
           lines={['Built for', 'Performance']} />
         

@@ -28,6 +28,19 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+a[href],
+button:not(:disabled),
+[role='button']:not([aria-disabled='true']),
+select:not(:disabled),
+input[type='checkbox']:not(:disabled),
+input[type='radio']:not(:disabled),
+input[type='file']:not(:disabled) {
+  cursor: pointer;
+}
+input:not(:disabled):not([type='checkbox']):not([type='radio']):not([type='button']):not([type='submit']):not([type='reset']):not([type='file']),
+textarea {
+  cursor: text;
+}
 .table-scroll-container {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -86,6 +99,28 @@ body {
   background-image: linear-gradient(to right, rgba(140, 140, 140, 0.08) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(140, 140, 140, 0.08) 1px, transparent 1px);
   background-size: 72px 72px;
+}
+.catalogue-hero-image {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 56%, rgba(0, 0, 0, 0.9) 78%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 56%, rgba(0, 0, 0, 0.9) 78%, transparent 100%);
+  animation: catalogue-bearing-float 12s ease-in-out infinite;
+}
+@keyframes catalogue-bearing-float {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-3px) scale(1.005);
+  }
+}
+#catalogue-categories {
+  padding-block: 3rem;
+}
+@media (min-width: 1024px) {
+  #catalogue-categories {
+    padding-block: 4rem;
+  }
 }
 .measure-marks {
   background-image: repeating-linear-gradient(
@@ -146,6 +181,7 @@ body {
   .bearing-spin,
   .bearing-spin-reverse,
   .bearing-product-image,
+  .catalogue-hero-image,
   .quality-scan-line,
   .quality-orbit,
   .network-pulse,

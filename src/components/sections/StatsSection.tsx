@@ -10,7 +10,7 @@ export function StatsSection() {
   return (
     <section
       aria-label="KHS-LG in numbers"
-      className="relative border-t border-ink-700 bg-ink-950 py-24 lg:py-28">
+      className="relative border-t border-ink-700 bg-ink-950 py-12 lg:py-18">
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <Reveal>

@@ -15,20 +15,20 @@ export function OurBrands() {
 
   return (
     <main>
-      <section className="relative overflow-hidden border-b border-ink-700 bg-ink-950 pb-20 pt-32 sm:pb-28 sm:pt-40 lg:pt-48">
+      <section className="relative overflow-hidden border-b border-ink-700 bg-ink-950 pb-8 pt-12 sm:pb-10 sm:pt-16 lg:pb-12 lg:pt-18">
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-30" aria-hidden />
         <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] opacity-[0.08]" style={{ background: 'radial-gradient(circle, rgba(245,180,0,0.9) 0%, transparent 62%)' }} aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
           <nav aria-label="Breadcrumb" className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel-500"><Link to="/" className="hover:text-signal">Home</Link><span className="mx-2 text-ink-600">/</span><span className="text-signal">Our brands</span></nav>
-          <div className="mt-12 max-w-5xl">
+          <div className="mt-6 max-w-5xl sm:mt-7">
             <TechnicalLabel code="Our brands">Global industrial partners</TechnicalLabel>
-            <h1 className="mt-5 max-w-4xl font-display text-[clamp(3rem,8vw,7.5rem)] font-bold uppercase leading-[0.86] text-steel-50">Engineered partners.<br /><span className="text-signal">Global expertise.</span></h1>
-            <p className="mt-8 max-w-2xl text-base leading-relaxed text-steel-400">KHS-LG works with established industrial brands to provide customers with precision bearing, linear motion and power transmission solutions for demanding applications.</p>
+            <h1 className="mt-4 max-w-4xl font-display text-[clamp(3rem,8vw,7.5rem)] font-bold uppercase leading-[0.86] text-steel-50">Engineered partners.<br /><span className="text-signal">Global expertise.</span></h1>
+            <p className="mt-5 max-w-2xl text-base leading-relaxed text-steel-400">KHS-LG works with established industrial brands to provide customers with precision bearing, linear motion and power transmission solutions for demanding applications.</p>
           </div>
         </div>
       </section>
 
-      <section className="relative bg-ink-900 py-16 lg:py-24">
+      <section className="relative bg-ink-900 py-12 lg:py-18">
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-15" aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
           <div className="flex flex-col gap-4 border-b border-ink-700 pb-7 sm:flex-row sm:items-end sm:justify-between">

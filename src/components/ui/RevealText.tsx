@@ -20,7 +20,7 @@ export function RevealText({
 }: {lines: string[];className?: string;lineClassName?: string;as?: 'h1' | 'h2' | 'h3';delay?: number;accentLast?: boolean;}) {
   const Tag = as;
   return (
-    <Tag className={cn('font-display uppercase leading-[0.88]', className)}>
+    <Tag className={cn(className, 'font-display uppercase leading-[0.88]')}>
       {lines.map((line, i) =>
       <span key={line + i} className="block overflow-hidden">
           <motion.span

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
@@ -6,7 +6,6 @@ import { CustomCursor } from './components/layout/CustomCursor';
 import { PageLoader } from './components/layout/PageLoader';
 import { Home } from './pages/Home';
 import { Products } from './pages/Products';
-import { ProductDetail } from './pages/ProductDetail';
 import { ProductFamily } from './pages/ProductFamily';
 import { Industries } from './pages/Industries';
 import { Applications } from './pages/Applications';
@@ -32,36 +31,39 @@ export interface AppProps {
 }
 
 export function App({ showIntroLoader = true, customCursor = true }: AppProps) {
-  const [siteVisible, setSiteVisible] = useState(!showIntroLoader);
+  const [siteReady, setSiteReady] = useState(!showIntroLoader);
   const [loaderMounted, setLoaderMounted] = useState(showIntroLoader);
+  const markSiteReady = useCallback(() => setSiteReady(true), []);
 
   return (
     <BrowserRouter>
       {loaderMounted &&
       <PageLoader
-        onReveal={() => setSiteVisible(true)}
+        isReady={siteReady}
         onFinish={() => setLoaderMounted(false)} />
 
       }
 
-      {siteVisible &&
       <div className="min-h-screen w-full bg-ink-950 animate-[fadeIn_400ms_ease-out]">
           {customCursor && <CustomCursor />}
-          <Site />
+          <Site onReady={markSiteReady} />
         </div>
-      }
     </BrowserRouter>);
 
 }
 
-function Site() {
+function Site({ onReady }: { onReady: () => void }) {
   useSmoothScroll();
+  useEffect(() => {
+    const frameId = requestAnimationFrame(onReady);
+    return () => cancelAnimationFrame(frameId);
+  }, [onReady]);
 
   return (
     <>
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[130] focus:bg-signal focus:px-4 focus:py-2 focus:font-display focus:text-sm focus:uppercase focus:text-ink-950">
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-skip-link focus:bg-signal focus:px-4 focus:py-2 focus:font-display focus:text-sm focus:uppercase focus:text-ink-950">
         
         Skip to content
       </a>

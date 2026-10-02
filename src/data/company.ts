@@ -18,11 +18,40 @@ export const company = {
   experience: '50+ years of experience',
   certification: 'ISO 9001:2015',
   email: 'info@khsbearings.com',
-  phone: '+91 9175275964',
+  emailHref: 'mailto:info@khsbearings.com',
+  salesEmail: 'sales@khsbearings.com',
+  salesEmailHref: 'mailto:sales@khsbearings.com',
+  phone: '+91 022 6978 6106',
+  phoneHref: 'tel:+912269786106',
+  factoryOffice: [
+    'KHS Innovation & Engineering LLP',
+    '196, Raj Rajeshwari Compound,',
+    '(Opp. Bombay Rayon Fashion Ltd.),',
+    'Near Sonale Police Station,',
+    'Sonale, Bhiwandi – 421302.'
+  ].join('\n'),
+  registeredOffice: [
+    '4A Karim Building,',
+    '1st Floor,',
+    '142/144, B. P. Lane,',
+    'Mumbai (M. Corp),',
+    'Mumbai – 400 003.'
+  ].join('\n'),
+  corporateOffice: [
+    'KHS Innovation & Engineering LLP',
+    'A-2403, Marathon Futurex,',
+    'Mafatlal Mills Compound,',
+    'N M Joshi Marg,',
+    'Lower Parel East,',
+    'Mumbai,',
+    'Maharashtra 400013.'
+  ].join('\n'),
+  zonalOffices: ['Ahmedabad', 'Bangalore', 'Delhi', 'Pune'],
   website: 'https://khslg.com/'
 };
 
-export const COMPANY_PHONE = '+91 9175275964';
+export const COMPANY_PHONE = company.phone;
+// Preserve the existing WhatsApp destination; it is not the approved call number.
 export const COMPANY_PHONE_RAW = '919175275964';
 export const COMPANY_WHATSAPP_URL = `https://wa.me/${COMPANY_PHONE_RAW}`;
 

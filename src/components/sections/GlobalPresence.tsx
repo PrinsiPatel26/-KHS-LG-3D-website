@@ -4,20 +4,20 @@ import { Reveal } from '../ui/RevealText';
 import { markets } from '../../data/company';
 import { useNearViewport } from '../../hooks/useNearViewport';
 
-export function GlobalPresence() {
+export function GlobalPresence({ code = '09 / Global' }: { code?: string }) {
   const [ref, near] = useNearViewport<HTMLDivElement>();
 
   return (
     <section
       ref={ref}
       aria-label="Global presence"
-      className="relative border-t border-ink-700 bg-ink-900 py-24 lg:py-32">
+      className="relative border-t border-ink-700 bg-ink-900 py-16 lg:py-20">
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-20">
           <div>
             <SectionHeading
-              code="09 / Global"
+              code={code}
               eyebrow="35+ export countries"
               lines={['Motion shipped', 'Worldwide']}
               body="KHS-LG bearings reach customers across Asia, Europe, Africa, the Middle East and South America through a distributor network built over five decades." />

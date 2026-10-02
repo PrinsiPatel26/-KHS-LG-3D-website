@@ -33,7 +33,7 @@ export function MobileMenu({ open, onClose }: {open: boolean;onClose: () => void
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.25, ease: [0.23, 1, 0.32, 1] }}
-        className="fixed inset-0 z-[110] overflow-y-auto bg-ink-950 xl:hidden"
+        className="fixed inset-0 z-mobile-menu overflow-y-auto bg-ink-950 xl:hidden"
         role="dialog"
         aria-modal="true"
         aria-label="Site menu">
@@ -116,10 +116,10 @@ export function MobileMenu({ open, onClose }: {open: boolean;onClose: () => void
 
             <div className="mt-10 space-y-4">
               <div className="space-y-1 font-mono text-[11px] uppercase tracking-[0.12em] text-steel-500">
-                <a className="block" href={`mailto:${company.email}`}>
+                <a className="block" href={company.emailHref}>
                   {company.email}
                 </a>
-                <a className="block" href={`tel:${company.phone.replace(/\s/g, '')}`}>
+                <a className="block" href={company.phoneHref}>
                   {company.phone}
                 </a>
               </div>

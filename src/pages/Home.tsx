@@ -27,6 +27,14 @@ export function Home() {
       url: company.website,
       email: company.email,
       telephone: company.phone,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '196, Raj Rajeshwari Compound, Near Sonale Police Station, Sonale',
+        addressLocality: 'Bhiwandi',
+        addressRegion: 'Maharashtra',
+        postalCode: '421302',
+        addressCountry: 'IN'
+      },
       slogan: 'Precision in Motion',
       description: company.intro,
       knowsAbout: stats.map((s) => `${s.value}${s.suffix} ${s.label}`)
@@ -36,16 +44,16 @@ export function Home() {
   return (
     <main>
       <Hero3D />
-      <BearingSearch />
       <MotionSection />
       <StatsSection />
       <Products3D limit={6} />
+      <BearingSearch />
       <IndustriesSection />
       <ApplicationsSection />
       <QualitySection />
-      <TechnologySection />
-      <PerformanceSection />
-      <GlobalPresence />
+      <GlobalPresence code="07 / Global" />
+      <TechnologySection code="08 / Technology" />
+      <PerformanceSection code="09 / Performance" />
       <CTASection />
     </main>);
 

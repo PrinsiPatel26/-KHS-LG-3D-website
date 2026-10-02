@@ -9,7 +9,7 @@ export function IndustriesSection() {
   return (
     <section
       aria-label="Industries served"
-      className="relative border-t border-ink-700 bg-ink-950 py-24 lg:py-32">
+      className="relative border-t border-ink-700 bg-ink-950 py-16 lg:py-24">
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <SectionHeading
@@ -18,7 +18,7 @@ export function IndustriesSection() {
           lines={['Motion that', 'Industries trust']} />
         
 
-        <div className="mt-14 grid gap-px border border-ink-700 bg-ink-700 lg:grid-cols-3">
+        <div className="mt-10 grid gap-px border border-ink-700 bg-ink-700 lg:grid-cols-3">
           {industries.map((industry, i) =>
           <Reveal key={industry.slug} delay={i * 0.06} className="h-full">
               <article className="group relative flex h-full min-h-[420px] flex-col justify-between overflow-hidden bg-ink-900 p-8 lg:p-10">

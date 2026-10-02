@@ -30,8 +30,8 @@ export function BrandMegaMenu({ open, onClose, scrolled = false }: { open: boole
 
   return (
     <>
-      <div className="fixed inset-x-0 bottom-0 z-[105] bg-ink-950/35" style={{ top: scrolled ? '70px' : '96px' }} aria-hidden />
-      <div ref={menuRef} className={cn('fixed inset-x-0 z-[9999] border-y border-ink-700 bg-ink-950 shadow-2xl animate-[fadeIn_180ms_ease-out]', scrolled ? 'top-[64px] lg:top-[70px]' : 'top-20 lg:top-24')} role="region" aria-label="KHS-LG brand navigation">
+      <div className="fixed inset-x-0 bottom-0 z-menu-backdrop bg-ink-950/35" style={{ top: scrolled ? '70px' : '84px' }} aria-hidden />
+      <div ref={menuRef} className={cn('fixed inset-x-0 z-menu-panel border-y border-ink-700 bg-ink-950 shadow-2xl animate-[fadeIn_180ms_ease-out]', scrolled ? 'top-[64px] lg:top-[70px]' : 'top-16 lg:top-[84px]')} role="region" aria-label="KHS-LG brand navigation">
         <div className="mx-auto max-h-[min(520px,calc(100vh-96px))] w-full max-w-[1400px] overflow-y-auto px-5 py-7 sm:px-8 lg:py-8">
           <div className="mb-6 flex flex-wrap items-end justify-between gap-4 border-b border-ink-700 pb-5">
             <div>

@@ -33,7 +33,7 @@ export function Products() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Products' }]} />
       
 
-      <section aria-label="Product categories" className="bg-ink-900 py-16 lg:py-20">
+      <section aria-label="Product categories" className="bg-ink-900 py-12 lg:py-16">
         <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
           <ul className="grid gap-px border border-ink-700 bg-ink-700 md:grid-cols-2 xl:grid-cols-3">
             {products.map((product, i) =>

@@ -38,7 +38,7 @@ export function Blog() {
 
   return <main>
     <PageHero code="Insights / Blog" eyebrow="Engineering knowledge for better motion solutions" lines={['Precision', 'in practice.']} body="Field knowledge for bearings, linear motion, maintenance, industrial applications and OEM manufacturing." breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Blog' }]} />
-    <section className="relative border-b border-ink-700 bg-ink-900 py-16 lg:py-20">
+    <section className="relative border-b border-ink-700 bg-ink-900 py-12 lg:py-16">
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
       <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <div className="grid gap-px border border-ink-700 bg-ink-700 lg:grid-cols-[1.2fr_0.8fr]">
@@ -47,7 +47,7 @@ export function Blog() {
         </div>
       </div>
     </section>
-    <section className="bg-ink-950 py-16 lg:py-24">
+    <section className="bg-ink-950 py-12 lg:py-18">
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <div className="flex flex-col gap-7 border-b border-ink-700 pb-8 lg:flex-row lg:items-end lg:justify-between"><div><p className="font-mono text-[10px] uppercase tracking-tech text-signal">Latest insights</p><h2 className="mt-4 font-display text-4xl font-bold uppercase text-steel-50 sm:text-5xl">The working archive</h2></div><p className="max-w-md text-sm leading-relaxed text-steel-500">{posts.length} {posts.length === 1 ? 'article' : 'articles'} found</p></div>
         <div className="mt-8 grid gap-3 border border-ink-700 bg-ink-700 p-3 lg:grid-cols-[1fr_auto_auto]">

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon, ChevronRightIcon } from 'lucide-react';
+import { ArrowLeftIcon, ArrowRightIcon, ChevronRightIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { powerTransmissionLinks, productFamilies } from '../../data/productFamilies';
 import { cn } from '../../utils/cn';
@@ -75,8 +75,8 @@ export function ProductMegaMenu({ open, onClose, scrolled = false }: { open: boo
 
   if (!open) return null;
   return <>
-    <div className="fixed inset-x-0 bottom-0 z-[105] bg-ink-950/35" style={{ top: scrolled ? '70px' : '96px' }} aria-hidden />
-    <div ref={menuRef} className={cn('fixed inset-x-0 z-[9999] border-y border-[#C9C9C6] bg-[#E9E9E7] text-[#181818] shadow-[0_12px_35px_rgba(0,0,0,0.16)] animate-[fadeIn_180ms_ease-out]', scrolled ? 'top-[64px] lg:top-[70px]' : 'top-20 lg:top-24')} role="region" aria-label="KHS-LG product navigation">
+      <div className="fixed inset-x-0 bottom-0 z-menu-backdrop bg-ink-950/35" style={{ top: scrolled ? '70px' : '84px' }} aria-hidden />
+    <div ref={menuRef} className={cn('fixed inset-x-0 z-menu-panel border-y border-[#C9C9C6] bg-[#E9E9E7] text-[#181818] shadow-[0_12px_35px_rgba(0,0,0,0.16)] animate-[fadeIn_180ms_ease-out]', scrolled ? 'top-[64px] lg:top-[70px]' : 'top-16 lg:top-[84px]')} role="region" aria-label="KHS-LG product navigation">
       <div className="mx-auto max-h-[min(500px,calc(100vh-96px))] w-full max-w-[1400px] overflow-y-auto px-5 py-6 sm:px-8 lg:py-7">
         <div className="mb-6 border-b border-[#C9C9C6] pb-4"><p className="font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-[#B99B00]">KHS-LG Products</p><p className="mt-1 text-[13px] text-[#555555]">Explore our industrial bearing and power transmission solutions.</p></div>
         <ProductMenuContent onNavigate={onClose} />

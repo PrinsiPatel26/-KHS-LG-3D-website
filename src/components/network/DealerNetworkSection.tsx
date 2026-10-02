@@ -1,5 +1,5 @@
 import indiaMap from '@svg-maps/india';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { TechnicalLabel } from '../ui/SectionHeading';
 import { dealerCities } from '../../data/network';
 import { NetworkInfoPanel } from './NetworkInfoPanel';
@@ -13,6 +13,8 @@ const INDIA_BOUNDS = {
   west: 68.1,
   east: 97.4
 };
+const ZONAL_OFFICE_CITY_IDS = new Set(['ahmedabad', 'bangalore', 'delhi', 'pune']);
+const zonalOfficeCities = dealerCities.filter((city) => ZONAL_OFFICE_CITY_IDS.has(city.id));
 
 function projectIndiaPosition(latitude: number, longitude: number) {
   return {
@@ -68,6 +70,29 @@ const cityDescriptions: Record<string, string> = {
 
 export function DealerNetworkSection() {
   const [selectedCityId, setSelectedCityId] = useState('ahmedabad');
+  const [timerResetKey, setTimerResetKey] = useState(0);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(() => document.visibilityState === 'visible');
+  useEffect(() => {
+    const updateVisibility = () => setIsDocumentVisible(document.visibilityState === 'visible');
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => document.removeEventListener('visibilitychange', updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!isDocumentVisible || dealerCities.length < 2) return;
+    const timeoutId = window.setTimeout(() => {
+      const currentIndex = dealerCities.findIndex((city) => city.id === selectedCityId);
+      const nextIndex = (currentIndex + 1) % dealerCities.length;
+      setSelectedCityId(dealerCities[nextIndex].id);
+    }, 3000);
+    return () => window.clearTimeout(timeoutId);
+  }, [selectedCityId, timerResetKey, isDocumentVisible]);
+
+  const selectCity = (cityId: string) => {
+    setSelectedCityId(cityId);
+    setTimerResetKey((current) => current + 1);
+  };
+
   const selectedCity = useMemo(() => {
     return dealerCities.find((city) => city.id === selectedCityId) ?? dealerCities[0];
   }, [selectedCityId]);
@@ -92,12 +117,12 @@ export function DealerNetworkSection() {
         </div>
 
         <div className="mt-10 grid gap-6 lg:grid-cols-[1.85fr_0.85fr] lg:items-stretch">
-          <div className="rounded-[20px] border border-ink-700 bg-ink-950/70 p-3 sm:p-5">
-            <div className="relative overflow-hidden rounded-[14px] border border-ink-700 bg-[#070b10] p-2 sm:p-4">
+          <div className="rounded-[20px] border border-ink-700 bg-ink-950/70 p-2 sm:p-5">
+            <div className="relative overflow-hidden rounded-[14px] border border-ink-700 bg-[#070b10] p-1 sm:p-4">
               <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
               <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_42%_48%,rgba(255,245,138,0.1),transparent_32%)]" aria-hidden />
-              <svg viewBox={`${-INDIA_VIEWBOX_PADDING} ${-INDIA_VIEWBOX_PADDING} ${INDIA_MAP_WIDTH + INDIA_VIEWBOX_PADDING * 2} ${INDIA_MAP_HEIGHT + INDIA_VIEWBOX_PADDING * 2}`} preserveAspectRatio="xMidYMid meet" className="relative z-10 mx-auto block h-auto w-full max-w-[500px] transition-transform duration-700 ease-out" role="img" aria-label="Accurate India dealer network map">
-                <g className="india-map-focus" style={{ transform: mapFocusTransform, transformOrigin: `${INDIA_MAP_WIDTH / 2}px ${INDIA_MAP_HEIGHT / 2}px`, transition: 'transform 700ms cubic-bezier(0.22, 1, 0.36, 1)' }}>
+              <svg viewBox={`${-INDIA_VIEWBOX_PADDING} ${-INDIA_VIEWBOX_PADDING} ${INDIA_MAP_WIDTH + INDIA_VIEWBOX_PADDING * 2} ${INDIA_MAP_HEIGHT + INDIA_VIEWBOX_PADDING * 2}`} preserveAspectRatio="xMidYMid meet" className="relative z-10 mx-auto block h-auto w-full max-w-[560px] transition-transform duration-700 ease-out" role="img" aria-label="Accurate India dealer network map">
+                <g className="india-map-focus transition-transform duration-700 ease-out motion-reduce:transition-none" style={{ transform: mapFocusTransform, transformOrigin: `${INDIA_MAP_WIDTH / 2}px ${INDIA_MAP_HEIGHT / 2}px` }}>
                   <g aria-hidden="true" fill="#12181e" stroke="#9a8c45" strokeWidth="1.2">
                     {indiaMap.locations.map((location) => <path key={location.id} d={location.path} />)}
                   </g>
@@ -105,10 +130,10 @@ export function DealerNetworkSection() {
                     const position = projectIndiaPosition(city.latitude, city.longitude);
                     const active = city.id === selectedCityId;
                     return (
-                      <g key={city.id} className="cursor-pointer" onClick={() => setSelectedCityId(city.id)} role="button" tabIndex={0} aria-label={`View ${city.city} dealer network`} onKeyDown={(event) => {
+                      <g key={city.id} className="cursor-pointer" onClick={() => selectCity(city.id)} role="button" tabIndex={0} aria-pressed={active} aria-label={`View ${city.city} dealer network`} onKeyDown={(event) => {
                         if (event.key === 'Enter' || event.key === ' ') {
                           event.preventDefault();
-                          setSelectedCityId(city.id);
+                          selectCity(city.id);
                         }
                       }}>
                         <title>{city.city} - {city.state}</title>
@@ -135,6 +160,24 @@ export function DealerNetworkSection() {
           </div>
 
         </div>
+
+        <nav aria-label="Zonal office map locations" className="mt-6 flex flex-wrap items-center gap-2">
+          <span className="mr-2 font-mono text-[9px] uppercase tracking-tech text-steel-500">Zonal offices</span>
+          {zonalOfficeCities.map((city) => {
+            const active = city.id === selectedCityId;
+            return (
+              <button
+                key={city.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => selectCity(city.id)}
+                className={`border px-3 py-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-colors ${active ? 'border-signal bg-signal text-ink-950' : 'border-ink-600 text-steel-400 hover:border-signal/60 hover:text-signal'}`}
+              >
+                {city.city}
+              </button>
+            );
+          })}
+        </nav>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-3">
           <div className="rounded-[16px] border border-ink-700 bg-ink-950/70 p-5">

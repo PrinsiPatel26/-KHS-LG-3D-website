@@ -20,7 +20,7 @@ export function Products3D({ limit }: {limit?: number;}) {
   return (
     <section
       aria-labelledby="products-heading"
-      className="relative border-t border-ink-700 bg-ink-900 py-24 lg:py-32">
+      className="relative border-t border-ink-700 bg-ink-900 py-12 lg:py-18">
       
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
       <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">

@@ -9,7 +9,7 @@ export function MotionSection() {
   return (
     <section
       aria-labelledby="motion-heading"
-      className="relative overflow-hidden border-t border-ink-700 bg-ink-900 py-24 lg:py-32">
+      className="relative overflow-hidden border-t border-ink-700 bg-ink-900 py-12 lg:py-18">
       
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden />
       <div className="relative mx-auto grid w-full max-w-[1600px] gap-16 px-5 sm:px-8 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-24">

@@ -12,7 +12,7 @@ export function ApplicationsSection() {
   return (
     <section
       aria-label="Applications"
-      className="relative border-t border-ink-700 bg-ink-900 py-24 lg:py-32">
+      className="relative border-t border-ink-700 bg-ink-900 py-12 lg:py-18">
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <SectionHeading
@@ -21,7 +21,7 @@ export function ApplicationsSection() {
           lines={['Where motion', 'Matters']} />
         
 
-        <div className="mt-14 grid gap-12 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:gap-12">
           <ul className="border-t border-ink-700">
             {applications.map((app, i) =>
             <li key={app.code} className="border-b border-ink-700">

@@ -37,14 +37,14 @@ export function About() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'About KHS-LG' }]} />
       
 
-      <section aria-label="Company story" className="relative bg-ink-900 py-20 lg:py-28">
+      <section aria-label="Company story" className="relative bg-ink-900 py-14 lg:py-20">
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
           <TechnicalLabel code="Story">
             Foundation → Experience → Engineering → Expansion → Global presence
           </TechnicalLabel>
 
-          <div ref={ref} className="mt-14 grid gap-14 lg:grid-cols-[1fr_0.75fr] lg:gap-20">
+          <div ref={ref} className="mt-10 grid gap-10 lg:grid-cols-[1fr_0.75fr] lg:gap-12">
             <ol className="relative pl-10">
               <div className="absolute left-[11px] top-2 h-full w-px bg-ink-700" aria-hidden />
               <motion.div
@@ -53,7 +53,7 @@ export function About() {
                 aria-hidden />
               
               {timeline.map((item, i) =>
-              <li key={item.step} className="relative pb-12 last:pb-0">
+              <li key={item.step} className="relative pb-9 last:pb-0">
                   <Reveal delay={i * 0.05}>
                     <span
                     className="absolute -left-10 top-1.5 flex h-6 w-6 items-center justify-center border border-signal/60 bg-ink-950"
