@@ -21,9 +21,9 @@ export function Logo({ className }: {className?: string;}) {
         className
       )}>
       <img
-        src="/khslogo2-removebg-preview.png"
+        src="/khslogo-clean.png"
         alt="KHS-LG"
-        className="khs-logo h-12 w-40 origin-left object-contain sm:h-20 sm:w-60 sm:scale-x-150"
+        className="khs-logo block h-10 w-auto object-contain object-left sm:h-12 lg:h-14"
         />
     </Link>);
 
@@ -107,7 +107,7 @@ export function Navbar() {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, delay: 0.15, ease: [0.23, 1, 0.32, 1] }}
         className={cn(
-          'fixed inset-x-0 top-0 z-navigation border-b transition-[background-color,border-color,height,backdrop-filter] duration-300 ease-precision',
+          'fixed inset-x-0 top-0 z-navigation flex items-center justify-center border-b transition-[background-color,border-color,height,backdrop-filter] duration-300 ease-precision',
           scrolled ?
           'h-16 border-signal/20 bg-ink-950/80 backdrop-blur-md lg:h-[70px]' :
           'h-16 border-steel-500/10 bg-transparent lg:h-[84px]'
@@ -115,7 +115,7 @@ export function Navbar() {
         
         <nav
           aria-label="Primary"
-          className="mx-auto flex h-full w-full max-w-[1600px] items-center justify-between gap-4 px-5 sm:px-8">
+          className="mx-auto flex h-full w-full max-w-[1600px] flex-row items-center justify-between gap-6 px-5 sm:px-8">
           
           <Logo />
 

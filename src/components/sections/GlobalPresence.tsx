@@ -39,14 +39,6 @@ export function GlobalPresence({ code = '09 / Global' }: { code?: string }) {
 
           <div className="relative aspect-square w-full">
             {near && <Globe className="absolute inset-0" />}
-            <div
-              className="pointer-events-none absolute inset-0"
-              aria-hidden
-              style={{
-                background:
-                'radial-gradient(circle at 50% 50%, rgba(5,5,5,0) 55%, rgba(11,11,11,0.9) 100%)'
-              }} />
-            
           </div>
         </div>
       </div>

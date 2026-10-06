@@ -2,7 +2,7 @@ import { geoNaturalEarth1, geoPath } from 'd3-geo';
 import worldTopology from 'world-atlas/countries-110m.json';
 import { feature } from 'topojson-client';
 import type { Topology } from 'topojson-specification';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { TechnicalLabel } from '../ui/SectionHeading';
 import { exportCountries } from '../../data/network';
 import { NetworkInfoPanel } from './NetworkInfoPanel';
@@ -74,6 +74,30 @@ const regionDescriptions: Record<string, string> = {
 export function ExportFootprintSection() {
   const [selectedCountryId, setSelectedCountryId] = useState('uae');
   const [hoveredCountryId, setHoveredCountryId] = useState<string | null>(null);
+  const [timerResetKey, setTimerResetKey] = useState(0);
+  const [isDocumentVisible, setIsDocumentVisible] = useState(() => document.visibilityState === 'visible');
+
+  useEffect(() => {
+    const updateVisibility = () => setIsDocumentVisible(document.visibilityState === 'visible');
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => document.removeEventListener('visibilitychange', updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (!isDocumentVisible || exportCountries.length < 2) return;
+    const timeoutId = window.setTimeout(() => {
+      const currentIndex = exportCountries.findIndex((country) => country.id === selectedCountryId);
+      const nextIndex = (currentIndex + 1) % exportCountries.length;
+      setSelectedCountryId(exportCountries[nextIndex].id);
+    }, 3000);
+    return () => window.clearTimeout(timeoutId);
+  }, [selectedCountryId, timerResetKey, isDocumentVisible]);
+
+  const selectCountry = (countryId: string) => {
+    setSelectedCountryId(countryId);
+    setTimerResetKey((current) => current + 1);
+  };
+
   const selectedCountry = useMemo(() => {
     return exportCountries.find((country) => country.id === selectedCountryId) ?? exportCountries[0];
   }, [selectedCountryId]);
@@ -172,13 +196,13 @@ export function ExportFootprintSection() {
                       role="button"
                       tabIndex={0}
                       aria-label={`View ${country.country} export market`}
-                      onClick={() => setSelectedCountryId(country.id)}
+                      onClick={() => selectCountry(country.id)}
                       onMouseEnter={() => setHoveredCountryId(country.id)}
                       onMouseLeave={() => setHoveredCountryId(null)}
                       onKeyDown={(event) => {
                         if (event.key === 'Enter' || event.key === ' ') {
                           event.preventDefault();
-                          setSelectedCountryId(country.id);
+                          selectCountry(country.id);
                         }
                       }}
                     >
