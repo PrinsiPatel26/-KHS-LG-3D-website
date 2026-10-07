@@ -56,12 +56,12 @@ export const brands: BrandDefinition[] = [
     ],
     categoriesHeading: 'IKO product categories',
     categories: [
-      { name: 'Needle roller bearings', description: 'Compact rolling solutions for applications with limited radial space.', image: '/machined-needle-roller-bearing.webp' },
-      { name: 'Cam & roller followers', description: 'Track-running components for controlled linear or oscillating motion.', image: '/track-roller-bearing-stud-yoke.webp' },
-      { name: 'Spherical plain bearings', description: 'Articulating bearing solutions for alignment and oscillating movement.', image: '/radial-spherical-plain-bearing.webp' },
-      { name: 'Linear motion bearings', description: 'Guided movement components for precise machine travel.', image: '/linear motion bearing.webp' },
+      { name: 'Needle roller bearings', description: 'Compact rolling solutions for applications with limited radial space.', image: '/assets/products/machined-needle-roller-bearing.png' },
+      { name: 'Cam & roller followers', description: 'Track-running components for controlled linear or oscillating motion.', image: '/assets/products/track-roller-bearing-stud-yoke.png' },
+      { name: 'Spherical plain bearings', description: 'Articulating bearing solutions for alignment and oscillating movement.', image: '/assets/products/radial-spherical-plain-bearing.png' },
+      { name: 'Linear motion bearings', description: 'Guided movement components for precise machine travel.', image: '/assets/products/linear-motion-bearing.png' },
       { name: 'Rod end bearings', description: 'Compact joint components for linkages and adjustable mechanisms.', image: '/rod-end.png' },
-      { name: 'Cylindrical roller bearings', description: 'Radial load support for demanding industrial assemblies.', image: '/cylindrical roller bearing.webp' }
+      { name: 'Cylindrical roller bearings', description: 'Radial load support for demanding industrial assemblies.', image: '/assets/products/cylindrical-roller-bearing.png' }
     ],
     whyHeading: 'Why IKO?',
     features: [
@@ -74,11 +74,11 @@ export const brands: BrandDefinition[] = [
     ],
     applicationsHeading: 'IKO applications',
     applications: ['Automation', 'Robotics', 'Machine tools', 'Packaging machinery', 'Semiconductor equipment', 'Medical equipment', 'Printing machinery', 'Precision machinery'],
-    applicationImage: '/linear motion shaft with support.webp',
+    applicationImage: '/assets/products/linear-motion-shaft-with-support.png',
     ctaHeading: 'Looking for an IKO product or series?',
     ctaDescription: 'Send us the IKO part number or your application requirement and our team can help you identify the appropriate product or series.',
     productLabel: 'Needle roller / linear motion',
-    productImage: '/needle-roller-and-cage-assembly.webp'
+    productImage: '/assets/products/needle-roller-and-cage-assembly.png'
   },
   {
     slug: 'won',
@@ -99,14 +99,14 @@ export const brands: BrandDefinition[] = [
     ],
     categoriesHeading: 'WON product categories',
     categories: [
-      { name: 'Super ball bush', description: 'Recirculating ball bushing assemblies for guided linear travel.', image: '/linear motion bearing.webp' },
-      { name: 'Linear motion shafts', description: 'Precision shafts designed to work with linear bearing systems.', image: '/linear motion shaft with support.webp' },
-      { name: 'Slide units', description: 'Ready-to-integrate units for compact guided movement.', image: '/dual-shaft-guide.webp' },
-      { name: 'Cross roller guideways', description: 'Rigid guidance for accurate positioning and controlled travel.', image: '/dual-shaft-guide.webp' },
-      { name: 'Linear ball bushings', description: 'Low-friction linear supports for automation equipment.', image: '/linear motion bearing.webp' },
-      { name: 'TR guide ways', description: 'Guided motion components for precision machinery assemblies.', image: '/linear motion shaft with support.webp' },
-      { name: 'Compact ball splines', description: 'Linear and rotary motion capability in a compact profile.', image: '/linear motion shaft with support.webp' },
-      { name: 'Housing type ball bushings', description: 'Housed linear bearings for simplified machine integration.', image: '/dual-shaft-guide.webp' }
+      { name: 'Super ball bush', description: 'Recirculating ball bushing assemblies for guided linear travel.', image: '/assets/products/linear-motion-bearing.png' },
+      { name: 'Linear motion shafts', description: 'Precision shafts designed to work with linear bearing systems.', image: '/assets/products/linear-motion-shaft.png' },
+      { name: 'Slide units', description: 'Ready-to-integrate units for compact guided movement.', image: '/assets/products/dual-shaft-guide.png' },
+      { name: 'Cross roller guideways', description: 'Rigid guidance for accurate positioning and controlled travel.', image: '/assets/products/dual-shaft-guide.png' },
+      { name: 'Linear ball bushings', description: 'Low-friction linear supports for automation equipment.', image: '/assets/products/linear-motion-bearing.png' },
+      { name: 'TR guide ways', description: 'Guided motion components for precision machinery assemblies.', image: '/assets/products/linear-motion-shaft-with-support.png' },
+      { name: 'Compact ball splines', description: 'Linear and rotary motion capability in a compact profile.', image: '/assets/products/linear-motion-shaft.png' },
+      { name: 'Housing type ball bushings', description: 'Housed linear bearings for simplified machine integration.', image: '/assets/products/dual-shaft-guide.png' }
     ],
     whyHeading: 'Why WON?',
     features: [
@@ -119,11 +119,11 @@ export const brands: BrandDefinition[] = [
     ],
     applicationsHeading: 'WON applications',
     applications: ['Automation', 'Robotics', 'Machine tools', 'Packaging machinery', 'Semiconductor equipment', 'Electronics manufacturing', 'Medical equipment', 'Precision machinery'],
-    applicationImage: '/dual-shaft-guide.webp',
+    applicationImage: '/assets/products/dual-shaft-guide.png',
     ctaHeading: 'Looking for a WON product or series?',
     ctaDescription: 'Send us the WON part number, shaft size or application requirement and our team can help identify the appropriate product or series.',
     productLabel: 'Linear motion guide',
-    productImage: '/linear motion bearing.webp'
+    productImage: '/assets/products/linear-motion-bearing.png'
   },
   {
     slug: 'stieber',
@@ -144,12 +144,12 @@ export const brands: BrandDefinition[] = [
     ],
     categoriesHeading: 'STIEBER product series',
     categories: [
-      { name: 'ASNU series', description: 'Overrunning clutch solutions for controlled one-way torque transmission.', image: '/one-way-clutch-bearing.webp' },
-      { name: 'AS series', description: 'Freewheel components for industrial drive and indexing applications.', image: '/drawn-cup-needle-roller-clutch.webp' },
-      { name: 'CSK series', description: 'Compact clutch formats for integrated machine arrangements.', image: '/one-way-clutch-bearing.webp' },
-      { name: 'CSK P series', description: 'Protected freewheel configurations for selected drive applications.', image: '/drawn-cup-needle-roller-clutch.webp' },
-      { name: 'CSK PP series', description: 'Sealed options for applications requiring additional protection.', image: '/one-way-clutch-bearing.webp' },
-      { name: 'DC series', description: 'Industrial clutch solutions for demanding torque transmission requirements.', image: '/permaglide-dry-bush.webp' }
+      { name: 'ASNU series', description: 'Overrunning clutch solutions for controlled one-way torque transmission.', image: '/assets/products/one-way-clutch-bearing.png' },
+      { name: 'AS series', description: 'Freewheel components for industrial drive and indexing applications.', image: '/assets/products/drawn-cup-needle-roller-clutch.png' },
+      { name: 'CSK series', description: 'Compact clutch formats for integrated machine arrangements.', image: '/assets/products/one-way-clutch-bearing.png' },
+      { name: 'CSK P series', description: 'Protected freewheel configurations for selected drive applications.', image: '/assets/products/drawn-cup-needle-roller-clutch.png' },
+      { name: 'CSK PP series', description: 'Sealed options for applications requiring additional protection.', image: '/assets/products/one-way-clutch-bearing.png' },
+      { name: 'DC series', description: 'Industrial clutch solutions for demanding torque transmission requirements.', image: '/assets/products/permaglide-dry-bush.png' }
     ],
     whyHeading: 'Why STIEBER?',
     features: [
@@ -162,11 +162,11 @@ export const brands: BrandDefinition[] = [
     ],
     applicationsHeading: 'STIEBER applications',
     applications: ['Conveyors', 'Gearboxes', 'Industrial drives', 'Material handling', 'Mining equipment', 'Packaging machinery', 'Machine tools', 'Fans & blowers', 'Heavy machinery', 'Automation systems'],
-    applicationImage: '/drawn-cup-needle-roller-clutch.webp',
+    applicationImage: '/assets/products/drawn-cup-needle-roller-clutch.png',
     ctaHeading: 'Looking for a STIEBER product or series?',
     ctaDescription: 'Send us the Stieber part number, torque requirement or application details and our team can help identify the appropriate product or series.',
     productLabel: 'Freewheel / clutch',
-    productImage: '/one-way-clutch-bearing.webp'
+    productImage: '/assets/products/one-way-clutch-bearing.png'
   }
 ];
 

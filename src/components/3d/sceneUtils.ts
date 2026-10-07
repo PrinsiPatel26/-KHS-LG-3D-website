@@ -11,31 +11,39 @@ export function disposeScene(scene: THREE.Object3D): void {
   scene.clear();
 }
 
-/** Dark industrial lighting rig: white key from above, yellow rim accents. */
+/** Photographic studio lighting rig: high-intensity key, sharp chrome rim highlights, brass fill, and under-bore bounce. */
 export function createIndustrialLights(shadows: boolean): THREE.Group {
   const group = new THREE.Group();
 
-  group.add(new THREE.AmbientLight('#cfd6e0', 0.55));
+  group.add(new THREE.AmbientLight('#dce6f2', 0.65));
 
-  const key = new THREE.SpotLight('#ffffff', 90, 26, 0.58, 0.92);
-  key.position.set(0, 7.5, 2.4);
+  const key = new THREE.SpotLight('#ffffff', 120, 32, 0.62, 0.88);
+  key.position.set(0, 8.2, 3.2);
   key.castShadow = shadows;
   key.shadow.mapSize.set(1024, 1024);
   key.shadow.bias = -0.0004;
   group.add(key);
   group.add(key.target);
 
-  const rim = new THREE.PointLight('#FFF58A', 28, 16);
-  rim.position.set(-4.2, 0.6, -2.4);
+  // Sharp cool rim light (catches outer bevel and chrome edges)
+  const rim = new THREE.PointLight('#cde2fa', 48, 22);
+  rim.position.set(-4.5, 2.5, -2.8);
   group.add(rim);
 
-  const warm = new THREE.PointLight('#D9CC4D', 14, 14);
-  warm.position.set(4.4, -1.2, 1.6);
+  // Front specular glint light
+  const frontSpecular = new THREE.PointLight('#ffffff', 28, 16);
+  frontSpecular.position.set(1.4, 2.4, 4.8);
+  group.add(frontSpecular);
+
+  // Warm industrial light to catch the golden brass cage
+  const warm = new THREE.PointLight('#ffdf88', 22, 18);
+  warm.position.set(4.2, -1.0, 1.8);
   group.add(warm);
 
-  const fill = new THREE.PointLight('#D7D7D7', 10, 14);
-  fill.position.set(1.6, 2.4, 4.4);
-  group.add(fill);
+  // Under-bore fill light so the inner steel ring isn't buried in shadows
+  const underFill = new THREE.PointLight('#94a9bf', 18, 16);
+  underFill.position.set(0, -4.5, 2.2);
+  group.add(underFill);
 
   return group;
 }

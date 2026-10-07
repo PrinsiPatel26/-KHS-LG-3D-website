@@ -1,10 +1,11 @@
 import { products } from './products';
 
-export type CatalogueGroup = 'Bearings' | 'V-Belts & Timing Belts';
+export type CatalogueGroup = 'Bearings' | 'Linear Shafts' | 'Linear Motion' | 'Power Transmission';
 
 export interface CatalogueRecord {
   id: string;
   group: CatalogueGroup;
+  categoryTag?: string;
   sequence: number;
   title: string;
   image?: string;
@@ -33,8 +34,50 @@ export interface CatalogueLead {
 
 export const catalogueGroups: { id: CatalogueGroup; code: string; title: string; description: string }[] = [
   { id: 'Bearings', code: '01', title: 'Bearings', description: 'Precision bearing solutions for industrial, OEM and motion applications.' },
-  { id: 'V-Belts & Timing Belts', code: '02', title: 'V-Belts & Timing Belts', description: 'Power transmission solutions for industrial applications.' }
+  { id: 'Linear Shafts', code: '02', title: 'Linear Shafts', description: 'Hard-chrome shafts, supported linear rails, and precision shaft support units.' },
+  { id: 'Linear Motion', code: '03', title: 'Linear Motion', description: 'Linear guideways, dual shaft guides, and recirculating ball bushing units.' },
+  { id: 'Power Transmission', code: '04', title: 'Power Transmission', description: 'Power transmission solutions including timing belts and V-belts.' }
 ];
+
+export const bearingImages: Record<string, string> = {
+  'taper-roller-bearings': '/assets/products/taper-roller-bearing.png',
+  'spherical-roller-bearings': '/assets/products/spherical-roller-bearing.png',
+  'deep-groove-ball-bearings': '/assets/products/deep-groove-roller-bearing.png',
+  'miniature-ball-bearings': '/assets/products/miniature-ball-bearing.png',
+  'cylindrical-roller-bearings': '/assets/products/cylindrical-roller-bearing.png',
+  'linear-motion-shafts-with-support': '/assets/products/linear-motion-shaft-with-support.png',
+  'linear-motion-bearings': '/assets/products/linear-motion-bearing.png',
+  'pillow-block-bearings': '/assets/products/pillow-block-bearing.png',
+  'thrust-needle-roller-bearings': '/assets/products/thrust-needle-roller-bearing.png',
+  'stud-and-yoke-track-roller-bearings': '/assets/products/track-roller-bearing-stud-yoke.png',
+  'machined-type-needle-roller-bearings': '/assets/products/machined-needle-roller-bearing.png',
+  'rod-end-bearings': '/rod-end.png',
+  'radial-spherical-plain-bearings': '/assets/products/radial-spherical-plain-bearing.png',
+  'one-way-clutch': '/assets/products/one-way-clutch-bearing.png',
+  'cylindrical-roller-thrust-bearings': '/assets/products/cylindrical-roller-bearing.png',
+  'drawn-cup-needle-roller-clutches': '/assets/products/drawn-cup-needle-roller-clutch.png',
+  'permaglide-dry-bush': '/assets/products/permaglide-dry-bush.png',
+  'needle-roller-and-cage-assemblies': '/assets/products/needle-roller-and-cage-assembly.png',
+  'track-roller-bearings': '/assets/products/track-roller-bearing.png',
+  'flat-roller-cages': '/assets/products/flat-roller-bearing.png',
+  'precision-angular-contact-bearings': '/assets/products/precision-angular-contact-bearing.png',
+  'self-aligning-ball-bearings': '/assets/products/self-aligning-ball-bearing.png',
+  'thrust-ball-bearings': '/assets/products/thrust-ball-bearing.png',
+  'spherical-roller-thrust-bearings': '/assets/products/spherical-roller-bearing.png',
+  'dual-shaft-guides': '/assets/products/dual-shaft-guide.png',
+  'drawn-cup-needle-roller-bearings': '/assets/products/drawn-cup-needle-roller-bearing.png',
+
+  // Linear Shafts series
+  'shaft-custom-made': '/assets/products/shaft-custom-made.png',
+  'shaft-s-st': '/assets/products/shaft-s-st.png',
+  'shaft-s-stu': '/assets/products/shaft-s-stu.png',
+  'shaft-st': '/assets/products/shaft-st.png',
+  'shaft-stu': '/assets/products/shaft-stu.png',
+  'shaft-was-solid': '/assets/products/shaft-was-solid.png',
+  'hard-chrome-shafts': '/assets/products/linear-motion-shaft.png',
+  'shafts-with-support': '/assets/products/linear-motion-shaft-with-support.png',
+  'shaft-supporting-units': '/assets/products/shaft-support-unit.png'
+};
 
 const bearingDefinitions = [
   ['taper-roller-bearings', 'Taper Roller Bearings', 'Combined radial and axial loads in one geometry.', ['30000 Series', '32000 Series', '33000 Series']],
@@ -42,8 +85,6 @@ const bearingDefinitions = [
   ['deep-groove-ball-bearings', 'Deep Groove Ball Bearings', 'The most widely used bearing type in motion systems.', ['6000 Series', '6200 Series', '6300 Series']],
   ['miniature-ball-bearings', 'Miniature Ball Bearings', 'Small envelope, precision motion.', ['MR Series', 'R Series', 'Flanged Series']],
   ['cylindrical-roller-bearings', 'Cylindrical Roller Bearings', 'High radial capacity through line contact.', ['NU Series', 'NJ Series', 'N Series']],
-  ['linear-motion-shafts-with-support', 'Linear Motion Shafts with Support', 'Supported linear shafts for stable, guided industrial movement.', ['Supported Shaft Series', 'Shaft Support Series']],
-  ['linear-motion-bearings', 'Linear Motion Bearings', 'Guided motion along a straight axis.', ['LM Series', 'LME Series', 'Linear Guide Series']],
   ['pillow-block-bearings', 'Pillow Block Bearings', 'Mounted bearing units for dependable shaft support.', ['UC Series', 'UCP Series', 'UCF Series']],
   ['thrust-needle-roller-bearings', 'Thrust Needle Roller Bearings', 'Compact axial-load support for constrained assemblies.', ['AXK Series', 'AS Series']],
   ['stud-and-yoke-track-roller-bearings', 'Stud and Yoke Type Track Roller Bearings', 'Track-running solutions for cam, guide and conveyor applications.', ['CF Series', 'KR Series', 'NUKR Series']],
@@ -61,36 +102,8 @@ const bearingDefinitions = [
   ['self-aligning-ball-bearings', 'Self-Aligning Ball Bearings', 'Compensate for shaft and housing alignment variation.', ['1200 Series', '1300 Series', '2200 Series']],
   ['thrust-ball-bearings', 'Thrust Ball Bearings', 'Dedicated axial-load support for rotating assemblies.', ['51100 Series', '51200 Series']],
   ['spherical-roller-thrust-bearings', 'Spherical Roller Thrust Bearings', 'Heavy axial-load support with self-aligning capability.', ['29200 Series', '29300 Series', '29400 Series']],
-  ['dual-shaft-guides', 'Dual Shaft Guides', 'Parallel shaft guidance for stable linear motion.', ['Dual Guide Series']],
   ['drawn-cup-needle-roller-bearings', 'Drawn Cup Needle Roller Bearings', 'Thin-section needle rollers for compact radial applications.', ['HK Series', 'HMK Series', 'SCE Series']]
 ] as const;
-
-const bearingImages: Record<string, string> = {
-  'taper-roller-bearings': '/taper roller.webp',
-  'spherical-roller-bearings': '/spheriphle roller.webp',
-  'deep-groove-ball-bearings': '/depp grove roller.webp',
-  'miniature-ball-bearings': '/miniature ball bearing.webp',
-  'cylindrical-roller-bearings': '/cylindrical roller bearing.webp',
-  'linear-motion-shafts-with-support': '/linear motion shaft with support.webp',
-  'linear-motion-bearings': '/linear motion bearing.webp',
-  'pillow-block-bearings': '/pillow-block-bearing.webp',
-  'thrust-needle-roller-bearings': '/thrust-needle-roller-bearing.webp',
-  'stud-and-yoke-track-roller-bearings': '/track-roller-bearing-stud-yoke.webp',
-  'machined-type-needle-roller-bearings': '/machined-needle-roller-bearing.webp',
-  'radial-spherical-plain-bearings': '/radial-spherical-plain-bearing.webp',
-  'one-way-clutch': '/one-way-clutch-bearing.webp',
-  'drawn-cup-needle-roller-clutches': '/drawn-cup-needle-roller-clutch.webp',
-  'permaglide-dry-bush': '/permaglide-dry-bush.webp',
-  'needle-roller-and-cage-assemblies': '/needle-roller-and-cage-assembly.webp',
-  'track-roller-bearings': '/track-roller-bearing.webp',
-  'flat-roller-cages': '/flat-roller-bearing.webp',
-  'precision-angular-contact-bearings': '/precision-angular-contact-bearing.webp',
-  'self-aligning-ball-bearings': '/self-aligning-ball-bearing.webp',
-  'dual-shaft-guides': '/dual-shaft-guide.webp',
-  'drawn-cup-needle-roller-bearings': '/drawn-cup-needle-roller-bearing.webp'
-};
-
-const productBySlug = new Map(products.map((product) => [product.slug, product]));
 
 type CatalogueDocument = Pick<CatalogueRecord, 'pdfAvailable' | 'pdfUrl' | 'pdfFileName' | 'downloadType'>;
 
@@ -100,8 +113,6 @@ const bearingDocuments: Record<string, CatalogueDocument> = {
   'deep-groove-ball-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/19wkE7Inu8U93486AShFwXdRTiTvUc-XJ/view?usp=sharing', pdfFileName: 'Deep Groove Ball Bearing_V7_1.pdf', downloadType: 'external' },
   'miniature-ball-bearings': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
   'cylindrical-roller-bearings': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
-  'linear-motion-shafts-with-support': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
-  'linear-motion-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1xSpNU2KxiztdonxZ4tqvfKs4PgjksqA8/view?usp=sharing', pdfFileName: 'Linear-Motion-Bearings_V2.pdf', downloadType: 'external' },
   'pillow-block-bearings': { pdfAvailable: true, pdfUrl: 'https://www.khslg.com/wp-content/uploads/2022/04/Pillow-block-bearing_V1_CORRECTIONS_MARKED-2_compressed.pdf', pdfFileName: 'Pillow-block-bearing_V1_CORRECTIONS_MARKED-2_compressed.pdf', downloadType: 'pdf' },
   'thrust-needle-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1ph9S7mUIvVcCztHV5dfix5Ax4aRZGK4B/view?usp=sharing', pdfFileName: 'Thrust needle roller bearings_V1 (1).pdf', downloadType: 'external' },
   'stud-and-yoke-track-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1V7HrKUSc8gXyoqqgvNMUL6Mrcf7G65U0/view?usp=sharing', pdfFileName: 'Stud-yoke-type-track-roller-bearings_V4 (1).pdf', downloadType: 'external' },
@@ -119,26 +130,83 @@ const bearingDocuments: Record<string, CatalogueDocument> = {
   'self-aligning-ball-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1rVcLmek8uJsImMbeOSW9S3EBmSHtgVGb/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
   'thrust-ball-bearings': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
   'spherical-roller-thrust-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1h7I5-VE-kHyyH1PGV9WDgdXTY5b75Apz/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
-  'dual-shaft-guides': { pdfAvailable: true, pdfUrl: 'https://www.khslg.com/wp-content/uploads/2019/11/KHS-LG-dual-guides.pdf', pdfFileName: 'KHS-LG-dual-guides.pdf', downloadType: 'pdf' },
   'drawn-cup-needle-roller-bearings': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null }
 };
+
+const productBySlug = new Map(products.map((product) => [product.slug, product]));
 
 export const bearingCatalogues: CatalogueRecord[] = bearingDefinitions.map(([id, title, description, series], index) => {
   const product = productBySlug.get(id);
   return {
     id,
     group: 'Bearings' as const,
+    categoryTag: 'Rolling & Plain Bearings',
     sequence: index + 1,
     title,
     image: bearingImages[id],
     description: product?.description ?? description,
-    keywords: [title, description, ...series],
+    keywords: [title, description, ...series, 'Bearings'],
     series: [...series],
     productSlug: product?.slug,
     ...(bearingDocuments[id] ?? { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null })
   };
 });
 
+// Linear Shafts catalogue items matching reference UI
+const linearShaftsDefinitions = [
+  ['shaft-custom-made', 'Custom-made', 'Custom precision linear shafts machined to OEM drawing tolerances and hardening specs.', ['Custom Machined Ends', 'Special Diameters', 'Flanged Ends', 'Keyways & Tapers']],
+  ['shaft-s-st', 'S-ST', 'Precision aluminum shaft support unit designed for secure end clamping and rigid alignment.', ['S-ST 12', 'S-ST 16', 'S-ST 20', 'S-ST 25', 'S-ST 30']],
+  ['shaft-s-stu', 'S-STU', 'Heavy-duty flanged shaft support unit for rigid machine base mounting.', ['S-STU 12', 'S-STU 16', 'S-STU 20', 'S-STU 25', 'S-STU 30']],
+  ['shaft-st', 'ST', 'Pre-assembled linear shaft with continuous aluminum support rail for deflection-free motion.', ['ST 16', 'ST 20', 'ST 25', 'ST 30', 'ST 40']],
+  ['shaft-stu', 'STU', 'Open continuous linear shaft and support rail system designed for long-stroke industrial travel.', ['STU 16', 'STU 20', 'STU 25', 'STU 30', 'STU 40']],
+  ['shaft-was-solid', 'WAS - Solid Shaft', 'Induction-hardened hard-chrome plated solid linear shafts precision ground to h6 tolerance.', ['WAS 12', 'WAS 16', 'WAS 20', 'WAS 25', 'WAS 30', 'WAS 40', 'WAS 50']],
+  ['hard-chrome-shafts', 'Hard-Chrome Shafts', 'Precision linear motion shafts with high-grade hard chrome plating for extreme wear protection.', ['C45E', 'Cf53', '100Cr6', 'X46Cr13']],
+  ['shafts-with-support', 'Shafts with Support', 'Supported shaft rails engineered to eliminate shaft bending in heavy automated machines.', ['SA Series', 'TBR Series', 'SBR Series']],
+  ['shaft-supporting-units', 'Shaft Supporting Units', 'Precision machined end support units and clamping blocks for linear assemblies.', ['SK Series', 'SHF Series', 'WA Series']]
+] as const;
+
+export const linearShaftsCatalogues: CatalogueRecord[] = linearShaftsDefinitions.map(([id, title, description, series], index) => ({
+  id,
+  group: 'Linear Shafts' as const,
+  categoryTag: 'Shaft Guidance Systems',
+  sequence: index + 1,
+  title,
+  image: bearingImages[id],
+  description,
+  keywords: [title, description, ...series, 'Linear Shafts', 'Hard-Chrome'],
+  series: [...series],
+  productSlug: id,
+  pdfAvailable: true,
+  pdfUrl: 'https://www.khslg.com/wp-content/uploads/2019/11/KHS-LG-dual-guides.pdf',
+  pdfFileName: `${id}.pdf`,
+  downloadType: 'pdf'
+}));
+
+// Linear Motion Guideways and Units
+const linearMotionDefinitions = [
+  ['linear-motion-bearings', 'Linear Motion Bearings', 'Guided motion along a straight axis with recirculating balls.', ['LM Series', 'LME Series', 'LMEK Series', 'LMF Series']],
+  ['dual-shaft-guides', 'Dual Shaft Guides', 'Parallel twin-shaft guidance blocks and rails for high-stability linear motion.', ['Dual Guide Series', 'Compact Series']],
+  ['linear-motion-shafts-with-support', 'Linear Motion Shafts with Support', 'Supported linear shafts for stable, guided industrial movement.', ['Supported Shaft Series', 'Shaft Support Series']]
+] as const;
+
+export const linearMotionCatalogues: CatalogueRecord[] = linearMotionDefinitions.map(([id, title, description, series], index) => ({
+  id,
+  group: 'Linear Motion' as const,
+  categoryTag: 'Linear Motion Systems',
+  sequence: index + 1,
+  title,
+  image: bearingImages[id],
+  description,
+  keywords: [title, description, ...series, 'Linear Motion', 'Guideways'],
+  series: [...series],
+  productSlug: id,
+  pdfAvailable: true,
+  pdfUrl: id === 'dual-shaft-guides' ? 'https://www.khslg.com/wp-content/uploads/2019/11/KHS-LG-dual-guides.pdf' : 'https://drive.google.com/file/d/1xSpNU2KxiztdonxZ4tqvfKs4PgjksqA8/view?usp=sharing',
+  pdfFileName: `${id}.pdf`,
+  downloadType: 'pdf'
+}));
+
+// Power Transmission (V-Belts & Timing Belts)
 const vBeltsDefinitions = [
   ['classical-wrapped-v-belt', 'Classical Wrapped V-Belt', 'General industrial wrapped V-belt for dependable power transmission.', ['A', 'B', 'C']],
   ['wedge-cogged-v-belt', 'Wedge Cogged V-Belt', 'Cogged profile improves flexibility and heat performance in demanding drives.', ['SPZ', 'SPA', 'SPB']],
@@ -150,35 +218,65 @@ const vBeltsDefinitions = [
   ['hexagonal-v-belt', 'Hexagonal V-Belt', 'Hexagonal cross-section designed for compact and flexible drive layouts.', ['Hex', 'H']],
   ['wedge-narrow-v-belt', 'Wedge Narrow V-Belt', 'High-power narrow wedge profile for efficient compact drives.', ['3V', '5V', '8V']],
   ['classical-raw-edge-cogged-v-belt', 'Classical Raw Edge Cogged V-Belt', 'Raw-edge cogged classical belt for enhanced flexibility and lower heat buildup.', ['A', 'B', 'C']],
-  ['banded-v-belt', 'Banded V-Belt', 'Multi-rib joined belt for balanced load sharing and stable operation.', ['Banded', 'Joined']] 
+  ['banded-v-belt', 'Banded V-Belt', 'Multi-rib joined belt for balanced load sharing and stable operation.', ['Banded', 'Joined']]
 ] as const;
 
-const vBeltsCatalogues: CatalogueRecord[] = vBeltsDefinitions.map(([id, title, description, series], index) => ({
-  id,
-  group: 'V-Belts & Timing Belts',
-  sequence: index + 1,
-  title,
-  description,
-  keywords: [title, description, ...series],
-  series: [...series],
-  pdfAvailable: false,
-  pdfUrl: null,
-  pdfFileName: null,
-  downloadType: null
-}));
+export const vBeltsCatalogues: CatalogueRecord[] = vBeltsDefinitions.map(([id, title, description, series], index) => {
+  const isTiming = id.includes('timing');
+  return {
+    id,
+    group: 'Power Transmission' as const,
+    categoryTag: isTiming ? 'Timing Belts' : 'V-Belts',
+    sequence: index + 1,
+    title,
+    image: isTiming ? '/assets/products/timing-belt.png' : '/assets/products/v-belt.png',
+    description,
+    keywords: [title, description, ...series, 'Belts', 'Power Transmission'],
+    series: [...series],
+    pdfAvailable: false,
+    pdfUrl: null,
+    pdfFileName: null,
+    downloadType: null
+  };
+});
 
-export const catalogues: CatalogueRecord[] = [...bearingCatalogues, ...vBeltsCatalogues];
+export const catalogues: CatalogueRecord[] = [
+  ...bearingCatalogues,
+  ...linearShaftsCatalogues,
+  ...linearMotionCatalogues,
+  ...vBeltsCatalogues
+];
+
 export const bearingCatalogueTotal = bearingCatalogues.length;
+export const linearShaftsCatalogueTotal = linearShaftsCatalogues.length;
+export const linearMotionCatalogueTotal = linearMotionCatalogues.length;
 export const vBeltsCatalogueTotal = vBeltsCatalogues.length;
 
-export function getCatalogueById(id: string | undefined) { return catalogues.find((catalogue) => catalogue.id === id); }
+export function getCatalogueById(id: string | undefined) {
+  return catalogues.find((catalogue) => catalogue.id === id);
+}
+
 export function searchCatalogues(query: string, records = catalogues) {
   const term = query.trim().toLowerCase();
   if (!term) return records;
-  return records.filter((catalogue) => [catalogue.title, catalogue.group, catalogue.description, ...catalogue.keywords, ...catalogue.series].join(' ').toLowerCase().includes(term));
+  return records.filter((catalogue) =>
+    [catalogue.title, catalogue.group, catalogue.categoryTag, catalogue.description, ...catalogue.keywords, ...catalogue.series]
+      .join(' ')
+      .toLowerCase()
+      .includes(term)
+  );
 }
-export function submitCatalogueLead(catalogue: CatalogueRecord, form: Omit<CatalogueLead, 'catalogueName' | 'catalogueId' | 'timestamp'>) {
-  const lead: CatalogueLead = { catalogueName: catalogue.title, catalogueId: catalogue.id, ...form, timestamp: new Date().toISOString() };
+
+export function submitCatalogueLead(
+  catalogue: CatalogueRecord,
+  form: Omit<CatalogueLead, 'catalogueName' | 'catalogueId' | 'timestamp'>
+) {
+  const lead: CatalogueLead = {
+    catalogueName: catalogue.title,
+    catalogueId: catalogue.id,
+    ...form,
+    timestamp: new Date().toISOString()
+  };
   const existing = JSON.parse(window.localStorage.getItem('khs-lg-catalogue-leads') ?? '[]') as CatalogueLead[];
   window.localStorage.setItem('khs-lg-catalogue-leads', JSON.stringify([...existing, lead]));
   return lead;

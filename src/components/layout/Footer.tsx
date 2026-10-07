@@ -11,6 +11,7 @@ const COLUMNS: {title: string;links: {label: string;to: string;}[];}[] = [
     { label: 'Needle Roller Bearings', to: '/products/needle-roller-bearings' },
     { label: 'Bearing Units & Housings', to: '/products/bearing-units-housings' },
     { label: 'Linear Motion', to: '/products/linear-motion' },
+    { label: 'Linear Shafts', to: '/products/linear-shafts' },
     { label: 'Rod Ends, Spherical & Track Roller Bearings', to: '/products/rod-ends-track-rollers' },
     { label: 'Clutches & Bushes', to: '/products/clutches-bushes' },
     { label: 'Power Transmission', to: '/products/power-transmission' }

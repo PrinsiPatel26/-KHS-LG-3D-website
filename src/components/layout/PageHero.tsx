@@ -15,7 +15,7 @@ export function PageHero({
 
 
 
-}: {code: string;eyebrow: string;lines: string[];body?: string;breadcrumb: {label: string;to?: string;}[];}) {
+}: {code: string;eyebrow: string;lines: string[];body?: string;breadcrumb?: {label: string;to?: string;}[];}) {
   const showCatalogueBearing = code === 'KHS-LG / Catalogue';
 
   return (
@@ -29,24 +29,7 @@ export function PageHero({
         }} />
       
       <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
-        <nav aria-label="Breadcrumb">
-          <ol className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-[0.14em] text-steel-500">
-            {breadcrumb.map((crumb, i) =>
-            <li key={crumb.label} className="flex items-center gap-2">
-                {i > 0 && <ChevronRightIcon className="h-3 w-3 text-ink-600" aria-hidden />}
-                {crumb.to ?
-              <Link className="transition-colors hover:text-signal" to={crumb.to}>
-                    {crumb.label}
-                  </Link> :
-
-              <span className="text-signal">{crumb.label}</span>
-              }
-              </li>
-            )}
-          </ol>
-        </nav>
-
-        <div className="mt-4 sm:mt-5 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 lg:gap-10">
           <div className="max-w-3xl">
             <TechnicalLabel code={code}>{eyebrow}</TechnicalLabel>
             <RevealText
@@ -65,7 +48,7 @@ export function PageHero({
           {showCatalogueBearing && (
             <div className="relative flex shrink-0 items-center justify-center lg:justify-end">
               <img
-                src="/cylindrical%20roller%20bearing.webp"
+                src="/assets/products/cylindrical-roller-bearing.png"
                 alt="Cylindrical roller bearing"
                 className="catalogue-hero-image h-36 w-auto max-w-[260px] sm:h-44 sm:max-w-[320px] lg:h-52 lg:max-w-[380px] object-contain drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]"
               />

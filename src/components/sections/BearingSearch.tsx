@@ -1,7 +1,8 @@
-﻿import { FormEvent, KeyboardEvent, useEffect, useMemo, useRef, useState } from 'react';
+import { FormEvent, KeyboardEvent, useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { ArrowUpRightIcon, CheckIcon, RotateCcwIcon, SearchIcon, XIcon } from 'lucide-react';
 import { cn } from '../../utils/cn';
-import { bearingRecords, BearingFilters, BearingRecord, filterProducts, getProductSuggestions } from '../../data/bearingSearch';
+import { BearingFilters, BearingRecord, getProductSuggestions } from '../../data/bearingSearch';
 
 const EMPTY_RANGE = { min: '', max: '' };
 const EMPTY_FILTERS: BearingFilters = { query: '', innerDiameter: EMPTY_RANGE, outerDiameter: EMPTY_RANGE, width: EMPTY_RANGE };
@@ -22,17 +23,13 @@ function rangeError(filters: BearingFilters) {
   })?.label;
 }
 
-function formatValue(value: number | null | undefined) {
-  return value === null || value === undefined ? '—' : value.toString();
-}
-
 export function BearingSearch() {
+  const navigate = useNavigate();
   const [filters, setFilters] = useState<BearingFilters>(EMPTY_FILTERS);
   const [suggestionsOpen, setSuggestionsOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestions = filters.query.trim() ? getProductSuggestions(filters.query) : [];
   const errorField = rangeError(filters);
-  const results = useMemo(() => filterProducts(filters), [filters]);
 
   useEffect(() => {
     const closeSuggestions = (event: MouseEvent) => {
@@ -56,12 +53,16 @@ export function BearingSearch() {
     event?.preventDefault();
     if (errorField) return;
     setSuggestionsOpen(false);
+    if (filters.query.trim()) {
+      navigate(`/catalogue?q=${encodeURIComponent(filters.query.trim())}`);
+    } else {
+      navigate('/catalogue');
+    }
   };
 
   const chooseSuggestion = (record: BearingRecord) => {
-    const nextFilters = { ...filters, query: record.partNumber };
-    setFilters(nextFilters);
     setSuggestionsOpen(false);
+    navigate(`/catalogue?q=${encodeURIComponent(record.partNumber)}`);
   };
 
   const reset = () => {
@@ -108,67 +109,6 @@ export function BearingSearch() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-end"><button type="button" onClick={reset} className="inline-flex items-center justify-center gap-2 border border-ink-600 px-5 py-3 font-mono text-[10px] uppercase tracking-tech text-steel-400 transition-colors hover:border-signal hover:text-signal"><RotateCcwIcon className="h-3.5 w-3.5" aria-hidden /> Reset</button><button type="button" onClick={() => executeSearch()} disabled={Boolean(errorField) || !hasRangeValue(filters)} className="inline-flex items-center justify-center gap-2 border border-signal px-5 py-3 font-display text-sm font-semibold uppercase tracking-[0.14em] text-signal transition-colors hover:bg-signal hover:text-ink-950 disabled:cursor-not-allowed disabled:border-ink-600 disabled:text-steel-600"><CheckIcon className="h-4 w-4" aria-hidden /> Search by dimensions</button></div>
           </div>
         </form>
-
-        <div className="mx-auto mt-16 max-w-6xl border-t border-ink-700 pt-8" aria-live="polite">
-          <div className="flex flex-col gap-3 lg:flex-row lg:items-end lg:justify-between">
-            <div>
-              <p className="font-mono text-[10px] uppercase tracking-tech text-signal">Technical data</p>
-              <h3 className="mt-3 font-display text-3xl font-semibold uppercase text-steel-50">Bearing product specifications</h3>
-              <p className="mt-3 max-w-2xl text-sm text-steel-400">Explore bearing series, dimensions and key technical specifications to identify the right solution for your application.</p>
-            </div>
-            <div className="font-mono text-[10px] uppercase tracking-tech text-steel-400">
-              Showing {results.length} of {bearingRecords.length} bearings
-            </div>
-          </div>
-
-          {results.length === 0 ? (
-            <div className="mt-8 border border-ink-700 bg-ink-950 px-6 py-10 text-center">
-              <p className="font-display text-xl uppercase text-steel-50">No bearings found</p>
-              <p className="mt-3 text-sm text-steel-500">Try adjusting your bearing number, product name or dimensional range.</p>
-              <button type="button" onClick={reset} className="mt-6 inline-flex items-center justify-center border border-signal px-5 py-3 font-display text-[11px] uppercase tracking-[0.14em] text-signal transition-colors hover:bg-signal hover:text-ink-950">
-                Clear filters
-              </button>
-            </div>
-          ) : (
-            <div className="mt-8 overflow-hidden border border-ink-700 bg-ink-950">
-              <div className="table-scroll-container overflow-x-auto">
-                <table className="w-full min-w-[860px] border-collapse text-left">
-                  <thead className="bg-ink-950 text-steel-300">
-                    <tr className="font-mono text-[9px] uppercase tracking-tech">
-                      <th rowSpan={2} scope="col" className="border-r border-ink-700 px-5 py-4 text-left font-semibold text-steel-400">Product</th>
-                      <th colSpan={3} scope="colgroup" className="border-r border-ink-700 px-5 py-4 text-left font-semibold text-steel-400">Principal dimensions</th>
-                      <th colSpan={2} scope="colgroup" className="px-5 py-4 text-left font-semibold text-steel-400">Basic load ratings</th>
-                    </tr>
-                    <tr className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
-                      <th scope="col" className="border-r border-t border-ink-700 px-5 py-3 text-left">d (mm)</th>
-                      <th scope="col" className="border-r border-t border-ink-700 px-5 py-3 text-left">D (mm)</th>
-                      <th scope="col" className="border-r border-t border-ink-700 px-5 py-3 text-left">B (mm)</th>
-                      <th scope="col" className="border-r border-t border-ink-700 px-5 py-3 text-left">C (kN)</th>
-                      <th scope="col" className="border-t border-ink-700 px-5 py-3 text-left">C0 (kN)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {results.map((record) => (
-                      <tr key={record.id} className="border-t border-ink-700 bg-ink-900 text-steel-200 transition-colors hover:bg-ink-800/80">
-                        <td className="border-r border-ink-700 px-5 py-5 align-top">
-                          <div className="flex flex-col gap-1">
-                            <span className="font-mono text-sm font-medium text-signal">{record.partNumber}</span>
-                            <span className="text-[11px] uppercase tracking-tech text-steel-500">{record.name}</span>
-                          </div>
-                        </td>
-                        <td className="border-r border-ink-700 px-5 py-5 font-mono text-sm text-steel-300">{formatValue(record.innerDiameter)}</td>
-                        <td className="border-r border-ink-700 px-5 py-5 font-mono text-sm text-steel-300">{formatValue(record.outerDiameter)}</td>
-                        <td className="border-r border-ink-700 px-5 py-5 font-mono text-sm text-steel-300">{formatValue(record.width)}</td>
-                        <td className="border-r border-ink-700 px-5 py-5 font-mono text-sm text-steel-300">{formatValue(record.dynamicLoadRating)}</td>
-                        <td className="px-5 py-5 font-mono text-sm text-steel-300">{formatValue(record.staticLoadRating)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
     </section>
   );

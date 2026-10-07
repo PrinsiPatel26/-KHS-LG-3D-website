@@ -73,7 +73,7 @@ export function ProductExplorer({
             
           </div>
 
-          <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
+          <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8 pb-10 sm:pb-16 lg:pb-20">
             <ol className="grid gap-px border border-ink-700 bg-ink-700 sm:grid-cols-2 lg:grid-cols-4">
               {parts.map((part, i) =>
               <PartRow

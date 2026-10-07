@@ -21,7 +21,7 @@ export function Industries() {
         body="Bearings supplied to 12,000+ OEMs across manufacturing, industrial and automobile applications, backed by 50+ years of experience."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Industries' }]} />
       
-      <IndustriesSection />
+      <IndustriesSection hideHeading />
       <ApplicationsSection />
       <CTASection />
     </main>);

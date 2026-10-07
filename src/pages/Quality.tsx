@@ -1,5 +1,4 @@
 import { ActivityIcon, ArrowRightIcon, CheckCircle2Icon, DraftingCompassIcon, FileCheck2Icon, RefreshCwIcon, RulerIcon, ScanLineIcon } from 'lucide-react';
-import { PageHero } from '../components/layout/PageHero';
 import { QualityVisual } from '../components/sections/QualityVisual';
 import { MagneticButton } from '../components/ui/MagneticButton';
 import { Reveal, RevealText } from '../components/ui/RevealText';
@@ -14,14 +13,28 @@ export function Quality() {
   useSeo({ title: 'Quality', description: 'KHS-LG quality is built through engineering review, inspection, performance evaluation and continual improvement. ISO 9001:2015.', path: '/quality' });
 
   return <main>
-    <PageHero code="Quality assurance" eyebrow={`${company.certification} · Engineering quality`} lines={['Engineered for', 'precision.']} body="Quality at KHS-LG is a connected discipline: understand the application, control the details, verify the result and keep learning from every requirement." breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Quality' }]} />
-
-    <section className="border-b border-ink-700 bg-ink-900 py-12 lg:py-18" aria-label="Quality assurance introduction">
-      <div className="mx-auto grid w-full max-w-[1600px] gap-12 px-5 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-center lg:gap-20">
-        <Reveal><TechnicalLabel code="01 / Quality assurance">Precision is a process</TechnicalLabel><RevealText as="h2" lines={['Quality is not', 'a final check.']} accentLast className="mt-5 text-[clamp(2.6rem,5vw,5rem)] font-bold text-steel-50" /><p className="mt-7 max-w-xl text-[15px] leading-relaxed text-steel-400">A dependable bearing starts with the right questions. KHS-LG considers customer requirements, application conditions, product consistency, inspection evidence and delivery expectations as part of one quality conversation.</p><div className="mt-8 flex flex-wrap gap-3 font-mono text-[9px] uppercase tracking-tech text-steel-500"><span className="border border-ink-600 px-3 py-2">Requirement-led</span><span className="border border-ink-600 px-3 py-2">Evidence-based</span><span className="border border-ink-600 px-3 py-2">Customer-focused</span></div></Reveal>
+    <header className="relative overflow-hidden border-b border-ink-700 bg-ink-950 pb-8 pt-24 sm:pb-10 sm:pt-26 lg:pb-12 lg:pt-28" aria-label="Quality assurance introduction">
+      <div className="industrial-grid pointer-events-none absolute inset-0 opacity-30" aria-hidden />
+      <div
+        className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] opacity-[0.07]"
+        aria-hidden
+        style={{
+          background: 'radial-gradient(circle, rgba(245,180,0,0.9) 0%, transparent 62%)'
+        }} />
+      <div className="relative mx-auto grid w-full max-w-[1600px] gap-12 px-5 sm:px-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-16">
+        <div>
+          <TechnicalLabel code="Quality assurance">{company.certification} · Engineering quality</TechnicalLabel>
+          <RevealText as="h1" lines={['Engineered for', 'precision.']} accentLast className="mt-3 text-[clamp(2.5rem,5.5vw,4.8rem)] font-bold leading-[0.9] text-steel-50" />
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-steel-400">Quality at KHS-LG is a connected discipline: understand the application, control the details, verify the result and keep learning from every requirement.</p>
+          <div className="mt-7 flex flex-wrap gap-3 font-mono text-[9px] uppercase tracking-tech text-steel-500">
+            <span className="border border-ink-600 px-3 py-2">Requirement-led</span>
+            <span className="border border-ink-600 px-3 py-2">Evidence-based</span>
+            <span className="border border-ink-600 px-3 py-2">Customer-focused</span>
+          </div>
+        </div>
         <QualityVisual mode="hero" />
       </div>
-    </section>
+    </header>
 
     <section className="border-b border-ink-700 bg-ink-950 py-12 lg:py-18" aria-labelledby="engineering-heading">
       <div className="mx-auto grid w-full max-w-[1600px] gap-12 px-5 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-20">

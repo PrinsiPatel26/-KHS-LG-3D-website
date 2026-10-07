@@ -89,16 +89,19 @@ export function createBearing({
   const spinGroup = new THREE.Group();
   tilt.add(spinGroup);
 
-  // Outer ring
+  // Outer ring: precision-ground chrome steel (AISI 52100) with internal raceway
   const outerGroup = new THREE.Group();
   const outerMesh = new THREE.Mesh(
-    track(latheGeometry(ringProfile(DIMS.outer.inner, DIMS.outer.outer, DIMS.halfWidth), seg.lathe)),
+    track(latheGeometry(ringProfile(DIMS.outer.inner, DIMS.outer.outer, DIMS.halfWidth, 0.045, 'inner'), seg.lathe)),
     trackMat(
-      new THREE.MeshStandardMaterial({
-        color: '#7c7f83',
-        metalness: 0.95,
-        roughness: 0.3,
-        envMapIntensity: 0.5,
+      new THREE.MeshPhysicalMaterial({
+        color: '#e6ebf2',
+        metalness: 1.0,
+        roughness: 0.13,
+        clearcoat: 0.45,
+        clearcoatRoughness: 0.06,
+        reflectivity: 1.0,
+        envMapIntensity: 1.55,
         side: THREE.DoubleSide
       })
     )
@@ -108,16 +111,19 @@ export function createBearing({
   outerGroup.add(outerMesh);
   spinGroup.add(outerGroup);
 
-  // Inner ring
+  // Inner ring: precision-ground chrome steel with external raceway
   const innerGroup = new THREE.Group();
   const innerMesh = new THREE.Mesh(
-    track(latheGeometry(ringProfile(DIMS.inner.inner, DIMS.inner.outer, DIMS.halfWidth), seg.lathe)),
+    track(latheGeometry(ringProfile(DIMS.inner.inner, DIMS.inner.outer, DIMS.halfWidth, 0.045, 'outer'), seg.lathe)),
     trackMat(
-      new THREE.MeshStandardMaterial({
-        color: '#8f9296',
-        metalness: 0.96,
-        roughness: 0.26,
-        envMapIntensity: 0.55,
+      new THREE.MeshPhysicalMaterial({
+        color: '#dfe4ec',
+        metalness: 1.0,
+        roughness: 0.14,
+        clearcoat: 0.45,
+        clearcoatRoughness: 0.06,
+        reflectivity: 1.0,
+        envMapIntensity: 1.55,
         side: THREE.DoubleSide
       })
     )
@@ -127,52 +133,60 @@ export function createBearing({
   innerGroup.add(innerMesh);
   spinGroup.add(innerGroup);
 
-  // Rolling elements
+  // Rolling elements: mirror-lapped superfinished chrome balls / rollers
   const rollersGroup = new THREE.Group();
   const rollerGeo = track(rollerGeometry(rollerShape, seg.sphere));
   const rollerMat = trackMat(
-    new THREE.MeshStandardMaterial({
-      color: '#cfd2d6',
-      metalness: 1,
-      roughness: 0.13,
-      envMapIntensity: 0.75
+    new THREE.MeshPhysicalMaterial({
+      color: '#ffffff',
+      metalness: 1.0,
+      roughness: 0.035,
+      clearcoat: 0.85,
+      clearcoatRoughness: 0.02,
+      reflectivity: 1.0,
+      envMapIntensity: 1.95
     })
   );
   const angles: number[] = [];
   for (let i = 0; i < seg.rollers; i += 1) {
-    const a = i / seg.rollers * Math.PI * 2;
+    const a = (i / seg.rollers) * Math.PI * 2;
     angles.push(a);
     const roller = new THREE.Mesh(rollerGeo, rollerMat);
     roller.position.set(Math.cos(a) * DIMS.pitch, 0, Math.sin(a) * DIMS.pitch);
-    if (rollerShape === 'linear') roller.rotation.set(0, -a, Math.PI / 2);else
-    if (rollerShape !== 'ball') roller.rotation.set(Math.PI / 2, 0, -a);
+    if (rollerShape === 'linear') roller.rotation.set(0, -a, Math.PI / 2);
+    else if (rollerShape !== 'ball') roller.rotation.set(Math.PI / 2, 0, -a);
     roller.castShadow = castShadow;
     rollersGroup.add(roller);
   }
   spinGroup.add(rollersGroup);
 
-  // Cage
+  // Cage: CNC-machined solid brass/bronze retainer with pocket dividers
   const cageGroup = new THREE.Group();
   const cageMat = trackMat(
-    new THREE.MeshStandardMaterial({
-      color: '#D9CC4D',
-      metalness: 0.9,
-      roughness: 0.36,
-      envMapIntensity: 0.6
+    new THREE.MeshPhysicalMaterial({
+      color: '#dfba56',
+      metalness: 0.98,
+      roughness: 0.22,
+      clearcoat: 0.28,
+      clearcoatRoughness: 0.1,
+      reflectivity: 0.95,
+      envMapIntensity: 1.4
     })
   );
-  const cageRingGeo = track(new THREE.TorusGeometry(DIMS.pitch, 0.022, 8, seg.torus));
+  const cageRingGeo = track(new THREE.TorusGeometry(DIMS.pitch, 0.026, 8, seg.torus));
   [-0.16, 0.16].forEach((y) => {
     const ring = new THREE.Mesh(cageRingGeo, cageMat);
     ring.position.y = y;
     ring.rotation.x = Math.PI / 2;
     cageGroup.add(ring);
   });
-  const bridgeGeo = track(new THREE.BoxGeometry(0.03, 0.34, 0.05));
+  const bridgeGeo = track(new THREE.BoxGeometry(0.038, 0.32, 0.06));
   angles.forEach((a) => {
+    // Dividers sit midway between rolling elements to form the retainer pockets
+    const midAngle = a + Math.PI / seg.rollers;
     const bridge = new THREE.Mesh(bridgeGeo, cageMat);
-    bridge.position.set(Math.cos(a) * DIMS.pitch, 0, Math.sin(a) * DIMS.pitch);
-    bridge.rotation.y = -a;
+    bridge.position.set(Math.cos(midAngle) * DIMS.pitch, 0, Math.sin(midAngle) * DIMS.pitch);
+    bridge.rotation.y = -midAngle;
     cageGroup.add(bridge);
   });
   spinGroup.add(cageGroup);

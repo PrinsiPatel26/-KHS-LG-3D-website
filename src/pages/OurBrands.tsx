@@ -19,8 +19,7 @@ export function OurBrands() {
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-30" aria-hidden />
         <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] opacity-[0.08]" style={{ background: 'radial-gradient(circle, rgba(245,180,0,0.9) 0%, transparent 62%)' }} aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
-          <nav aria-label="Breadcrumb" className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel-500"><Link to="/" className="hover:text-signal">Home</Link><span className="mx-2 text-ink-600">/</span><span className="text-signal">Our brands</span></nav>
-          <div className="mt-6 max-w-5xl sm:mt-7">
+          <div className="max-w-5xl">
             <TechnicalLabel code="Our brands">Global industrial partners</TechnicalLabel>
             <h1 className="mt-4 max-w-4xl font-display text-[clamp(3rem,8vw,7.5rem)] font-bold uppercase leading-[0.86] text-steel-50">Engineered partners.<br /><span className="text-signal">Global expertise.</span></h1>
             <p className="mt-5 max-w-2xl text-base leading-relaxed text-steel-400">KHS-LG works with established industrial brands to provide customers with precision bearing, linear motion and power transmission solutions for demanding applications.</p>

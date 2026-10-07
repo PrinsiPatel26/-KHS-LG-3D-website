@@ -4,6 +4,7 @@ import { SectionHeading } from '../ui/SectionHeading';
 import { Reveal } from '../ui/RevealText';
 import { BearingGlyph } from '../ui/BearingGlyph';
 import { Product, products } from '../../data/products';
+import { bearingImages } from '../../data/catalogues';
 
 const SHAPE: Record<string, 'ball' | 'roller' | 'linear'> = {
   'taper-roller-bearings': 'roller',
@@ -73,7 +74,7 @@ export function ProductCard({ product, index }: {product: Product;index: number;
             </p>
           </div>
 
-          <div className="relative mx-auto my-8 h-40 w-40 transition-transform duration-500 ease-precision group-hover:-translate-y-1.5 group-hover:scale-[1.04] sm:h-48 sm:w-48">
+          <div className="relative mx-auto my-8 flex h-40 w-40 items-center justify-center transition-transform duration-500 ease-precision group-hover:-translate-y-1.5 group-hover:scale-[1.04] sm:h-48 sm:w-48">
             <div
               className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-precision group-hover:opacity-100"
               style={{
@@ -81,7 +82,16 @@ export function ProductCard({ product, index }: {product: Product;index: number;
               }}
               aria-hidden />
             
-            <BearingGlyph shape={SHAPE[product.slug] ?? 'ball'} rollers={12} />
+            {bearingImages[product.slug] ? (
+              <img
+                src={bearingImages[product.slug]}
+                alt={product.name}
+                className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)]"
+                loading="lazy"
+              />
+            ) : (
+              <BearingGlyph shape={SHAPE[product.slug] ?? 'ball'} rollers={12} />
+            )}
           </div>
 
           <h3 className="font-display text-2xl font-semibold uppercase leading-tight text-steel-50">

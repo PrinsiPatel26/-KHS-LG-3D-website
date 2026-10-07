@@ -57,7 +57,7 @@ export function BearingScene({
 
   const setup = useCallback(
     (ctx: StageContext): StageHandle => {
-      ctx.scene.fog = new THREE.FogExp2('#050505', 0.055);
+      ctx.scene.fog = new THREE.FogExp2('#050505', 0.036);
       ctx.scene.add(createIndustrialLights(ctx.shadows));
 
       const env = createStudioEnvironment(ctx.renderer);

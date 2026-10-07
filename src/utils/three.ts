@@ -17,25 +17,52 @@ export const clamp = (v: number, min = 0, max = 1) => Math.min(max, Math.max(min
 
 /**
  * Closed 2D profile of a bearing ring, revolved by LatheGeometry.
- * Chamfered edges read as machined steel rather than a raw tube.
+ * Machined chamfers and concave ball raceway groove produce an authentic
+ * precision-ground chrome steel bearing cross section.
  */
 export function ringProfile(
-innerRadius: number,
-outerRadius: number,
-halfWidth: number,
-chamfer = 0.045)
-: THREE.Vector2[] {
-  const c = Math.min(chamfer, halfWidth * 0.6, (outerRadius - innerRadius) * 0.35);
-  const pts = [
-  new THREE.Vector2(innerRadius + c, -halfWidth),
-  new THREE.Vector2(outerRadius - c, -halfWidth),
-  new THREE.Vector2(outerRadius, -halfWidth + c),
-  new THREE.Vector2(outerRadius, halfWidth - c),
-  new THREE.Vector2(outerRadius - c, halfWidth),
-  new THREE.Vector2(innerRadius + c, halfWidth),
-  new THREE.Vector2(innerRadius, halfWidth - c),
-  new THREE.Vector2(innerRadius, -halfWidth + c)];
+  innerRadius: number,
+  outerRadius: number,
+  halfWidth: number,
+  chamfer = 0.045,
+  raceway?: 'inner' | 'outer'
+): THREE.Vector2[] {
+  const c = Math.min(chamfer, halfWidth * 0.5, (outerRadius - innerRadius) * 0.32);
+  const pts: THREE.Vector2[] = [];
 
+  // Bottom face: inner chamfer to outer chamfer
+  pts.push(new THREE.Vector2(innerRadius + c, -halfWidth));
+  pts.push(new THREE.Vector2(outerRadius - c, -halfWidth));
+  pts.push(new THREE.Vector2(outerRadius, -halfWidth + c));
+
+  // Outer cylindrical surface (concave raceway if inner ring)
+  if (raceway === 'outer') {
+    const depth = Math.min(0.034, (outerRadius - innerRadius) * 0.22);
+    pts.push(new THREE.Vector2(outerRadius, -0.12));
+    pts.push(new THREE.Vector2(outerRadius - depth * 0.7, -0.07));
+    pts.push(new THREE.Vector2(outerRadius - depth, 0));
+    pts.push(new THREE.Vector2(outerRadius - depth * 0.7, 0.07));
+    pts.push(new THREE.Vector2(outerRadius, 0.12));
+  }
+
+  // Top outer chamfer & top face
+  pts.push(new THREE.Vector2(outerRadius, halfWidth - c));
+  pts.push(new THREE.Vector2(outerRadius - c, halfWidth));
+  pts.push(new THREE.Vector2(innerRadius + c, halfWidth));
+  pts.push(new THREE.Vector2(innerRadius, halfWidth - c));
+
+  // Inner cylindrical surface (concave raceway if outer ring)
+  if (raceway === 'inner') {
+    const depth = Math.min(0.034, (outerRadius - innerRadius) * 0.22);
+    pts.push(new THREE.Vector2(innerRadius, 0.12));
+    pts.push(new THREE.Vector2(innerRadius + depth * 0.7, 0.07));
+    pts.push(new THREE.Vector2(innerRadius + depth, 0));
+    pts.push(new THREE.Vector2(innerRadius + depth * 0.7, -0.07));
+    pts.push(new THREE.Vector2(innerRadius, -0.12));
+  }
+
+  // Bottom inner chamfer
+  pts.push(new THREE.Vector2(innerRadius, -halfWidth + c));
   pts.push(pts[0].clone());
   return pts;
 }

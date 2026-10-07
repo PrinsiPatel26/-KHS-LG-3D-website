@@ -1,81 +1,883 @@
-import { FormEvent, forwardRef, useEffect, useRef, useState } from 'react';
-import { ArrowUpRightIcon, CheckCircle2Icon, DownloadIcon, SearchIcon, XIcon } from 'lucide-react';
+import { FormEvent, forwardRef, useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ArrowUpRightIcon,
+  CheckCircle2Icon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  DownloadIcon,
+  FileTextIcon,
+  LayersIcon,
+  SearchIcon,
+  SlidersHorizontalIcon,
+  XIcon
+} from 'lucide-react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { PageHero } from '../components/layout/PageHero';
 import { BearingGlyph } from '../components/ui/BearingGlyph';
 import { TechnicalLabel } from '../components/ui/SectionHeading';
-import { bearingCatalogueTotal, CatalogueRecord, catalogueGroups as allCatalogueGroups, searchCatalogues, submitCatalogueLead, vBeltsCatalogueTotal } from '../data/catalogues';
-import { vBeltCatalogue } from '../data/vBelts';
+import {
+  CatalogueRecord,
+  catalogues,
+  CatalogueLead,
+  searchCatalogues,
+  submitCatalogueLead
+} from '../data/catalogues';
 import { useSeo } from '../hooks/useSeo';
 
-interface DownloadForm { fullName: string; companyName: string; mobile: string; email: string; city: string; industry: string; message: string; }
-const EMPTY_FORM: DownloadForm = { fullName: '', companyName: '', mobile: '', email: '', city: '', industry: '', message: '' };
-
-function normalizeCatalogueCategory(value: string | null | undefined) {
-  const normalized = value?.toLowerCase().trim().replace(/_/g, '-');
-  if (!normalized) return null;
-
-  const aliases: Record<string, 'bearings' | 'v-belts'> = {
-    bearings: 'bearings',
-    'v-belts': 'v-belts',
-    'v-belts-timing-belts': 'v-belts',
-    'v-belt': 'v-belts',
-    'v-belts-timing': 'v-belts',
-    'v_belts': 'v-belts',
-    'v_belts_timing_belts': 'v-belts'
-  };
-
-  return aliases[normalized] ?? null;
+interface DownloadForm {
+  fullName: string;
+  companyName: string;
+  mobile: string;
+  email: string;
+  city: string;
+  industry: string;
+  message: string;
 }
+
+const EMPTY_FORM: DownloadForm = {
+  fullName: '',
+  companyName: '',
+  mobile: '',
+  email: '',
+  city: '',
+  industry: '',
+  message: ''
+};
+
+interface CategoryNode {
+  id: string;
+  label: string;
+  code?: string;
+  subcategories?: { id: string; label: string; count?: number }[];
+}
+
+const CATEGORY_TREE: CategoryNode[] = [
+  {
+    id: 'bearings',
+    label: 'Bearings',
+    code: '01',
+    subcategories: [
+      { id: 'all-bearings', label: 'All Bearings' },
+      { id: 'rolling-bearings', label: 'Rolling Bearings' },
+      { id: 'needle-roller', label: 'Needle Roller Bearings' },
+      { id: 'bearing-units', label: 'Bearing Units & Housings' },
+      { id: 'plain-rod-ends', label: 'Rod Ends & Plain Bearings' },
+      { id: 'clutches-bushes', label: 'Clutches & Bushes' }
+    ]
+  },
+  {
+    id: 'linear-shafts',
+    label: 'Linear Shafts',
+    code: '02',
+    subcategories: [
+      { id: 'all-shafts', label: 'All Linear Shafts' },
+      { id: 'shaft-custom-made', label: 'Custom-made' },
+      { id: 'shaft-s-st', label: 'S-ST' },
+      { id: 'shaft-s-stu', label: 'S-STU' },
+      { id: 'shaft-st', label: 'ST' },
+      { id: 'shaft-stu', label: 'STU' },
+      { id: 'shaft-was-solid', label: 'WAS - Solid Shaft' },
+      { id: 'hard-chrome-shafts', label: 'Hard-Chrome Shafts' },
+      { id: 'shafts-with-support', label: 'Shafts with Support' },
+      { id: 'shaft-supporting-units', label: 'Shaft Supporting Units' }
+    ]
+  },
+  {
+    id: 'linear-motion',
+    label: 'Linear Motion',
+    code: '03',
+    subcategories: [
+      { id: 'all-linear', label: 'All Linear Motion' },
+      { id: 'linear-motion-bearings', label: 'Linear Motion Bearings' },
+      { id: 'dual-shaft-guides', label: 'Dual Shaft Guides' },
+      { id: 'linear-motion-shafts-with-support', label: 'Supported Shaft Rails' }
+    ]
+  },
+  {
+    id: 'power-transmission',
+    label: 'Power Transmission',
+    code: '04',
+    subcategories: [
+      { id: 'all-power', label: 'All Belts' },
+      { id: 'v-belts', label: 'V-Belts' },
+      { id: 'timing-belts', label: 'Timing Belts' }
+    ]
+  },
+  {
+    id: 'brands',
+    label: 'Partner Brands',
+    code: '05',
+    subcategories: [
+      { id: 'brand-iko', label: 'IKO Nippon Thompson' },
+      { id: 'brand-won', label: 'WON ST Linear' },
+      { id: 'brand-stieber', label: 'STIEBER Clutch' },
+      { id: 'brand-ina-fag', label: 'INA / FAG' }
+    ]
+  }
+];
 
 export function Catalogue() {
-  const [query, setQuery] = useState('');
-  const [sort, setSort] = useState<'az' | 'za'>('az');
   const [params, setParams] = useSearchParams();
+  const [query, setQuery] = useState('');
+  const [sort, setSort] = useState<'az' | 'za' | 'default'>('default');
   const [selectedCatalogue, setSelectedCatalogue] = useState<CatalogueRecord | null>(null);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    bearings: true,
+    'linear-shafts': true,
+    'linear-motion': true,
+    'power-transmission': true,
+    brands: true
+  });
+
   const downloadButtonRef = useRef<HTMLButtonElement | null>(null);
-  const queryCategory = normalizeCatalogueCategory(params.get('category')) ?? normalizeCatalogueCategory(window.location.pathname.includes('/catalogue/bearings') ? 'bearings' : window.location.pathname.includes('/catalogue/v-belts') ? 'v-belts' : null);
-  const catalogueGroups = queryCategory ? [] : allCatalogueGroups;
-  const group = queryCategory === 'bearings' ? 'Bearings' : queryCategory === 'v-belts' ? 'V-Belts & Timing Belts' : null;
-  const filtered = group ? searchCatalogues(query).filter((catalogue) => catalogue.group === group).sort((a, b) => sort === 'az' ? a.sequence - b.sequence : b.sequence - a.sequence) : [];
-  const groupTotal = group === 'Bearings' ? bearingCatalogueTotal : group === 'V-Belts & Timing Belts' ? vBeltsCatalogueTotal : 0;
-  const unknownCategory = params.get('category') !== null && !queryCategory;
 
-  useSeo({ title: 'Catalogue', description: 'Explore KHS-LG product catalogues and technical documentation for industrial bearings and motion solutions.', path: '/catalogue' });
-  const openDownload = (catalogue: CatalogueRecord, button?: HTMLButtonElement) => { downloadButtonRef.current = button ?? null; setSelectedCatalogue(catalogue); };
-  const closeDownload = () => { setSelectedCatalogue(null); window.setTimeout(() => downloadButtonRef.current?.focus(), 0); };
-  const selectGroup = (nextGroup: CatalogueRecord['group']) => {
-    setQuery('');
-    setParams({ category: nextGroup === 'Bearings' ? 'bearings' : 'v-belts' });
-    window.setTimeout(() => document.getElementById('catalogue-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
-  };
-  const clearGroup = () => {
-    setQuery('');
-    setParams({});
-    window.setTimeout(() => document.getElementById('catalogue-categories')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+  // Active category & subcategory from URL params
+  const activeCategory = params.get('category') ?? 'linear-shafts';
+  const activeSub = params.get('sub') ?? '';
+
+  useSeo({
+    title: 'Product Catalogues & Brochures',
+    description: 'Explore KHS-LG technical brochures, product catalogues, and engineering documentation for precision industrial bearings, linear shafts, and motion systems.',
+    path: '/catalogue'
+  });
+
+  const toggleCategoryExpand = (catId: string) => {
+    setExpandedCategories((prev) => ({ ...prev, [catId]: !prev[catId] }));
   };
 
-  if (unknownCategory) {
-    return <main className="flex min-h-screen items-center justify-center bg-ink-950 px-5 py-20 text-center"><div><TechnicalLabel code="404" className="justify-center">Catalogue category not found</TechnicalLabel><h1 className="mt-6 font-display text-4xl font-bold uppercase text-steel-50 sm:text-5xl">Invalid category</h1><p className="mt-4 max-w-md text-sm text-steel-500">The requested catalogue category could not be found.</p><Link to="/catalogue" className="mt-8 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-tech text-signal">â† Back to catalogue</Link></div></main>;
-  }
+  const handleSelectCategory = (categoryId: string, subId = '') => {
+    const nextParams = new URLSearchParams();
+    if (categoryId !== 'all') {
+      nextParams.set('category', categoryId);
+    }
+    if (subId && !subId.startsWith('all-')) {
+      nextParams.set('sub', subId);
+    }
+    setParams(nextParams);
+    setMobileSidebarOpen(false);
+  };
 
-  return <main><PageHero code="KHS-LG / Catalogue" eyebrow="Technical documentation for better motion" lines={['Product', 'catalogues']} body="Explore our range of industrial bearing and motion solutions through detailed product catalogues." breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Catalogue' }]} /><section id="catalogue-categories" className="relative overflow-hidden border-b border-ink-700 bg-ink-900 py-8 sm:py-10 lg:py-12"><div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden /><div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8"><div className="grid gap-px border border-ink-700 bg-ink-700 lg:grid-cols-2">{catalogueGroups.map((item) => { const active = group === item.id; return <button key={item.id} type="button" onClick={() => selectGroup(item.id)} aria-pressed={active} className={`group relative text-left bg-ink-950 p-6 transition-colors hover:bg-ink-800 sm:p-8 ${active ? 'ring-1 ring-inset ring-signal' : ''}`}><span className={`absolute bottom-0 left-0 top-0 w-px bg-signal transition-transform ${active ? 'scale-y-100' : 'scale-y-0 group-hover:scale-y-100'}`} aria-hidden /><div className="flex items-start justify-between"><span className="font-mono text-sm tracking-tech text-signal">{item.code}</span><span className="font-mono text-[9px] uppercase tracking-tech text-steel-600">{active ? 'Active selection' : 'Catalogue group'}</span></div><h2 className="mt-6 sm:mt-8 font-display text-[clamp(2.2rem,4vw,3.8rem)] font-bold uppercase leading-[0.9] text-steel-50 group-hover:text-signal">{item.title}</h2><p className="mt-3.5 max-w-md text-sm leading-relaxed text-steel-500">{item.description}</p><span className="mt-6 inline-flex items-center gap-2 font-display text-sm font-semibold uppercase tracking-[0.14em] text-signal">Explore catalogue <ArrowUpRightIcon className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" aria-hidden /></span></button>; })}</div></div></section>{group === 'V-Belts & Timing Belts' && <section className="border-b border-ink-700 bg-ink-950 py-6"><div className="mx-auto flex w-full max-w-[1600px] flex-col gap-4 px-5 sm:px-8 lg:flex-row lg:items-center lg:justify-end"><button type="button" disabled={!vBeltCatalogue.brochure.available} className="inline-flex items-center justify-center border border-signal/60 bg-signal/5 px-5 py-3 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-signal disabled:cursor-not-allowed disabled:border-ink-600 disabled:bg-ink-900 disabled:text-steel-500" aria-label="Download brochure for V-Belts and Timing Belts">{vBeltCatalogue.brochure.available ? 'Download Brochure' : 'DOCUMENT PENDING'}</button><button type="button" disabled={!vBeltCatalogue.catalogue.available} className="inline-flex items-center justify-center border border-signal/60 bg-signal/5 px-5 py-3 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-signal disabled:cursor-not-allowed disabled:border-ink-600 disabled:bg-ink-900 disabled:text-steel-500" aria-label="Download catalogue for V-Belts and Timing Belts">{vBeltCatalogue.catalogue.available ? 'Download Catalogue' : 'DOCUMENT PENDING'}</button></div></section>}{group && <section id="catalogue-list" className="relative overflow-hidden bg-ink-950 py-10 lg:py-14"><div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden /><div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8"><div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between"><div><TechnicalLabel code={group === 'Bearings' ? '01' : '02'}>Catalogue Series</TechnicalLabel><h2 className="mt-2 font-display text-3xl font-bold uppercase leading-none text-steel-50 sm:text-4xl">{group}</h2></div><div className="flex flex-col gap-3 sm:flex-row sm:items-center"><label className="relative block"><SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-steel-500" aria-hidden /><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search catalogues" className="w-full border border-ink-700 bg-ink-900 py-2.5 pl-10 pr-4 font-mono text-[10px] uppercase tracking-tech text-steel-200 placeholder:text-steel-600 sm:w-64" aria-label="Search catalogues" /></label><select value={sort} onChange={(event) => setSort(event.target.value as 'az' | 'za')} className="border border-ink-700 bg-ink-900 px-3 py-2.5 font-mono text-[10px] uppercase tracking-tech text-steel-200"><option value="az">A–Z</option><option value="za">Z–A</option></select><button type="button" onClick={clearGroup} className="font-mono text-[10px] uppercase tracking-tech text-signal">Clear selection</button></div></div>{filtered.length > 0 ? <div className="mt-8 grid gap-px border border-ink-700 bg-ink-700 md:grid-cols-2 xl:grid-cols-3">{filtered.map((item, index) => <CatalogueCard key={item.id} catalogue={item} index={index} onDownload={openDownload} total={groupTotal} />)}</div> : <div className="mt-8 border border-dashed border-ink-700 bg-ink-950/70 p-8 text-center"><p className="font-mono text-[10px] uppercase tracking-tech text-steel-500">No matching catalogues found</p><p className="mt-3 text-steel-400">Try a different search or clear the current filter.</p></div>}</div></section>}{selectedCatalogue && <CatalogueDownloadModal catalogue={selectedCatalogue} onClose={closeDownload} />}</main>;
+  // Filter catalogue items based on activeCategory, activeSub, and search query
+  const filteredCatalogues = useMemo(() => {
+    let list = catalogues;
+
+    // Apply category filter
+    if (activeCategory === 'bearings') {
+      list = list.filter((c) => c.group === 'Bearings');
+      if (activeSub === 'rolling-bearings') {
+        const rollingIds = ['taper-roller-bearings', 'spherical-roller-bearings', 'deep-groove-ball-bearings', 'miniature-ball-bearings', 'cylindrical-roller-bearings', 'self-aligning-ball-bearings', 'precision-angular-contact-bearings', 'thrust-ball-bearings', 'cylindrical-roller-thrust-bearings', 'spherical-roller-thrust-bearings'];
+        list = list.filter((c) => rollingIds.includes(c.id));
+      } else if (activeSub === 'needle-roller') {
+        const needleIds = ['machined-type-needle-roller-bearings', 'drawn-cup-needle-roller-bearings', 'thrust-needle-roller-bearings', 'needle-roller-and-cage-assemblies', 'flat-roller-cages'];
+        list = list.filter((c) => needleIds.includes(c.id));
+      } else if (activeSub === 'bearing-units') {
+        list = list.filter((c) => c.id === 'pillow-block-bearings');
+      } else if (activeSub === 'plain-rod-ends') {
+        const plainIds = ['rod-end-bearings', 'radial-spherical-plain-bearings', 'stud-and-yoke-track-roller-bearings', 'track-roller-bearings'];
+        list = list.filter((c) => plainIds.includes(c.id));
+      } else if (activeSub === 'clutches-bushes') {
+        const clutchIds = ['one-way-clutch', 'drawn-cup-needle-roller-clutches', 'permaglide-dry-bush'];
+        list = list.filter((c) => clutchIds.includes(c.id));
+      }
+    } else if (activeCategory === 'linear-shafts') {
+      list = list.filter((c) => c.group === 'Linear Shafts');
+      if (activeSub && !activeSub.startsWith('all-')) {
+        list = list.filter((c) => c.id === activeSub);
+      }
+    } else if (activeCategory === 'linear-motion') {
+      list = list.filter((c) => c.group === 'Linear Motion');
+      if (activeSub && !activeSub.startsWith('all-')) {
+        list = list.filter((c) => c.id === activeSub);
+      }
+    } else if (activeCategory === 'power-transmission' || activeCategory === 'v-belts') {
+      list = list.filter((c) => c.group === 'Power Transmission');
+      if (activeSub === 'timing-belts') {
+        list = list.filter((c) => c.id.includes('timing'));
+      } else if (activeSub === 'v-belts') {
+        list = list.filter((c) => !c.id.includes('timing'));
+      }
+    } else if (activeCategory === 'brands') {
+      if (activeSub === 'brand-iko') {
+        const ikoIds = ['machined-type-needle-roller-bearings', 'stud-and-yoke-track-roller-bearings', 'radial-spherical-plain-bearings', 'linear-motion-bearings', 'rod-end-bearings', 'cylindrical-roller-bearings'];
+        list = list.filter((c) => ikoIds.includes(c.id));
+      } else if (activeSub === 'brand-won') {
+        const wonIds = ['linear-motion-bearings', 'linear-motion-shafts-with-support', 'dual-shaft-guides', 'shaft-st', 'shaft-was-solid'];
+        list = list.filter((c) => wonIds.includes(c.id));
+      } else if (activeSub === 'brand-stieber') {
+        const stieberIds = ['one-way-clutch', 'drawn-cup-needle-roller-clutches', 'permaglide-dry-bush'];
+        list = list.filter((c) => stieberIds.includes(c.id));
+      } else if (activeSub === 'brand-ina-fag') {
+        const inaIds = ['taper-roller-bearings', 'spherical-roller-bearings', 'deep-groove-ball-bearings', 'cylindrical-roller-bearings', 'needle-roller-and-cage-assemblies'];
+        list = list.filter((c) => inaIds.includes(c.id));
+      }
+    }
+
+    // Apply search query
+    if (query.trim()) {
+      list = searchCatalogues(query, list);
+    }
+
+    // Apply sort
+    if (sort === 'az') {
+      return [...list].sort((a, b) => a.title.localeCompare(b.title));
+    }
+    if (sort === 'za') {
+      return [...list].sort((a, b) => b.title.localeCompare(a.title));
+    }
+    return list;
+  }, [activeCategory, activeSub, query, sort]);
+
+  const activeNode = CATEGORY_TREE.find((c) => c.id === activeCategory);
+  const activeSubNode = activeNode?.subcategories?.find((s) => s.id === activeSub);
+
+  const openDownload = (catalogue: CatalogueRecord, button?: HTMLButtonElement) => {
+    downloadButtonRef.current = button ?? null;
+    setSelectedCatalogue(catalogue);
+  };
+
+  const closeDownload = () => {
+    setSelectedCatalogue(null);
+    window.setTimeout(() => downloadButtonRef.current?.focus(), 0);
+  };
+
+  return (
+    <main className="min-h-screen bg-ink-950 text-steel-100">
+      <PageHero
+        code="KHS-LG / Technical Documentation"
+        eyebrow="Download Engineering Catalogues & Brochures"
+        lines={['Product', 'Catalogues']}
+        body="Access comprehensive technical brochures, 2D/3D specifications, and product data sheets across our full bearing and linear motion range."
+        showCatalogueBearing={false}
+      />
+
+      <div className="border-b border-ink-800 bg-ink-900/60">
+        <div className="mx-auto flex max-w-[1600px] flex-wrap items-center justify-between gap-4 px-5 py-4 sm:px-8">
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+              className="inline-flex items-center gap-2 border border-ink-700 bg-ink-950 px-3.5 py-2 font-mono text-[11px] uppercase tracking-tech text-steel-200 hover:border-signal lg:hidden"
+              aria-label="Toggle Category Navigation"
+            >
+              <SlidersHorizontalIcon className="h-4 w-4 text-signal" />
+              Categories ({filteredCatalogues.length})
+            </button>
+            <div className="hidden items-center gap-2 font-mono text-[11px] uppercase tracking-tech text-steel-400 sm:flex">
+              <span className="text-signal">KHS-LG</span>
+              <span>/</span>
+              <span>{activeNode ? activeNode.label : 'All Catalogues'}</span>
+              {activeSubNode && (
+                <>
+                  <span>/</span>
+                  <span className="text-steel-200">{activeSubNode.label}</span>
+                </>
+              )}
+            </div>
+          </div>
+
+          <div className="flex flex-1 items-center justify-end gap-3 sm:flex-initial">
+            {/* Search Input */}
+            <div className="relative w-full sm:w-72">
+              <SearchIcon className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-steel-500" aria-hidden />
+              <input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search brochures..."
+                className="w-full border border-ink-700 bg-ink-950 py-2 pl-9 pr-8 font-mono text-[11px] text-steel-100 placeholder:text-steel-600 focus:border-signal focus:outline-none"
+                aria-label="Search brochures"
+              />
+              {query && (
+                <button
+                  type="button"
+                  onClick={() => setQuery('')}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-steel-500 hover:text-signal"
+                  aria-label="Clear search"
+                >
+                  <XIcon className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
+
+            {/* Sort Dropdown */}
+            <select
+              value={sort}
+              onChange={(e) => setSort(e.target.value as 'az' | 'za' | 'default')}
+              className="border border-ink-700 bg-ink-950 px-3 py-2 font-mono text-[11px] uppercase tracking-tech text-steel-300 focus:border-signal focus:outline-none"
+              aria-label="Sort brochures"
+            >
+              <option value="default">Default Order</option>
+              <option value="az">A – Z</option>
+              <option value="za">Z – A</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-[1600px] px-5 py-8 sm:px-8 lg:py-12">
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[290px_1fr] lg:gap-10 xl:grid-cols-[320px_1fr]">
+          {/* ================= LEFT SIDEBAR (CATEGORY TREE) ================= */}
+          <aside
+            className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-ink-950 p-6 shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-full lg:transform-none lg:bg-transparent lg:p-0 lg:shadow-none ${
+              mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
+            }`}
+          >
+            <div className="flex items-center justify-between border-b border-ink-800 pb-4 lg:hidden">
+              <span className="font-display text-sm font-bold uppercase tracking-wider text-steel-100">
+                Categories & Products
+              </span>
+              <button
+                type="button"
+                onClick={() => setMobileSidebarOpen(false)}
+                className="p-1 text-steel-400 hover:text-signal"
+                aria-label="Close sidebar"
+              >
+                <XIcon className="h-5 w-5" />
+              </button>
+            </div>
+
+            <div className="mt-4 flex flex-col gap-1.5 lg:mt-0">
+              {/* All Catalogues Button */}
+              <button
+                type="button"
+                onClick={() => handleSelectCategory('all')}
+                className={`group flex w-full items-center justify-between rounded-md px-3.5 py-2.5 text-left transition-all ${
+                  activeCategory === 'all'
+                    ? 'border-l-2 border-signal bg-ink-800/90 text-signal shadow-sm'
+                    : 'text-steel-300 hover:bg-ink-900 hover:text-steel-100'
+                }`}
+              >
+                <span className="flex items-center gap-2.5 font-display text-[13px] font-semibold uppercase tracking-wide">
+                  <LayersIcon className="h-4 w-4 text-signal/80" />
+                  All Catalogues
+                </span>
+                <span className="rounded bg-ink-900 px-2 py-0.5 font-mono text-[10px] text-steel-500 group-hover:text-steel-300">
+                  {catalogues.length}
+                </span>
+              </button>
+
+              <div className="my-2 border-t border-ink-800/80" />
+
+              {/* Tree Categories */}
+              {CATEGORY_TREE.map((cat) => {
+                const isSelected = activeCategory === cat.id;
+                const isExpanded = expandedCategories[cat.id];
+
+                return (
+                  <div key={cat.id} className="space-y-1">
+                    {/* Parent Category Header */}
+                    <div
+                      className={`group flex w-full items-center justify-between rounded-md px-3 py-2.5 transition-colors ${
+                        isSelected && !activeSub
+                          ? 'border-l-2 border-signal bg-ink-800/80 text-signal'
+                          : 'text-steel-200 hover:bg-ink-900/80'
+                      }`}
+                    >
+                      <button
+                        type="button"
+                        onClick={() => handleSelectCategory(cat.id)}
+                        className="flex flex-1 items-center gap-2.5 text-left font-display text-[13px] font-bold uppercase tracking-wider"
+                      >
+                        <span className="font-mono text-[10px] text-signal/70">{cat.code}</span>
+                        <span className={isSelected ? 'text-signal' : 'text-steel-100'}>{cat.label}</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          toggleCategoryExpand(cat.id);
+                        }}
+                        className="p-1 text-steel-500 hover:text-signal"
+                        aria-label={`Toggle ${cat.label} subcategories`}
+                      >
+                        {isExpanded ? (
+                          <ChevronDownIcon className="h-4 w-4 text-steel-400" />
+                        ) : (
+                          <ChevronRightIcon className="h-4 w-4 text-steel-500" />
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Subcategories */}
+                    {isExpanded && cat.subcategories && (
+                      <div className="ml-3.5 space-y-0.5 border-l border-ink-800 py-1 pl-3">
+                        {cat.subcategories.map((sub) => {
+                          const isSubSelected = isSelected && (activeSub === sub.id || (!activeSub && sub.id.startsWith('all-')));
+
+                          return (
+                            <button
+                              key={sub.id}
+                              type="button"
+                              onClick={() => handleSelectCategory(cat.id, sub.id)}
+                              className={`group flex w-full items-center justify-between rounded px-2.5 py-1.5 text-left text-[12px] transition-colors ${
+                                isSubSelected
+                                  ? 'bg-signal/15 font-semibold text-signal'
+                                  : 'text-steel-400 hover:bg-ink-900 hover:text-steel-200'
+                              }`}
+                            >
+                              <span className="truncate">{sub.label}</span>
+                              <ChevronRightIcon
+                                className={`h-3 w-3 transition-transform ${
+                                  isSubSelected ? 'translate-x-0.5 text-signal' : 'text-ink-600 group-hover:text-steel-500'
+                                }`}
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Quick Contact Box in Sidebar */}
+            <div className="mt-8 border border-ink-800 bg-ink-900/60 p-4">
+              <span className="font-mono text-[9px] uppercase tracking-tech text-signal">Custom Engineering</span>
+              <p className="mt-1 font-display text-[12px] font-bold uppercase text-steel-100">
+                Need OEM Specifications?
+              </p>
+              <p className="mt-2 text-[11px] leading-relaxed text-steel-400">
+                Contact our engineering team for customized drawings, shaft machining, or non-standard dimensions.
+              </p>
+              <Link
+                to="/contact"
+                className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-tech text-signal hover:underline"
+              >
+                Inquire now →
+              </Link>
+            </div>
+          </aside>
+
+          {/* ================= RIGHT MAIN AREA (CATALOGUE GRID) ================= */}
+          <section className="min-w-0">
+            {/* Header info */}
+            <div className="mb-6 flex flex-col gap-2 border-b border-ink-800 pb-5 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <TechnicalLabel code={activeNode?.code ?? 'ALL'}>
+                  {activeNode ? activeNode.label : 'Full Catalogue Portfolio'}
+                </TechnicalLabel>
+                <h2 className="mt-1 font-display text-2xl font-bold uppercase tracking-tight text-steel-50 sm:text-3xl">
+                  {activeSubNode ? activeSubNode.label : activeNode?.label ?? 'All Product Catalogues'}
+                </h2>
+              </div>
+              <div className="font-mono text-[11px] uppercase tracking-tech text-steel-500">
+                Showing <span className="font-bold text-signal">{filteredCatalogues.length}</span> catalogues
+              </div>
+            </div>
+
+            {/* Cards Grid */}
+            {filteredCatalogues.length > 0 ? (
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
+                {filteredCatalogues.map((item, index) => (
+                  <ReferenceCatalogueCard
+                    key={item.id}
+                    catalogue={item}
+                    index={index}
+                    onDownload={openDownload}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="border border-dashed border-ink-700 bg-ink-900/40 p-12 text-center">
+                <FileTextIcon className="mx-auto h-8 w-8 text-steel-600" />
+                <p className="mt-4 font-mono text-[11px] uppercase tracking-tech text-steel-400">
+                  No matching catalogues found
+                </p>
+                <p className="mt-2 text-sm text-steel-500">
+                  Try clearing your search term or select another category from the sidebar.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery('');
+                    handleSelectCategory('all');
+                  }}
+                  className="mt-6 border border-signal/60 bg-signal/10 px-4 py-2 font-mono text-[11px] uppercase tracking-tech text-signal hover:bg-signal hover:text-ink-950"
+                >
+                  Reset all filters
+                </button>
+              </div>
+            )}
+          </section>
+        </div>
+      </div>
+
+      {/* Download Form Modal */}
+      {selectedCatalogue && (
+        <CatalogueDownloadModal catalogue={selectedCatalogue} onClose={closeDownload} />
+      )}
+    </main>
+  );
 }
 
-export function CatalogueCard({ catalogue, onDownload, total }: { catalogue: CatalogueRecord; index?: number; onDownload: (catalogue: CatalogueRecord, button?: HTMLButtonElement) => void; total?: number }) {
-  const groupTotal = total ?? (catalogue.group === 'Bearings' ? bearingCatalogueTotal : vBeltsCatalogueTotal);
-  return <article className="group flex h-full flex-col bg-ink-950 p-6 transition-colors hover:bg-ink-800 sm:p-7"><div className="relative flex h-44 items-center justify-center overflow-hidden border border-ink-700 bg-ink-900"><div className="industrial-grid absolute inset-0 opacity-30" aria-hidden /><div className="absolute h-32 w-32 rounded-full border border-signal/15" aria-hidden /><div className="h-28 w-28 opacity-80 transition-transform duration-500 group-hover:scale-105">{catalogue.image ? <img src={catalogue.image} alt={catalogue.title} className="bearing-product-image h-full w-full object-contain" /> : <BearingGlyph shape={catalogue.group === 'Bearings' ? 'ball' : 'linear'} rollers={12} />}</div></div><div className="mt-6 flex flex-wrap items-center justify-between gap-x-3 gap-y-1 font-mono text-[9px] uppercase tracking-tech text-steel-500"><span className="text-signal">{String(catalogue.sequence).padStart(2, '0')} / {groupTotal}</span><span>{catalogue.pdfAvailable ? 'Document available' : 'DOCUMENT PENDING'}</span></div><h3 className="mt-4 font-display text-2xl font-semibold uppercase leading-none text-steel-50 group-hover:text-signal">{catalogue.title}</h3><p className="mt-4 flex-1 text-sm leading-relaxed text-steel-500">{catalogue.description}</p>{catalogue.series.length > 0 && <p className="mt-5 font-mono text-[9px] uppercase tracking-tech text-steel-600">Series / {catalogue.series.join(' Â· ')}</p>}<div className="mt-7 flex flex-wrap items-center gap-4"><Link to={`/catalogue/${catalogue.id}`} className="inline-flex items-center gap-2 font-display text-[13px] font-semibold uppercase tracking-[0.14em] text-steel-50 hover:text-signal">View catalogue <ArrowUpRightIcon className="h-3.5 w-3.5" aria-hidden /></Link>{catalogue.pdfAvailable ? <button type="button" onClick={(event) => onDownload(catalogue, event.currentTarget)} className="inline-flex items-center gap-2 font-display text-[13px] font-semibold uppercase tracking-[0.14em] text-signal" aria-label={`Download PDF for ${catalogue.title}`}><DownloadIcon className="h-3.5 w-3.5" aria-hidden /> Download PDF</button> : <span className="font-mono text-[9px] uppercase tracking-tech text-steel-600">PDF unavailable</span>}</div></article>;
+/**
+ * Catalogue Card strictly following the reference image layout:
+ * - Product Title on top
+ * - High-res transparent product image in center
+ * - "DOWNLOAD Brochure" action at bottom
+ */
+export function ReferenceCatalogueCard({
+  catalogue,
+  onDownload
+}: {
+  catalogue: CatalogueRecord;
+  index: number;
+  onDownload: (catalogue: CatalogueRecord, button?: HTMLButtonElement) => void;
+}) {
+  return (
+    <article className="group flex h-full flex-col justify-between border border-ink-800 bg-ink-900/70 p-5 transition-all duration-300 hover:border-signal/50 hover:bg-ink-800/80 hover:shadow-[0_12px_30px_rgba(0,0,0,0.4)]">
+      {/* 1. TOP: Product Title & Category */}
+      <div>
+        <div className="flex items-start justify-between gap-2">
+          <h3 className="font-display text-lg font-bold uppercase tracking-tight text-steel-50 transition-colors group-hover:text-signal sm:text-xl">
+            {catalogue.title}
+          </h3>
+          <span className="shrink-0 font-mono text-[9px] uppercase tracking-tech text-steel-500">
+            {catalogue.categoryTag ? catalogue.categoryTag.split(' ')[0] : 'KHS-LG'}
+          </span>
+        </div>
+
+        {catalogue.series.length > 0 && (
+          <p className="mt-1 truncate font-mono text-[9px] uppercase tracking-tech text-steel-500">
+            {catalogue.series.slice(0, 3).join(' · ')}
+          </p>
+        )}
+      </div>
+
+      {/* 2. CENTER: Clean Product Image Frame */}
+      <div className="relative my-4 flex h-48 w-full items-center justify-center overflow-hidden rounded-md border border-ink-800/80 bg-ink-950/70 p-4 transition-colors group-hover:border-ink-700 sm:h-52">
+        <div className="industrial-grid absolute inset-0 opacity-15" aria-hidden />
+
+        {catalogue.image ? (
+          <img
+            src={catalogue.image}
+            alt={catalogue.title}
+            className="relative z-10 max-h-full max-w-full object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.65)] transition-transform duration-500 ease-out group-hover:scale-105"
+            loading="lazy"
+          />
+        ) : (
+          <div className="h-32 w-32 opacity-80">
+            <BearingGlyph
+              shape={catalogue.group === 'Bearings' ? 'ball' : 'linear'}
+              rollers={12}
+            />
+          </div>
+        )}
+      </div>
+
+      {/* 3. BOTTOM: Actions matching reference UI ("DOWNLOAD Brochure") */}
+      <div className="mt-auto pt-2">
+        <div className="flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={(e) => onDownload(catalogue, e.currentTarget)}
+            className="flex flex-1 items-center justify-center gap-2 rounded border border-signal/80 bg-signal/10 px-4 py-2.5 font-display text-[11px] font-bold uppercase tracking-[0.15em] text-signal transition-all hover:bg-signal hover:text-ink-950 active:scale-[0.98]"
+            aria-label={`Download brochure for ${catalogue.title}`}
+          >
+            <DownloadIcon className="h-3.5 w-3.5" aria-hidden />
+            <span>DOWNLOAD Brochure</span>
+          </button>
+
+          <Link
+            to={`/catalogue/${catalogue.id}`}
+            className="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded border border-ink-700 bg-ink-950 text-steel-400 transition-colors hover:border-signal hover:text-signal"
+            title="View Details"
+            aria-label={`View details for ${catalogue.title}`}
+          >
+            <ArrowUpRightIcon className="h-3.5 w-3.5" aria-hidden />
+          </Link>
+        </div>
+      </div>
+    </article>
+  );
 }
 
-export function CatalogueDownloadModal({ catalogue, onClose }: { catalogue: CatalogueRecord; onClose: () => void }) {
+/**
+ * Lead capture modal for downloading brochures and catalogues
+ */
+export function CatalogueDownloadModal({
+  catalogue,
+  onClose
+}: {
+  catalogue: CatalogueRecord;
+  onClose: () => void;
+}) {
   const [form, setForm] = useState<DownloadForm>(EMPTY_FORM);
   const [errors, setErrors] = useState<Partial<Record<keyof DownloadForm, string>>>({});
   const [state, setState] = useState<'idle' | 'processing' | 'success' | 'error'>('idle');
   const firstInputRef = useRef<HTMLInputElement>(null);
-  useEffect(() => { firstInputRef.current?.focus(); const onKeyDown = (event: KeyboardEvent) => { if (event.key === 'Escape' && state !== 'processing') onClose(); }; const previousOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden'; document.addEventListener('keydown', onKeyDown); return () => { document.body.style.overflow = previousOverflow; document.removeEventListener('keydown', onKeyDown); }; }, [onClose, state]);
-  const update = (key: keyof DownloadForm) => (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { setForm((current) => ({ ...current, [key]: event.target.value })); setErrors((current) => ({ ...current, [key]: undefined })); };
-  const submit = (event: FormEvent) => { event.preventDefault(); const next: Partial<Record<keyof DownloadForm, string>> = {}; if (!form.fullName.trim()) next.fullName = 'Please enter your full name.'; if (!form.companyName.trim()) next.companyName = 'Please enter your company name.'; if (!/^\+?[\d\s().-]{8,}$/.test(form.mobile.trim())) next.mobile = 'Please enter a valid mobile number.'; if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim())) next.email = 'Please enter a valid email address.'; if (!form.city.trim()) next.city = 'Please enter your city.'; setErrors(next); if (Object.keys(next).length > 0) return; setState('processing'); window.setTimeout(() => { try { submitCatalogueLead(catalogue, form); if (!catalogue.pdfUrl) { setState('error'); return; } const link = document.createElement('a'); link.href = catalogue.pdfUrl; link.download = `${catalogue.id}.pdf`; link.target = '_blank'; link.rel = 'noreferrer'; document.body.appendChild(link); link.click(); link.remove(); setState('success'); } catch { setState('error'); } }, 350); };
-  return <div className="fixed inset-0 z-[130] flex items-center justify-center overflow-y-auto bg-ink-950/85 px-4 py-6 backdrop-blur-sm" role="dialog" aria-modal="true" aria-labelledby="catalogue-download-heading" onMouseDown={(event) => { if (event.target === event.currentTarget && state !== 'processing') onClose(); }}><div className="relative my-auto grid max-h-[calc(100vh-3rem)] w-full max-w-5xl overflow-y-auto border border-ink-600 bg-ink-950 shadow-2xl lg:grid-cols-[0.85fr_1.15fr]"><div className="relative flex min-h-52 flex-col justify-end overflow-hidden border-b border-ink-700 bg-ink-900 p-7 lg:border-b-0 lg:border-r sm:p-9"><div className="industrial-grid absolute inset-0 opacity-30" aria-hidden /><div className="relative mx-auto mb-auto mt-5 h-32 w-32"><BearingGlyph shape={catalogue.group === 'Bearings' ? 'ball' : 'linear'} rollers={12} /></div><div className="relative"><p className="font-mono text-[10px] uppercase tracking-tech text-signal">Catalogue</p><h2 className="mt-4 font-display text-3xl font-bold uppercase leading-none text-steel-50">{catalogue.title}</h2><p className="mt-4 text-sm leading-relaxed text-steel-500">{catalogue.description}</p></div></div><div className="relative p-6 sm:p-9"><button type="button" onClick={onClose} aria-label="Close catalogue download form" className="absolute right-4 top-4 p-2 text-steel-500 hover:text-signal"><XIcon className="h-5 w-5" aria-hidden /></button>{state === 'success' ? <div className="flex min-h-[420px] flex-col items-center justify-center text-center"><CheckCircle2Icon className="h-12 w-12 text-signal" aria-hidden /><p className="mt-6 font-mono text-[10px] uppercase tracking-tech text-signal">Request received</p><h3 className="mt-4 font-display text-3xl font-bold uppercase text-steel-50">Your catalogue download is starting.</h3><button type="button" onClick={onClose} className="mt-8 border border-signal px-5 py-3 font-display text-sm font-semibold uppercase tracking-[0.14em] text-signal hover:bg-signal hover:text-ink-950">Close</button></div> : <><TechnicalLabel code="Download catalogue">Access technical documentation</TechnicalLabel><h2 id="catalogue-download-heading" className="mt-5 pr-8 font-display text-3xl font-bold uppercase leading-none text-steel-50">Please fill in your details to access this catalogue.</h2>{state === 'error' && <p className="mt-5 border border-red-400/40 bg-red-400/5 px-4 py-3 text-sm text-red-200">Something went wrong, or this catalogue PDF has not been uploaded yet. Please try again after the approved document is available.</p>}<form onSubmit={submit} noValidate className="mt-7 grid gap-4 sm:grid-cols-2"><CatalogueField ref={firstInputRef} id="catalogue-full-name" label="Full name" value={form.fullName} onChange={update('fullName')} error={errors.fullName} required /><CatalogueField id="catalogue-company" label="Company name" value={form.companyName} onChange={update('companyName')} error={errors.companyName} required /><CatalogueField id="catalogue-mobile" label="Mobile number" type="tel" value={form.mobile} onChange={update('mobile')} error={errors.mobile} required /><CatalogueField id="catalogue-email" label="Email address" type="email" value={form.email} onChange={update('email')} error={errors.email} required /><CatalogueField id="catalogue-city" label="City" value={form.city} onChange={update('city')} error={errors.city} required /><CatalogueField id="catalogue-industry" label="Industry / business type" value={form.industry} onChange={update('industry')} /><div className="sm:col-span-2"><label htmlFor="catalogue-message" className="field-label">Message / requirement</label><textarea id="catalogue-message" rows={3} value={form.message} onChange={update('message')} className="field-input resize-y" /></div><button type="submit" disabled={state === 'processing'} className="inline-flex items-center justify-center gap-2 bg-signal px-6 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.14em] text-ink-950 hover:bg-signal-bright disabled:cursor-wait disabled:opacity-70 sm:col-span-2">{state === 'processing' ? 'Processing...' : 'Submit & download'} <DownloadIcon className="h-4 w-4" aria-hidden /></button></form></>}</div></div></div>;
+
+  useEffect(() => {
+    firstInputRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && state !== 'processing') onClose();
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+    };
+  }, [onClose, state]);
+
+  const update =
+    (key: keyof DownloadForm) =>
+    (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setForm((cur) => ({ ...cur, [key]: event.target.value }));
+      setErrors((cur) => ({ ...cur, [key]: undefined }));
+    };
+
+  const submit = (event: FormEvent) => {
+    event.preventDefault();
+    const next: Partial<Record<keyof DownloadForm, string>> = {};
+    if (!form.fullName.trim()) next.fullName = 'Please enter your full name.';
+    if (!form.companyName.trim()) next.companyName = 'Please enter your company name.';
+    if (!/^\+?[\d\s().-]{8,}$/.test(form.mobile.trim()))
+      next.mobile = 'Please enter a valid mobile number.';
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email.trim()))
+      next.email = 'Please enter a valid email address.';
+    if (!form.city.trim()) next.city = 'Please enter your city.';
+
+    setErrors(next);
+    if (Object.keys(next).length > 0) return;
+
+    setState('processing');
+    window.setTimeout(() => {
+      try {
+        submitCatalogueLead(catalogue, form);
+        if (catalogue.pdfUrl) {
+          const link = document.createElement('a');
+          link.href = catalogue.pdfUrl;
+          link.download = catalogue.pdfFileName || `${catalogue.id}.pdf`;
+          link.target = '_blank';
+          link.rel = 'noreferrer';
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+        }
+        setState('success');
+      } catch {
+        setState('error');
+      }
+    }, 400);
+  };
+
+  return (
+    <div
+      className="fixed inset-0 z-[130] flex items-center justify-center overflow-y-auto bg-ink-950/85 px-4 py-6 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="catalogue-download-heading"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget && state !== 'processing') onClose();
+      }}
+    >
+      <div className="relative my-auto grid max-h-[calc(100vh-3rem)] w-full max-w-4xl overflow-y-auto border border-ink-700 bg-ink-950 shadow-2xl lg:grid-cols-[0.8fr_1.2fr]">
+        {/* Left Side: Product Details */}
+        <div className="relative flex min-h-52 flex-col justify-between overflow-hidden border-b border-ink-800 bg-ink-900/90 p-7 lg:border-b-0 lg:border-r sm:p-8">
+          <div className="industrial-grid absolute inset-0 opacity-20" aria-hidden />
+
+          <div className="relative">
+            <span className="font-mono text-[10px] uppercase tracking-tech text-signal">
+              KHS-LG Documentation
+            </span>
+            <h2 className="mt-2 font-display text-2xl font-bold uppercase text-steel-50 sm:text-3xl">
+              {catalogue.title}
+            </h2>
+            <p className="mt-3 text-xs leading-relaxed text-steel-400">
+              {catalogue.description}
+            </p>
+          </div>
+
+          <div className="relative my-6 flex h-36 items-center justify-center">
+            {catalogue.image ? (
+              <img
+                src={catalogue.image}
+                alt={catalogue.title}
+                className="max-h-full max-w-full object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.6)]"
+              />
+            ) : (
+              <BearingGlyph shape="ball" rollers={12} className="h-28 w-28" />
+            )}
+          </div>
+
+          {catalogue.series.length > 0 && (
+            <div className="relative border-t border-ink-800 pt-3">
+              <span className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
+                Series Covered
+              </span>
+              <p className="mt-1 font-mono text-[11px] text-steel-300">
+                {catalogue.series.join(' · ')}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Right Side: Lead Capture Form */}
+        <div className="relative p-6 sm:p-8">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close download form"
+            className="absolute right-4 top-4 p-2 text-steel-500 hover:text-signal"
+          >
+            <XIcon className="h-5 w-5" aria-hidden />
+          </button>
+
+          {state === 'success' ? (
+            <div className="flex min-h-[400px] flex-col items-center justify-center text-center">
+              <CheckCircle2Icon className="h-12 w-12 text-signal" aria-hidden />
+              <p className="mt-5 font-mono text-[10px] uppercase tracking-tech text-signal">
+                Request Confirmed
+              </p>
+              <h3 className="mt-2 font-display text-2xl font-bold uppercase text-steel-50">
+                Your brochure download is ready!
+              </h3>
+              <p className="mt-3 max-w-sm text-xs leading-relaxed text-steel-400">
+                Thank you for your interest. A copy has been opened in your browser, and our technical engineering department will follow up with complete specifications if needed.
+              </p>
+              <button
+                type="button"
+                onClick={onClose}
+                className="mt-8 border border-signal bg-signal px-6 py-2.5 font-display text-xs font-bold uppercase tracking-wider text-ink-950 hover:bg-signal-bright"
+              >
+                Close Window
+              </button>
+            </div>
+          ) : (
+            <>
+              <TechnicalLabel code="Free Access">Product Catalogue Download</TechnicalLabel>
+              <h2
+                id="catalogue-download-heading"
+                className="mt-2 pr-6 font-display text-2xl font-bold uppercase leading-tight text-steel-50"
+              >
+                Enter your details to download brochure
+              </h2>
+              <p className="mt-2 text-xs text-steel-400">
+                Please complete the form below to instantly access official technical drawings and load ratings.
+              </p>
+
+              {state === 'error' && (
+                <p className="mt-4 border border-red-500/40 bg-red-500/10 px-3 py-2 font-mono text-xs text-red-200">
+                  An error occurred. Please try again.
+                </p>
+              )}
+
+              <form onSubmit={submit} noValidate className="mt-6 grid gap-3.5 sm:grid-cols-2">
+                <CatalogueField
+                  ref={firstInputRef}
+                  id="cat-name"
+                  label="Full Name"
+                  value={form.fullName}
+                  onChange={update('fullName')}
+                  error={errors.fullName}
+                  required
+                />
+                <CatalogueField
+                  id="cat-company"
+                  label="Company Name"
+                  value={form.companyName}
+                  onChange={update('companyName')}
+                  error={errors.companyName}
+                  required
+                />
+                <CatalogueField
+                  id="cat-mobile"
+                  label="Mobile Number"
+                  type="tel"
+                  value={form.mobile}
+                  onChange={update('mobile')}
+                  error={errors.mobile}
+                  required
+                />
+                <CatalogueField
+                  id="cat-email"
+                  label="Email Address"
+                  type="email"
+                  value={form.email}
+                  onChange={update('email')}
+                  error={errors.email}
+                  required
+                />
+                <CatalogueField
+                  id="cat-city"
+                  label="City / Location"
+                  value={form.city}
+                  onChange={update('city')}
+                  error={errors.city}
+                  required
+                />
+                <CatalogueField
+                  id="cat-industry"
+                  label="Industry / Application"
+                  value={form.industry}
+                  onChange={update('industry')}
+                  placeholder="e.g. Automation, CNC, Steel"
+                />
+                <div className="sm:col-span-2">
+                  <label htmlFor="cat-msg" className="field-label">
+                    Specific Requirements (Optional)
+                  </label>
+                  <textarea
+                    id="cat-msg"
+                    rows={2}
+                    value={form.message}
+                    onChange={update('message')}
+                    className="field-input resize-y text-xs"
+                    placeholder="Provide shaft sizes, stroke lengths, or bearing numbers..."
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={state === 'processing'}
+                  className="mt-2 inline-flex items-center justify-center gap-2 rounded bg-signal px-6 py-3 font-display text-xs font-bold uppercase tracking-[0.16em] text-ink-950 transition-colors hover:bg-signal-bright disabled:cursor-wait disabled:opacity-75 sm:col-span-2"
+                >
+                  {state === 'processing' ? 'Processing...' : 'Download Technical Brochure'}
+                  <DownloadIcon className="h-4 w-4" aria-hidden />
+                </button>
+              </form>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
 
-const CatalogueField = forwardRef<HTMLInputElement, { id: string; label: string; value: string; onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; type?: string; error?: string; required?: boolean; placeholder?: string }>(({ id, label, value, onChange, type = 'text', error, required, ...props }, ref) => <div><label htmlFor={id} className="field-label">{label} {required && <span className="text-signal">*</span>}</label><input ref={ref} id={id} type={type} value={value} onChange={onChange} className={`field-input ${error ? 'border-red-400/80' : ''}`} aria-invalid={Boolean(error)} {...props} />{error && <p className="mt-2 text-xs text-red-300" role="alert">{error}</p>}</div>);
+const CatalogueField = forwardRef<
+  HTMLInputElement,
+  {
+    id: string;
+    label: string;
+    value: string;
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    type?: string;
+    error?: string;
+    required?: boolean;
+    placeholder?: string;
+  }
+>(({ id, label, value, onChange, type = 'text', error, required, ...props }, ref) => (
+  <div>
+    <label htmlFor={id} className="field-label text-xs">
+      {label} {required && <span className="text-signal">*</span>}
+    </label>
+    <input
+      ref={ref}
+      id={id}
+      type={type}
+      value={value}
+      onChange={onChange}
+      className={`field-input text-xs ${error ? 'border-red-400/80' : ''}`}
+      aria-invalid={Boolean(error)}
+      {...props}
+    />
+    {error && (
+      <p className="mt-1 text-[11px] text-red-300" role="alert">
+        {error}
+      </p>
+    )}
+  </div>
+));

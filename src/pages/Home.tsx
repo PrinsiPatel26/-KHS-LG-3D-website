@@ -4,7 +4,6 @@ import { MotionSection } from '../components/sections/MotionSection';
 import { StatsSection } from '../components/sections/StatsSection';
 import { Products3D } from '../components/sections/Products3D';
 import { IndustriesSection } from '../components/sections/IndustriesSection';
-import { ApplicationsSection } from '../components/sections/ApplicationsSection';
 import { QualitySection } from '../components/sections/QualitySection';
 import { TechnologySection } from '../components/sections/TechnologySection';
 import { PerformanceSection } from '../components/sections/PerformanceSection';
@@ -49,7 +48,6 @@ export function Home() {
       <Products3D limit={6} />
       <BearingSearch />
       <IndustriesSection />
-      <ApplicationsSection />
       <QualitySection />
       <GlobalPresence code="07 / Global" />
       <TechnologySection code="08 / Technology" />

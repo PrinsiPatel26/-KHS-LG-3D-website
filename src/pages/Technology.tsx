@@ -22,7 +22,7 @@ export function Technology() {
         body="High technology products and services that support manufacturers from product design through to the bearing that ships."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Technology' }]} />
       
-      <TechnologySection />
+      <TechnologySection hideHeading />
       <ProductExplorer
         title={['Engineering', 'Every component']}
         code="EXP / TECH" />

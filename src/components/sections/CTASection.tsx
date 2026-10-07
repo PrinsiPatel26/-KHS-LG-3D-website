@@ -24,7 +24,7 @@ export function CTASection() {
     <section
       ref={ref}
       aria-label="Contact KHS-LG"
-      className="relative flex min-h-[440px] items-center overflow-hidden border-t border-ink-700 bg-ink-950 py-14 lg:min-h-[500px] lg:py-18">
+      className="relative flex min-h-[460px] items-center overflow-hidden border-t border-ink-700 bg-ink-950 py-20 lg:min-h-[540px] lg:py-28">
       
       {near &&
       <BearingScene

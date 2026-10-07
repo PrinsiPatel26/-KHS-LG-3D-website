@@ -11,10 +11,10 @@ export function GlobalPresence({ code = '09 / Global' }: { code?: string }) {
     <section
       ref={ref}
       aria-label="Global presence"
-      className="relative border-t border-ink-700 bg-ink-900 py-16 lg:py-20">
+      className="relative border-t border-ink-700 bg-ink-900 py-8 sm:py-10 lg:py-12">
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
-        <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-20">
+        <div className="grid gap-8 lg:grid-cols-[1fr_1fr] lg:items-center lg:gap-12">
           <div>
             <SectionHeading
               code={code}
@@ -23,7 +23,7 @@ export function GlobalPresence({ code = '09 / Global' }: { code?: string }) {
               body="KHS-LG bearings reach customers across Asia, Europe, Africa, the Middle East and South America through a distributor network built over five decades." />
             
             <Reveal delay={0.12}>
-              <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-2.5 sm:grid-cols-3">
+              <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-2 sm:grid-cols-3">
                 {markets.map((m) =>
                 <li
                   key={m.country}
@@ -37,7 +37,7 @@ export function GlobalPresence({ code = '09 / Global' }: { code?: string }) {
             </Reveal>
           </div>
 
-          <div className="relative aspect-square w-full">
+          <div className="relative aspect-square w-full max-w-[540px] lg:max-w-[620px] xl:max-w-[660px] mx-auto">
             {near && <Globe className="absolute inset-0" />}
           </div>
         </div>

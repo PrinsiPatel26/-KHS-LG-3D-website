@@ -39,10 +39,19 @@ export const productFamilyDefinitions: ProductFamilyDefinition[] = [
   family('linear-motion', 'Linear Motion', [
     ['linear-motion-bearings', 'Linear Motion Bearings'],
     ['linear-motion-bearings-with-housing', 'Linear Motion Bearings with Housing', 'linear-motion-shafts-with-support'],
-    ['linear-shafts', 'Linear Shafts', 'linear-motion-shafts-with-support'],
-    ['shafts-with-support', 'Shafts with Support', 'linear-motion-shafts-with-support'],
     ['dual-shaft-guides-blocks', 'Dual Shaft Guides & Blocks', 'dual-shaft-guides'],
     ['cross-roller-guideway', 'Cross Roller Guideway', 'linear-motion-bearings']
+  ]),
+  family('linear-shafts', 'Linear Shafts', [
+    ['hard-chrome-shafts', 'Hard-Chrome Shafts', 'hard-chrome-shafts'],
+    ['shafts-with-support', 'Shafts with support', 'shafts-with-support'],
+    ['shaft-supporting-units', 'Shaft Supporting Units', 'shaft-supporting-units'],
+    ['shaft-custom-made', 'Custom-made Shafts', 'shaft-custom-made'],
+    ['shaft-s-st', 'S-ST Shaft Support Units', 'shaft-s-st'],
+    ['shaft-s-stu', 'S-STU Shaft Support Units', 'shaft-s-stu'],
+    ['shaft-st', 'ST Shaft with Support', 'shaft-st'],
+    ['shaft-stu', 'STU Shaft with Support', 'shaft-stu'],
+    ['shaft-was-solid', 'WAS Solid Shaft', 'shaft-was-solid']
   ]),
   family('rod-ends-track-rollers', 'Rod Ends, Spherical & Track Roller Bearings', [
     ['rod-end-bearings', 'Rod End Bearings'],
