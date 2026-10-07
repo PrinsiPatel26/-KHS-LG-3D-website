@@ -14,6 +14,7 @@ export interface BlogPost {
   readTime: string;
   excerpt: string;
   tags: string[];
+  image?: string;
   content: ArticleBlock[];
 }
 
@@ -29,6 +30,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Industrial Applications', date: '2026-09-01', author: 'KHS-LG', readTime: '8 min read',
     excerpt: 'A practical guide to evaluating authenticity, technical competence, stock depth, documentation and delivery reliability before committing to a bearing supplier.',
     tags: ['bearing supplier', 'procurement', 'bearing selection', 'quality'],
+    image: '/blog/blog-1.png',
     content: [
       { type: 'paragraph', text: 'A single wrong bearing, wrong tolerance, wrong internal clearance or wrong grade does not simply fail on its own. It can take the equipment around it down with it: the shaft, the housing and sometimes the gearbox.' },
       { type: 'paragraph', text: 'Mumbai and its surrounding industrial zones form one of India’s most concentrated manufacturing regions. Bearings are among the most frequently sourced mechanical components across automotive, textile, pharma, packaging, pump and general engineering applications.' },
@@ -60,6 +62,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Buying Guides', date: '2026-08-21', author: 'KHS-LG', readTime: '7 min read',
     excerpt: 'How industrial buyers can assess bearing quality, traceability, batch consistency, availability and technical support before placing a large order.',
     tags: ['bearing supplier', 'India', 'procurement', 'OEM'],
+    image: '/blog/blog-2.png',
     content: [
       { type: 'paragraph', text: 'Finding a bearing supplier in India is easy. Finding one that consistently supplies the right bearing, correct specification, reliable quality, documentation and dependable delivery is harder.' },
       { type: 'heading', text: 'What Should You Look for in a Bearing Supplier in India?' },
@@ -83,6 +86,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Engineering', date: '2026-08-06', author: 'KHS-LG', readTime: '9 min read',
     excerpt: 'An engineering guide to IKO needle bearings, cam followers, roller followers, linear guides, application fit and maintenance practice.',
     tags: ['IKO bearings', 'cam followers', 'linear motion', 'engineering'],
+    image: '/blog/blog-3.png',
     content: [
       { type: 'paragraph', text: 'In industrial manufacturing, minimizing unplanned downtime and maximizing machine precision are non-negotiable. For machine builders, OEMs and maintenance engineers, selecting rotary and linear motion components directly influences equipment life.' },
       { type: 'heading', text: 'The Engineering Superiority of IKO Needle Bearings' },
@@ -110,6 +114,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Industrial Applications', date: '2026-07-24', author: 'KHS-LG', readTime: '12 min read',
     excerpt: 'Understand pump loads, bearing types, lubrication, sealing, alignment, failure causes, quality checks and supplier selection.',
     tags: ['pump bearings', 'industrial bearings', 'selection', 'maintenance'],
+    image: '/blog/blog-4.png',
     content: [
       { type: 'paragraph', text: 'Industrial pumps operate across water treatment, chemical processing, pharmaceuticals, food manufacturing, oil and gas, power generation, mining, agriculture and HVAC. The bearing must support the shaft, control movement, reduce friction and withstand the operating environment.' },
       { type: 'heading', text: 'Why Bearings Are Important in Industrial Pumps' },
@@ -139,6 +144,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Maintenance', date: '2026-07-15', author: 'KHS-LG', readTime: '10 min read',
     excerpt: 'A practical 10-point linear guide maintenance SOP for reducing contamination, lubrication failures, lost precision and unplanned downtime.',
     tags: ['linear guides', 'maintenance', 'machine uptime', 'linear motion'],
+    image: '/blog/blog-5.png',
     content: [
       { type: 'paragraph', text: 'Linear guide rails carry loads through high-speed packaging automation, CNC machining centres and industrial equipment. Treating them as run-to-failure components is costly: the replacement is only part of the bill; lost production, expedited shipping and re-alignment add more.' },
       { type: 'heading', text: 'What Is a Linear Guide Rail?' },
@@ -163,6 +169,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Linear Motion', date: '2026-07-07', author: 'KHS-LG', readTime: '8 min read',
     excerpt: 'A guide to linear guideway construction, applications, selection, maintenance and the quality factors that affect machine performance.',
     tags: ['linear guideways', 'linear motion', 'manufacturing', 'CNC'],
+    image: '/blog/blog-6.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'Precision, efficiency and reliability are the cornerstones of modern manufacturing. In CNC machining, automation, robotics, semiconductor production, packaging and material handling, linear guideways provide smooth and accurate motion.' },
@@ -187,6 +194,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Maintenance', date: '2026-06-27', author: 'KHS-LG', readTime: '11 min read',
     excerpt: 'Understand the eleven common causes of spindle failure, early warning signs and the bearing-selection and maintenance choices that extend machine life.',
     tags: ['spindle bearings', 'maintenance', 'precision bearings', 'reliability'],
+    image: '/blog/blog-7.png',
     content: [
       { type: 'paragraph', text: 'A spindle is not just another component. It runs at thousands of RPM and translates motor power into accuracy. When it fails, the result can be a scrapped part, damaged tooling, a multi-day repair and missed customer commitments.' },
       { type: 'heading', text: 'What Is Premature Spindle Failure?' },
@@ -214,6 +222,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Linear Motion', date: '2026-06-17', author: 'KHS-LG', readTime: '8 min read',
     excerpt: 'How LM bearings, shafts, guideways and ball screws support accurate, repeatable movement in modern machines.',
     tags: ['linear motion', 'machine builders', 'automation', 'OEM'],
+    image: '/blog/blog-8.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'Linear motion products are essential to machine builders, automation companies, OEMs and industrial engineering businesses that depend on smooth, accurate and reliable movement.' },
@@ -238,6 +247,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Engineering', date: '2026-06-06', author: 'KHS-LG', readTime: '6 min read',
     excerpt: 'Why technical expertise, consistent quality, inventory depth and application support matter as much as the bearing itself.',
     tags: ['industrial bearings', 'supplier', 'reliability', 'OEM'],
+    image: '/blog/blog-9.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'Bearings support rotating parts, reduce friction and improve machine efficiency. A trusted supplier provides more than products: technical expertise, consistent quality, reliable inventory and long-term support.' },
@@ -263,6 +273,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Industrial Applications', date: '2026-06-02', author: 'KHS-LG', readTime: '6 min read',
     excerpt: 'How local stock, faster support, lower logistics delays and regional industrial knowledge can improve bearing procurement.',
     tags: ['Gujarat', 'bearing supplier', 'OEM', 'procurement'],
+    image: '/blog/blog-10.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'Gujarat has a strong presence in manufacturing, engineering, chemicals, automotive production and heavy industry. These sectors need dependable bearing suppliers who can provide quality products, technical expertise and timely delivery.' },
@@ -285,6 +296,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Engineering', date: '2026-05-23', author: 'KHS-LG', readTime: '6 min read',
     excerpt: 'How tight tolerances, better materials and controlled surfaces improve efficiency, stability, service life and industrial performance.',
     tags: ['precision bearings', 'bearing manufacturer', 'accuracy', 'maintenance'],
+    image: '/blog/blog-7.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'Industrial machinery depends on precision, efficiency and reliability. Even small mechanical inaccuracies can reduce performance, increase downtime and raise maintenance costs.' },
@@ -309,6 +321,7 @@ export const blogPosts: BlogPost[] = [
     category: 'OEM', date: '2026-05-26', author: 'KHS-LG', readTime: '6 min read',
     excerpt: 'How reliable bearing suppliers support OEM quality, inventory, technical guidance, customisation and long-term manufacturing performance.',
     tags: ['OEM', 'bearing supplier', 'manufacturing', 'quality'],
+    image: '/blog/blog-2.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'OEM industries depend on high-quality components to maintain machine performance, production efficiency and long-term reliability. Bearings support rotating parts, reduce friction and improve operational stability.' },
@@ -331,6 +344,7 @@ export const blogPosts: BlogPost[] = [
     category: 'OEM', date: '2026-05-21', author: 'KHS-LG', readTime: '6 min read',
     excerpt: 'Why OEMs should compare bearing quality, precision, service life and lifecycle cost rather than choosing by initial purchase price alone.',
     tags: ['OEM', 'bearing quality', 'procurement', 'reliability'],
+    image: '/blog/blog-1.png',
     content: [
       { type: 'heading', text: 'Introduction' },
       { type: 'paragraph', text: 'For OEMs, every component affects product quality, operational reliability and customer satisfaction. Low-cost bearings may reduce initial cost, but can create maintenance issues, downtime and performance failures over time.' },
@@ -355,6 +369,7 @@ export const blogPosts: BlogPost[] = [
     category: 'Bearings', date: '2018-11-23', author: 'KHS-LG', readTime: '4 min read',
     excerpt: 'An archived KHS-LG guide to deep groove ball bearing construction, clearance, sealing, applications and operating advantages.',
     tags: ['deep groove ball bearings', 'bearings', 'maintenance'],
+    image: '/blog/blog-4.png',
     content: [
       { type: 'paragraph', text: 'Deep groove ball bearings are the most widely used bearings in industry. They are composed of an outer ring, inner ring, bearing cage, balls and seals.' },
       { type: 'paragraph', text: 'Single-row ball bearings are the most popular rolling bearings. They are simple in design, non-separable, suitable for high-speed operation and require little attention in service.' },

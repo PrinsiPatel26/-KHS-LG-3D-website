@@ -23,7 +23,7 @@ export function Logo({ className }: {className?: string;}) {
       <img
         src="/khslogo-clean.png"
         alt="KHS-LG"
-        className="khs-logo block h-10 w-auto object-contain object-left sm:h-12 lg:h-14"
+        className="khs-logo block h-12 w-auto object-contain object-left transition-all duration-200 sm:h-14 lg:h-16"
         />
     </Link>);
 

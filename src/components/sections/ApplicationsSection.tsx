@@ -6,22 +6,23 @@ import { BearingGlyph } from '../ui/BearingGlyph';
 import { applications } from '../../data/applications';
 
 /** Where motion matters — a technical index, not a card grid. */
-export function ApplicationsSection() {
+export function ApplicationsSection({ hideHeading = false }: { hideHeading?: boolean } = {}) {
   const [active, setActive] = useState(0);
 
   return (
     <section
       aria-label="Applications"
-      className="relative border-t border-ink-700 bg-ink-900 py-12 lg:py-18">
+      className={`relative border-t border-ink-700 bg-ink-900 ${hideHeading ? 'py-8 lg:py-12' : 'py-12 lg:py-16'}`}>
       
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
-        <SectionHeading
-          code="05 / Applications"
-          eyebrow="Verified KHS-LG application areas"
-          lines={['Where motion', 'Matters']} />
-        
+        {!hideHeading && (
+          <SectionHeading
+            code="05 / Applications"
+            eyebrow="Verified KHS-LG application areas"
+            lines={['Where motion', 'Matters']} />
+        )}
 
-        <div className="mt-10 grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:gap-12">
+        <div className={`${hideHeading ? 'mt-2' : 'mt-10'} grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:gap-12`}>
           <ul className="border-t border-ink-700">
             {applications.map((app, i) =>
             <li key={app.code} className="border-b border-ink-700">

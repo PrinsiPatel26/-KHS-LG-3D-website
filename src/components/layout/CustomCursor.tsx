@@ -113,20 +113,25 @@ export function CustomCursor() {
     <div aria-hidden className="pointer-events-none fixed inset-0 z-cursor">
       <div
         ref={dot}
-        className="absolute -ml-[3px] -mt-[3px] h-1.5 w-1.5 rounded-full bg-steel-50"
-        style={{ opacity: visible && !expanded ? 1 : 0, transition: 'opacity 150ms linear' }} />
+        className="absolute -ml-1 -mt-1 h-2 w-2 rounded-full border border-ink-950 bg-signal shadow-[0_0_4px_rgba(0,0,0,0.7)]"
+        style={{
+          opacity: visible ? 1 : 0,
+          transform: expanded ? 'scale(0.6)' : 'scale(1)',
+          transition: 'opacity 150ms linear, transform 180ms ease'
+        }} />
       
       <div
         ref={ring}
-        className="absolute flex items-center justify-center rounded-full border border-signal font-mono text-[8px] uppercase tracking-tech text-signal"
+        className="absolute flex items-center justify-center rounded-full border border-signal font-mono text-[8px] uppercase tracking-tech text-signal shadow-[0_0_6px_rgba(0,0,0,0.35)]"
         style={{
-          width: expanded ? label ? 62 : 34 : 22,
-          height: expanded ? label ? 62 : 34 : 22,
-          marginLeft: expanded ? label ? -31 : -17 : -11,
-          marginTop: expanded ? label ? -31 : -17 : -11,
-          opacity: visible ? expanded ? 1 : 0.35 : 0,
+          width: expanded ? label ? 64 : 36 : 24,
+          height: expanded ? label ? 64 : 36 : 24,
+          marginLeft: expanded ? label ? -32 : -18 : -12,
+          marginTop: expanded ? label ? -32 : -18 : -12,
+          backgroundColor: expanded ? 'rgba(255, 245, 138, 0.12)' : 'rgba(0, 0, 0, 0.08)',
+          opacity: visible ? (expanded ? 1 : 0.65) : 0,
           transition:
-          'width 200ms cubic-bezier(0.23,1,0.32,1), height 200ms cubic-bezier(0.23,1,0.32,1), margin 200ms cubic-bezier(0.23,1,0.32,1), opacity 160ms linear'
+          'width 200ms cubic-bezier(0.23,1,0.32,1), height 200ms cubic-bezier(0.23,1,0.32,1), margin 200ms cubic-bezier(0.23,1,0.32,1), opacity 160ms linear, background-color 200ms ease'
         }}>
         
         {label}

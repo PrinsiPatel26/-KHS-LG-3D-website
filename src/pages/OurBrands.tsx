@@ -15,7 +15,7 @@ export function OurBrands() {
 
   return (
     <main>
-      <section className="relative overflow-hidden border-b border-ink-700 bg-ink-950 pb-8 pt-12 sm:pb-10 sm:pt-16 lg:pb-12 lg:pt-18">
+      <section className="relative overflow-hidden border-b border-ink-700 bg-ink-950 pb-6 pt-24 sm:pb-8 sm:pt-26 lg:pb-8 lg:pt-28">
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-30" aria-hidden />
         <div className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] opacity-[0.08]" style={{ background: 'radial-gradient(circle, rgba(245,180,0,0.9) 0%, transparent 62%)' }} aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">

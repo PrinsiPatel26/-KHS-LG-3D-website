@@ -5,16 +5,27 @@ import { BearingGlyph } from '../ui/BearingGlyph';
 
 export function BlogVisual({ post, large = false }: { post: BlogPost; large?: boolean }) {
   const shape = post.category === 'Linear Motion' || post.category === 'Maintenance' ? 'linear' : post.category === 'Engineering' ? 'roller' : 'ball';
-  return <div className={`relative overflow-hidden border border-ink-700 bg-ink-950 ${large ? 'min-h-[280px] sm:min-h-[360px]' : 'h-48'}`}>
-    <div className="industrial-grid absolute inset-0 opacity-30" aria-hidden />
-    <div className="absolute inset-0 flex items-center justify-center opacity-75 transition-transform duration-700 ease-precision group-hover:scale-105">
-      <div className="absolute h-48 w-48 rounded-full border border-signal/10" aria-hidden />
-      <div className="absolute h-36 w-36 rounded-full border border-signal/10" aria-hidden />
-      <div className="h-32 w-32 sm:h-40 sm:w-40"><BearingGlyph shape={shape} rollers={12} /></div>
+  return (
+    <div className={`relative overflow-hidden border border-ink-700 bg-ink-950 flex items-center justify-center ${large ? 'w-full aspect-[16/9] max-h-[520px]' : 'w-full aspect-[16/9]'}`}>
+      {post.image ? (
+        <img
+          src={post.image}
+          alt={post.title}
+          loading="lazy"
+          className="h-full w-full object-contain"
+        />
+      ) : (
+        <>
+          <div className="industrial-grid absolute inset-0 opacity-30" aria-hidden />
+          <div className="absolute inset-0 flex items-center justify-center opacity-75">
+            <div className="absolute h-48 w-48 rounded-full border border-signal/10" aria-hidden />
+            <div className="absolute h-36 w-36 rounded-full border border-signal/10" aria-hidden />
+            <div className="h-32 w-32 sm:h-40 sm:w-40"><BearingGlyph shape={shape} rollers={12} /></div>
+          </div>
+        </>
+      )}
     </div>
-    <span className="absolute left-5 top-5 font-mono text-[9px] uppercase tracking-tech text-signal">KHS / INSIGHT</span>
-    <span className="absolute bottom-5 right-5 font-mono text-[9px] uppercase tracking-tech text-steel-600">{post.date.slice(0, 4)} / {post.category}</span>
-  </div>;
+  );
 }
 
 export function BlogCard({ post }: { post: BlogPost }) {

@@ -22,7 +22,7 @@ export function Applications() {
         body="From plant machinery to automation systems, the KHS-LG range is specified around how the assembly actually moves."
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Applications' }]} />
       
-      <ApplicationsSection />
+      <ApplicationsSection hideHeading />
       <ProductExplorer />
       <PerformanceSection />
       <CTASection />

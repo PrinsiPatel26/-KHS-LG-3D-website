@@ -55,6 +55,12 @@ export const productFamilyDefinitions: ProductFamilyDefinition[] = [
     ['drawn-cup-needle-roller-clutches', 'Drawn Cup Needle Roller Clutches'],
     ['one-way-clutch', 'One Way Clutch'],
     ['permaglide-dry-bush', 'Permaglide Dry Bush']
+  ]),
+  family('power-transmission', 'Power Transmission', [
+    ['classical-wrapped-v-belt', 'V-Belts'],
+    ['industrial-rubber-timing-belt', 'Timing Belts'],
+    ['poly-ribbed-v-belt', 'Poly-Ribbed Belts'],
+    ['wedge-cogged-v-belt', 'Wedge Cogged Belts']
   ])
 ];
 

@@ -114,7 +114,7 @@ export function ExportFootprintSection() {
   const origin = projectPoint(78.9629, 20.5937);
 
   return (
-    <section aria-label="Export footprint" className="relative overflow-hidden border-y border-ink-700 bg-ink-900 py-20 lg:py-28">
+    <section aria-label="Export footprint" className="relative overflow-hidden border-y border-ink-700 bg-ink-900 py-12 lg:py-16">
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
       <div className="pointer-events-none absolute -right-24 top-16 h-80 w-80 rounded-full border border-signal/10" aria-hidden />
       <div className="pointer-events-none absolute -left-12 bottom-10 h-72 w-72 rounded-full border border-signal/10" aria-hidden />

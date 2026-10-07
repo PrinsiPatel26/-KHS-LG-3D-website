@@ -37,7 +37,7 @@ export function About() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'About KHS-LG' }]} />
       
 
-      <section aria-label="Company story" className="relative bg-ink-900 py-14 lg:py-20">
+      <section aria-label="Company story" className="relative bg-ink-900 py-10 lg:py-14">
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
         <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">
           <TechnicalLabel code="Story">

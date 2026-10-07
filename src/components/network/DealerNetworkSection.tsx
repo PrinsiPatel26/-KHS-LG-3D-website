@@ -103,7 +103,7 @@ export function DealerNetworkSection() {
   const dealerCount = dealerCities.filter((city) => city.active).length;
 
   return (
-    <section aria-label="Our dealer network" className="relative overflow-hidden border-y border-ink-700 bg-ink-900 py-20 lg:py-28">
+    <section aria-label="Our dealer network" className="relative overflow-hidden border-y border-ink-700 bg-ink-900 py-12 lg:py-16">
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
       <div className="pointer-events-none absolute -left-16 top-20 h-72 w-72 rounded-full border border-signal/10" aria-hidden />
       <div className="relative mx-auto w-full max-w-[1600px] px-5 sm:px-8">

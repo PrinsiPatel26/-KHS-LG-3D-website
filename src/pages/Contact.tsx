@@ -83,7 +83,7 @@ export function Contact() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Contact' }]} />
       
 
-      <section className="bg-ink-900 py-20 lg:py-28">
+      <section className="bg-ink-900 py-12 lg:py-16">
         <div className="mx-auto grid w-full max-w-[1600px] gap-14 px-5 sm:px-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
           <div>
             <TechnicalLabel code="Direct">Get in touch</TechnicalLabel>

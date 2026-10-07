@@ -24,9 +24,8 @@ export function RevealText({
       {lines.map((line, i) =>
       <span key={line + i} className="block overflow-hidden">
           <motion.span
-          initial={{ y: '105%' }}
-          whileInView={{ y: '0%' }}
-          viewport={{ once: true, margin: '-12% 0px' }}
+          initial={{ y: '100%', opacity: 0 }}
+          animate={{ y: '0%', opacity: 1 }}
           transition={{ duration: 0.62, delay: delay + i * 0.08, ease: [0.23, 1, 0.32, 1] }}
           className={cn(
             'block',
@@ -57,7 +56,7 @@ export function Reveal({
     <motion.div
       initial={{ opacity: 0, y }}
       whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: '-10% 0px' }}
+      viewport={{ once: true, margin: '0px', amount: 0.05 }}
       transition={{ duration: 0.55, delay, ease: [0.23, 1, 0.32, 1] }}
       className={className}>
       

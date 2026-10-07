@@ -1,13 +1,20 @@
 import { Link } from 'react-router-dom';
 import { MailIcon, PhoneIcon } from 'lucide-react';
 import { company, markets } from '../../data/company';
-import { products } from '../../data/products';
 import { Logo } from './Navbar';
 
 const COLUMNS: {title: string;links: {label: string;to: string;}[];}[] = [
 {
   title: 'Products',
-  links: products.slice(0, 6).map((p) => ({ label: p.name, to: `/products/${p.slug}` }))
+  links: [
+    { label: 'Rolling Bearings', to: '/products/rolling-bearings' },
+    { label: 'Needle Roller Bearings', to: '/products/needle-roller-bearings' },
+    { label: 'Bearing Units & Housings', to: '/products/bearing-units-housings' },
+    { label: 'Linear Motion', to: '/products/linear-motion' },
+    { label: 'Rod Ends, Spherical & Track Roller Bearings', to: '/products/rod-ends-track-rollers' },
+    { label: 'Clutches & Bushes', to: '/products/clutches-bushes' },
+    { label: 'Power Transmission', to: '/products/power-transmission' }
+  ]
 },
 {
   title: 'Company',
