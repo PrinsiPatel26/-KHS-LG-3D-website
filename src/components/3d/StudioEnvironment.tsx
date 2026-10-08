@@ -47,27 +47,42 @@ function buildEnvTexture(): THREE.Texture {
     ctx.fillStyle = fillSoftbox;
     ctx.fillRect(width * 0.54, height * 0.1, width * 0.36, height * 0.4);
 
-    // 4. Razor-Sharp Strip Lights (creates chrome specular glints on cylinders and balls)
-    const strip1 = ctx.createLinearGradient(width * 0.16, 0, width * 0.2, 0);
-    strip1.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    strip1.addColorStop(0.5, '#ffffff');
-    strip1.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    ctx.fillStyle = strip1;
-    ctx.fillRect(width * 0.16, height * 0.12, width * 0.04, height * 0.55);
+    // 4. Feathered Strip Lights (creates chrome specular glints without harsh horizontal cutoff edges)
+    const s1X = width * 0.18;
+    const s1Y = height * 0.36;
+    const s1W = width * 0.025;
+    const s1H = height * 0.26;
+    ctx.save();
+    ctx.translate(s1X, s1Y);
+    ctx.scale(s1W / s1H, 1);
+    const rad1 = ctx.createRadialGradient(0, 0, 0, 0, 0, s1H);
+    rad1.addColorStop(0, '#ffffff');
+    rad1.addColorStop(0.25, 'rgba(255, 255, 255, 0.85)');
+    rad1.addColorStop(0.65, 'rgba(220, 235, 255, 0.2)');
+    rad1.addColorStop(1, 'rgba(220, 235, 255, 0)');
+    ctx.fillStyle = rad1;
+    ctx.beginPath();
+    ctx.arc(0, 0, s1H, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
 
-    const strip2 = ctx.createLinearGradient(width * 0.52, 0, width * 0.55, 0);
-    strip2.addColorStop(0, 'rgba(255, 255, 255, 0)');
-    strip2.addColorStop(0.5, '#ffffff');
-    strip2.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    ctx.fillStyle = strip2;
-    ctx.fillRect(width * 0.52, height * 0.18, width * 0.03, height * 0.48);
-
-    // Overhead horizon highlight line
-    const topStrip = ctx.createLinearGradient(0, height * 0.03, 0, height * 0.08);
-    topStrip.addColorStop(0, '#ffffff');
-    topStrip.addColorStop(1, 'rgba(255, 255, 255, 0)');
-    ctx.fillStyle = topStrip;
-    ctx.fillRect(width * 0.12, height * 0.02, width * 0.76, height * 0.06);
+    const s2X = width * 0.53;
+    const s2Y = height * 0.40;
+    const s2W = width * 0.02;
+    const s2H = height * 0.22;
+    ctx.save();
+    ctx.translate(s2X, s2Y);
+    ctx.scale(s2W / s2H, 1);
+    const rad2 = ctx.createRadialGradient(0, 0, 0, 0, 0, s2H);
+    rad2.addColorStop(0, '#ffffff');
+    rad2.addColorStop(0.25, 'rgba(255, 255, 255, 0.8)');
+    rad2.addColorStop(0.65, 'rgba(220, 235, 255, 0.18)');
+    rad2.addColorStop(1, 'rgba(220, 235, 255, 0)');
+    ctx.fillStyle = rad2;
+    ctx.beginPath();
+    ctx.arc(0, 0, s2H, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
 
     // 5. Warm Amber Accent Softbox (enriches brass retainer and gives chrome depth)
     const warmBox = ctx.createRadialGradient(
@@ -80,14 +95,14 @@ function buildEnvTexture(): THREE.Texture {
     ctx.fillStyle = warmBox;
     ctx.fillRect(width * 0.78, height * 0.32, width * 0.2, height * 0.22);
 
-    // 6. Floor Bounce / Ground Horizon Reflectance
-    const floorBounce = ctx.createLinearGradient(0, height * 0.7, 0, height);
-    floorBounce.addColorStop(0, 'rgba(20, 25, 32, 0)');
-    floorBounce.addColorStop(0.4, 'rgba(60, 75, 95, 0.45)');
-    floorBounce.addColorStop(0.8, 'rgba(32, 40, 52, 0.5)');
-    floorBounce.addColorStop(1, 'rgba(10, 14, 18, 0.7)');
+    // 6. Smooth Floor Bounce (continuous gradient with no sharp boundary)
+    const floorBounce = ctx.createLinearGradient(0, height * 0.5, 0, height);
+    floorBounce.addColorStop(0, 'rgba(0, 0, 0, 0)');
+    floorBounce.addColorStop(0.4, 'rgba(45, 60, 80, 0.25)');
+    floorBounce.addColorStop(0.8, 'rgba(25, 32, 42, 0.4)');
+    floorBounce.addColorStop(1, 'rgba(8, 11, 15, 0.6)');
     ctx.fillStyle = floorBounce;
-    ctx.fillRect(0, height * 0.7, width, height * 0.3);
+    ctx.fillRect(0, height * 0.5, width, height * 0.5);
   }
 
   const texture = new THREE.CanvasTexture(canvas);

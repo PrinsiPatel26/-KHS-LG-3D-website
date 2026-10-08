@@ -30,9 +30,9 @@ const DIMS = {
 };
 
 function segmentsFor(quality: Quality) {
-  if (quality === 'low') return { lathe: 40, sphere: 12, torus: 24, rollers: 9 };
-  if (quality === 'medium') return { lathe: 64, sphere: 18, torus: 36, rollers: 12 };
-  return { lathe: 112, sphere: 32, torus: 56, rollers: 15 };
+  if (quality === 'low') return { lathe: 64, sphere: 16, torus: 32, rollers: 11 };
+  if (quality === 'medium') return { lathe: 96, sphere: 24, torus: 48, rollers: 13 };
+  return { lathe: 144, sphere: 36, torus: 72, rollers: 15 };
 }
 
 function rollerGeometry(shape: RollerShape, segments: number): THREE.BufferGeometry {
@@ -102,12 +102,12 @@ export function createBearing({
         clearcoatRoughness: 0.06,
         reflectivity: 1.0,
         envMapIntensity: 1.55,
-        side: THREE.DoubleSide
+        side: THREE.FrontSide
       })
     )
   );
   outerMesh.castShadow = castShadow;
-  outerMesh.receiveShadow = castShadow;
+  outerMesh.receiveShadow = false;
   outerGroup.add(outerMesh);
   spinGroup.add(outerGroup);
 
@@ -124,12 +124,12 @@ export function createBearing({
         clearcoatRoughness: 0.06,
         reflectivity: 1.0,
         envMapIntensity: 1.55,
-        side: THREE.DoubleSide
+        side: THREE.FrontSide
       })
     )
   );
   innerMesh.castShadow = castShadow;
-  innerMesh.receiveShadow = castShadow;
+  innerMesh.receiveShadow = false;
   innerGroup.add(innerMesh);
   spinGroup.add(innerGroup);
 

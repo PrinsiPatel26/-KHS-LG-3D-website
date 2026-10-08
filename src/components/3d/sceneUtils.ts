@@ -21,7 +21,7 @@ export function createIndustrialLights(shadows: boolean): THREE.Group {
   key.position.set(0, 8.2, 3.2);
   key.castShadow = shadows;
   key.shadow.mapSize.set(1024, 1024);
-  key.shadow.bias = -0.0004;
+  key.shadow.bias = 0.0001;
   group.add(key);
   group.add(key.target);
 

@@ -29,7 +29,7 @@ export function LoaderScene({
     };
   }, [state]);
 
-  const bearingScale = tier === 'low' ? 0.78 : tier === 'medium' ? 0.88 : 1;
+  const bearingScale = tier === 'low' ? 0.95 : tier === 'medium' ? 1.1 : 1.22;
 
   return (
     <BearingScene
@@ -42,7 +42,7 @@ export function LoaderScene({
       cameraY={sources.camY}
       scale={bearingScale}
       fov={36}
-      initialCamera={[0, 1.75, 9]}
+      initialCamera={[0, 0.2, 5.4]}
       cameraLambda={5.2}
       fallbackLabel="KHS-LG precision bearing" />);
 

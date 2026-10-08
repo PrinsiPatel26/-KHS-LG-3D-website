@@ -22,8 +22,9 @@ export interface BearingSceneProps {
   rollerShape?: RollerShape;
   grid?: boolean;
   particles?: boolean;
-  scale?: number;
-  modelX?: number;
+  scale?: NumSource;
+  modelX?: NumSource;
+  modelY?: NumSource;
   fov?: number;
   /** Starting camera position — used to continue the loader's push-in shot. */
   initialCamera?: [number, number, number];
@@ -47,13 +48,14 @@ export function BearingScene({
   particles = true,
   scale = 1,
   modelX = 0,
+  modelY = 0,
   fov = 38,
   initialCamera = [0, 1.1, 4.8],
   cameraLambda = 2.4,
   fallbackLabel
 }: BearingSceneProps) {
-  const props = useRef({ explode, scan, spin, rings, cameraZ, cameraY, pointer, cameraLambda });
-  props.current = { explode, scan, spin, rings, cameraZ, cameraY, pointer, cameraLambda };
+  const props = useRef({ explode, scan, spin, rings, cameraZ, cameraY, modelX, modelY, scale, pointer, cameraLambda });
+  props.current = { explode, scan, spin, rings, cameraZ, cameraY, modelX, modelY, scale, pointer, cameraLambda };
 
   const setup = useCallback(
     (ctx: StageContext): StageHandle => {
@@ -63,13 +65,15 @@ export function BearingScene({
       const env = createStudioEnvironment(ctx.renderer);
       ctx.scene.environment = env.texture;
 
+      const initScale = readNum(props.current.scale, 1);
       const bearing = createBearing({
         quality: ctx.tier,
         rollerShape,
-        scale,
+        scale: initScale,
         castShadow: ctx.shadows
       });
-      bearing.group.position.x = modelX;
+      bearing.group.position.x = readNum(props.current.modelX, 0);
+      bearing.group.position.y = readNum(props.current.modelY, 0);
       ctx.scene.add(bearing.group);
 
       const techRings = createTechRings(ctx.tier);
@@ -89,6 +93,11 @@ export function BearingScene({
       return {
         update(delta, elapsed) {
           const p = props.current;
+          bearing.group.position.x = readNum(p.modelX, 0);
+          bearing.group.position.y = readNum(p.modelY, 0);
+          const sc = readNum(p.scale, 1);
+          bearing.group.scale.set(sc, sc, sc);
+
           bearing.update(
             {
               explode: readNum(p.explode, 0),
@@ -121,7 +130,7 @@ export function BearingScene({
         }
       };
     },
-    [rollerShape, grid, particles, scale, modelX]
+    [rollerShape, grid, particles]
   );
 
   return (

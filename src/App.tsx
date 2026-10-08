@@ -23,6 +23,8 @@ import { OurBrands } from './pages/OurBrands';
 import { BrandPage } from './pages/BrandPage';
 import { useSmoothScroll } from './hooks/useSmoothScroll';
 
+import { LoaderProvider, useLoader } from './context/LoaderContext';
+
 export interface AppProps {
   /** Play the cinematic bearing loader before the site appears. */
   showIntroLoader?: boolean;
@@ -31,25 +33,41 @@ export interface AppProps {
 }
 
 export function App({ showIntroLoader = true, customCursor = true }: AppProps) {
-  const [siteReady, setSiteReady] = useState(!showIntroLoader);
-  const [loaderMounted, setLoaderMounted] = useState(showIntroLoader);
-  const markSiteReady = useCallback(() => setSiteReady(true), []);
-
   return (
     <BrowserRouter>
-      {loaderMounted &&
-      <PageLoader
-        isReady={siteReady}
-        onFinish={() => setLoaderMounted(false)} />
+      <LoaderProvider initialPhase={showIntroLoader ? 'loading' : 'done'}>
+        <AppShell showIntroLoader={showIntroLoader} customCursor={customCursor} />
+      </LoaderProvider>
+    </BrowserRouter>
+  );
+}
 
-      }
+function AppShell({ showIntroLoader = true, customCursor = true }: AppProps) {
+  const [siteReady, setSiteReady] = useState(!showIntroLoader);
+  const [loaderMounted, setLoaderMounted] = useState(showIntroLoader);
+  const { markDone } = useLoader();
+  const markSiteReady = useCallback(() => setSiteReady(true), []);
+
+  const handleFinish = useCallback(() => {
+    setLoaderMounted(false);
+    markDone();
+  }, [markDone]);
+
+  return (
+    <>
+      {loaderMounted && (
+        <PageLoader
+          isReady={siteReady}
+          onFinish={handleFinish}
+        />
+      )}
 
       <div className="min-h-screen w-full bg-ink-950 animate-[fadeIn_400ms_ease-out]">
-          {customCursor && <CustomCursor />}
-          <Site onReady={markSiteReady} />
-        </div>
-    </BrowserRouter>);
-
+        {customCursor && <CustomCursor />}
+        <Site onReady={markSiteReady} />
+      </div>
+    </>
+  );
 }
 
 function Site({ onReady }: { onReady: () => void }) {

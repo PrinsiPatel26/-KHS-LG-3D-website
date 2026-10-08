@@ -6,12 +6,11 @@ const easeInOut = (value: number) => value < 0.5 ? 2 * value * value : 1 - Math.
 /** Phase-driven cinematic values — one continuous shot from dark to hero. */
 export const loaderCurves = {
   cameraZ(progress: number, outro: number) {
-    const approach = 9 - range(progress, 0, 0.22) * 2.6 - range(progress, 0.22, 0.9) * 2.1;
-    return approach + (0.5 - approach) * easeInOut(outro);
+    const approach = 5.4 - range(progress, 0, 0.5) * 0.8;
+    return approach - outro * 0.3;
   },
   cameraY(progress: number, outro: number) {
-    const y = 1.75 - range(progress, 0.1, 0.9) * 0.7;
-    return y * (1 - easeInOut(outro));
+    return 0.25 * (1 - range(progress, 0, 0.5)) * (1 - outro);
   },
   explode(progress: number) {
     return range(progress, 0.55, 0.8) * (1 - range(progress, 0.88, 0.99));

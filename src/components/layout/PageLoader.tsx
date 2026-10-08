@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { LoaderScene, LoaderState } from './LoaderScene';
 import { useReducedMotion } from '../../hooks/useEnvironment';
+import { useLoader } from '../../context/LoaderContext';
 
 export interface PageLoaderProps {
   isReady: boolean;
@@ -12,6 +14,10 @@ const MINIMUM_LOAD_MS = 2200; // Company logo clearly visible in center for ~2.2
 
 export function PageLoader({ isReady, onFinish }: PageLoaderProps) {
   const reduced = useReducedMotion();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const { markCompleting } = useLoader();
+
   const state = useRef<LoaderState>({ progress: 0, outro: 0 });
   const [fading, setFading] = useState(false);
   const [logoAvailable, setLogoAvailable] = useState(true);
@@ -52,36 +58,47 @@ export function PageLoader({ isReady, onFinish }: PageLoaderProps) {
   }, [reduced]);
 
   useEffect(() => {
-    if (minTimeElapsed && isReady && logoReady) {
+    if (minTimeElapsed && isReady && logoReady && !fading) {
       state.current.progress = 1;
       state.current.outro = 1;
       setFading(true);
+      markCompleting();
     }
-  }, [minTimeElapsed, isReady, logoReady]);
+  }, [minTimeElapsed, isReady, logoReady, fading, markCompleting]);
 
   return (
     <motion.div
-      className="fixed inset-0 z-loader bg-ink-950 select-none overflow-hidden"
+      className={`fixed inset-0 z-loader select-none overflow-hidden ${
+        isHome ? 'bg-transparent' : 'bg-ink-950'
+      }`}
       animate={{ opacity: fading ? 0 : 1 }}
-      transition={{ duration: reduced ? 0 : 0.5, ease: [0.23, 1, 0.32, 1] }}
+      transition={{ duration: reduced ? 0 : 0.65, ease: [0.23, 1, 0.32, 1] }}
       onAnimationComplete={() => {
         if (fading) onFinish();
       }}
       role="status"
       aria-label="Loading KHS-LG"
       aria-busy={!fading}>
-      <LoaderScene state={state} className="absolute inset-0" />
+      {!isHome && <LoaderScene state={state} className="absolute inset-0" />}
 
       <div
         className="pointer-events-none absolute inset-0"
         style={{
-          background:
-            'radial-gradient(circle at 50% 50%, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.92) 75%)'
+          background: isHome
+            ? 'radial-gradient(circle at 50% 50%, rgba(5,5,5,0.14) 0%, rgba(5,5,5,0.58) 55%, rgba(5,5,5,0.92) 85%)'
+            : 'radial-gradient(circle at 50% 50%, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.92) 75%)'
         }} />
 
-      <div className="pointer-events-none absolute inset-0 industrial-grid opacity-[0.16]" />
+      <div className="pointer-events-none absolute inset-0 industrial-grid opacity-[0.14]" />
 
-      <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
+      <motion.div
+        animate={{
+          opacity: fading ? 0 : 1,
+          scale: fading ? 0.94 : 1,
+          y: fading ? -16 : 0
+        }}
+        transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+        className="absolute inset-0 flex flex-col items-center justify-center px-4">
         {/* Ambient warm glow behind company logo */}
         <div
           className="pointer-events-none absolute h-64 w-64 rounded-full opacity-20 blur-3xl sm:h-80 sm:w-80"
@@ -130,6 +147,6 @@ export function PageLoader({ isReady, onFinish }: PageLoaderProps) {
             <span className="text-signal font-semibold">{percent}%</span>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </motion.div>);
 }

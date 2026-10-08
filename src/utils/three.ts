@@ -27,7 +27,7 @@ export function ringProfile(
   chamfer = 0.045,
   raceway?: 'inner' | 'outer'
 ): THREE.Vector2[] {
-  const c = Math.min(chamfer, halfWidth * 0.5, (outerRadius - innerRadius) * 0.32);
+  const c = Math.min(chamfer, halfWidth * 0.45, (outerRadius - innerRadius) * 0.28);
   const pts: THREE.Vector2[] = [];
 
   // Bottom face: inner chamfer to outer chamfer
@@ -35,14 +35,20 @@ export function ringProfile(
   pts.push(new THREE.Vector2(outerRadius - c, -halfWidth));
   pts.push(new THREE.Vector2(outerRadius, -halfWidth + c));
 
-  // Outer cylindrical surface (concave raceway if inner ring)
+  // Outer cylindrical surface (concave smooth raceway arc if inner ring)
   if (raceway === 'outer') {
-    const depth = Math.min(0.034, (outerRadius - innerRadius) * 0.22);
-    pts.push(new THREE.Vector2(outerRadius, -0.12));
-    pts.push(new THREE.Vector2(outerRadius - depth * 0.7, -0.07));
-    pts.push(new THREE.Vector2(outerRadius - depth, 0));
-    pts.push(new THREE.Vector2(outerRadius - depth * 0.7, 0.07));
-    pts.push(new THREE.Vector2(outerRadius, 0.12));
+    const yRim = 0.12;
+    const depth = 0.035;
+    const R = (yRim * yRim + depth * depth) / (2 * depth);
+    const r0 = outerRadius - depth + R;
+    pts.push(new THREE.Vector2(outerRadius, -yRim));
+    const arcPoints = 12;
+    for (let i = 1; i < arcPoints; i++) {
+      const y = -yRim + (i / arcPoints) * (2 * yRim);
+      const r = r0 - Math.sqrt(Math.max(0.0001, R * R - y * y));
+      pts.push(new THREE.Vector2(r, y));
+    }
+    pts.push(new THREE.Vector2(outerRadius, yRim));
   }
 
   // Top outer chamfer & top face
@@ -51,13 +57,24 @@ export function ringProfile(
   pts.push(new THREE.Vector2(innerRadius + c, halfWidth));
   pts.push(new THREE.Vector2(innerRadius, halfWidth - c));
 
-  // Inner cylindrical surface (concave raceway if outer ring)
+  // Inner cylindrical surface (concave smooth raceway arc if outer ring)
   if (raceway === 'inner') {
-    const depth = Math.min(0.034, (outerRadius - innerRadius) * 0.22);
+    const yRim = 0.12;
+    const depth = 0.035;
+    const R = (yRim * yRim + depth * depth) / (2 * depth);
+    const r0 = innerRadius + depth - R;
+    pts.push(new THREE.Vector2(innerRadius, yRim));
+    const arcPoints = 12;
+    for (let i = 1; i < arcPoints; i++) {
+      const y = yRim - (i / arcPoints) * (2 * yRim);
+      const r = r0 + Math.sqrt(Math.max(0.0001, R * R - y * y));
+      pts.push(new THREE.Vector2(r, y));
+    }
+    pts.push(new THREE.Vector2(innerRadius, -yRim));
+  } else {
+    // Smooth inner bore cylinder with axial subdivisions to avoid vertex interpolation artifacts
     pts.push(new THREE.Vector2(innerRadius, 0.12));
-    pts.push(new THREE.Vector2(innerRadius + depth * 0.7, 0.07));
-    pts.push(new THREE.Vector2(innerRadius + depth, 0));
-    pts.push(new THREE.Vector2(innerRadius + depth * 0.7, -0.07));
+    pts.push(new THREE.Vector2(innerRadius, 0));
     pts.push(new THREE.Vector2(innerRadius, -0.12));
   }
 
@@ -68,9 +85,9 @@ export function ringProfile(
 }
 
 export function latheGeometry(points: THREE.Vector2[], segments: number): THREE.LatheGeometry {
-  const geo = new THREE.LatheGeometry(points, segments);
-  geo.computeVertexNormals();
-  return geo;
+  // Built-in LatheGeometry normals are mathematically rotational-symmetric
+  // and closed seamlessly across phi = 0 / 2*PI. Do not call computeVertexNormals().
+  return new THREE.LatheGeometry(points, segments);
 }
 
 export function latLonToVector3(lat: number, lon: number, radius: number): THREE.Vector3 {

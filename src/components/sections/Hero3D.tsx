@@ -1,10 +1,11 @@
 import { useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { animate, motion, useMotionValue, useScroll, useTransform } from 'framer-motion';
 import { ArrowDownIcon } from 'lucide-react';
 import { BearingScene } from '../3d/BearingScene';
 import { MagneticButton } from '../ui/MagneticButton';
 import { company } from '../../data/company';
 import { useIsTouch, useReducedMotion } from '../../hooks/useEnvironment';
+import { useLoader } from '../../context/LoaderContext';
 
 const COMPONENT_LABELS = [
 { name: 'Outer Ring', code: 'C-01', at: [0.3, 0.9], className: 'left-[6%] top-[24%]' },
@@ -22,6 +23,7 @@ export function Hero3D() {
   const pointer = useRef({ x: 0, y: 0 });
   const touch = useIsTouch();
   const reduced = useReducedMotion();
+  const { phase } = useLoader();
 
   const { scrollYProgress } = useScroll({
     target: wrap,
@@ -36,6 +38,49 @@ export function Hero3D() {
 
   const heroOpacity = useTransform(scrollYProgress, [0, 0.16], [1, 0]);
   const heroY = useTransform(scrollYProgress, [0, 0.16], [0, -40]);
+
+  // Seamless intro transition: 0 = centered behind loading logo, 1 = hero position on right
+  const introProgress = useMotionValue(phase === 'done' ? 1 : 0);
+
+  useEffect(() => {
+    if (phase === 'completing') {
+      const controls = animate(introProgress, 1, {
+        duration: reduced ? 0 : 1.35,
+        ease: [0.16, 1, 0.3, 1]
+      });
+      return () => controls.stop();
+    } else if (phase === 'done') {
+      introProgress.set(1);
+    }
+  }, [phase, introProgress, reduced]);
+
+  const targetModelX = touch ? 0.45 : 1.1;
+
+  const dynamicModelX = useTransform(introProgress, (t) => {
+    if (t >= 1) return targetModelX;
+    return targetModelX * t;
+  });
+
+  const dynamicScale = useTransform(introProgress, (t) => {
+    if (t >= 1) return 1;
+    return 1.25 + (1 - 1.25) * t;
+  });
+
+  const dynamicCameraY = useTransform([introProgress, cameraY], ([t, cy]) => {
+    const targetY = typeof cy === 'number' ? cy : 1.1;
+    if (t >= 1) return targetY;
+    return 0 + (targetY - 0) * t;
+  });
+
+  const dynamicCameraZ = useTransform([introProgress, cameraZ], ([t, cz]) => {
+    const targetZ = typeof cz === 'number' ? cz : 4.9;
+    if (t >= 1) return targetZ;
+    return 4.6 + (targetZ - 4.6) * t;
+  });
+
+  // Entrance animation for hero copy once loading completes
+  const copyEntranceOpacity = useTransform(introProgress, [0.15, 0.7], [0, 1]);
+  const copyEntranceY = useTransform(introProgress, [0.15, 0.8], [30, 0]);
 
   useEffect(() => {
     if (touch) return;
@@ -60,12 +105,13 @@ export function Hero3D() {
           explode={explode}
           rings={rings}
           spin={spin}
-          cameraZ={cameraZ}
-          cameraY={cameraY}
+          cameraZ={dynamicCameraZ}
+          cameraY={dynamicCameraY}
+          scale={dynamicScale}
+          modelX={dynamicModelX}
           pointer={pointer}
-          modelX={touch ? 0.45 : 1.1}
-          /* Continues the loader's push-through: starts inside the bore and pulls back */
-          initialCamera={[0, 0.35, 1.7]} />
+          /* Centered straight-on framing for loading screen */
+          initialCamera={[0, 0, 4.6]} />
         
         <div
           className="pointer-events-none absolute inset-0"
@@ -83,7 +129,10 @@ export function Hero3D() {
 
         {/* Hero copy */}
         <motion.div
-          style={{ opacity: reduced ? 1 : heroOpacity, y: reduced ? 0 : heroY }}
+          style={{
+            opacity: reduced ? 1 : useTransform([heroOpacity, copyEntranceOpacity], ([ho, eo]) => (ho as number) * (eo as number)),
+            y: reduced ? 0 : useTransform([heroY, copyEntranceY], ([hy, ey]) => (hy as number) + (ey as number))
+          }}
           className="pointer-events-none absolute inset-0 z-[3] flex flex-col justify-end pb-10 sm:pb-14">
           
           <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
