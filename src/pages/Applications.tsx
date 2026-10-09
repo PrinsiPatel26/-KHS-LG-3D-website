@@ -1,6 +1,5 @@
 import { PageHero } from '../components/layout/PageHero';
 import { ApplicationsSection } from '../components/sections/ApplicationsSection';
-import { ProductExplorer } from '../components/sections/ProductExplorer';
 import { CTASection } from '../components/sections/CTASection';
 import { useSeo } from '../hooks/useSeo';
 
@@ -22,7 +21,6 @@ export function Applications() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Applications' }]} />
       
       <ApplicationsSection hideHeading />
-      <ProductExplorer />
       
       {/* Transitional spacer between exploded product view and contact CTA */}
       <section className="relative border-t border-ink-800 bg-ink-950 py-24 sm:py-32 lg:py-40 overflow-hidden" aria-hidden>

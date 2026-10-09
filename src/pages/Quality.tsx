@@ -1,5 +1,6 @@
 import { ActivityIcon, ArrowRightIcon, CheckCircle2Icon, DownloadIcon, DraftingCompassIcon, FileCheck2Icon, RefreshCwIcon, RulerIcon, ScanLineIcon } from 'lucide-react';
 import { QualityVisual } from '../components/sections/QualityVisual';
+import { ProductExplorer } from '../components/sections/ProductExplorer';
 import { MagneticButton } from '../components/ui/MagneticButton';
 import { Reveal, RevealText } from '../components/ui/RevealText';
 import { TechnicalLabel } from '../components/ui/SectionHeading';
@@ -49,6 +50,8 @@ export function Quality() {
         <QualityVisual mode="inspection" />
       </div>
     </section>
+
+    <ProductExplorer />
 
     <section className="border-b border-ink-700 bg-ink-950 py-12 lg:py-18" aria-labelledby="testing-heading">
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8"><div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:items-end"><Reveal><TechnicalLabel code="04 / Testing & performance">Verification follows the requirement</TechnicalLabel><h2 id="testing-heading" className="mt-5 font-display text-4xl font-bold uppercase leading-[0.9] text-steel-50 sm:text-6xl">Rotation becomes <span className="text-signal">evidence.</span></h2></Reveal><Reveal delay={0.1}><p className="max-w-2xl text-[15px] leading-relaxed text-steel-400">Performance evaluation can include load-related review, dimensional verification, rotational behavior, noise and vibration checks, and reliability considerations matched to the operating conditions. The result is a clearer quality decision, not an unsupported promise.</p></Reveal></div><div className="mt-12 grid gap-px border border-ink-700 bg-ink-700 md:grid-cols-[1fr_auto_1fr_auto_1fr_auto_1fr]"><TestNode title="Bearing" detail="Defined requirement" /><ArrowRightIcon className="hidden self-center bg-ink-950 p-3 text-signal md:block" aria-hidden /><TestNode title="Rotation" detail="Controlled behavior" /><ArrowRightIcon className="hidden self-center bg-ink-950 p-3 text-signal md:block" aria-hidden /><TestNode title="Sensor" detail="Measured response" /><ArrowRightIcon className="hidden self-center bg-ink-950 p-3 text-signal md:block" aria-hidden /><TestNode title="Verification" detail="Quality decision" /></div></div>

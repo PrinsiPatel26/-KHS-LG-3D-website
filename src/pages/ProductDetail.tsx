@@ -1,7 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeftIcon, ArrowUpRightIcon, CheckIcon, DownloadIcon } from 'lucide-react';
 import { ProductViewer } from '../components/sections/ProductViewer';
-import { ProductExplorer } from '../components/sections/ProductExplorer';
 import { MagneticButton } from '../components/ui/MagneticButton';
 import { TechnicalLabel } from '../components/ui/SectionHeading';
 import { Reveal } from '../components/ui/RevealText';
@@ -152,13 +151,6 @@ export function ProductDetail() {
           </div>
         </div>
       </section>
-
-      <ProductExplorer
-        parts={product.components}
-        rollerShape={SHAPE[product.slug] ?? 'ball'}
-        title={['Inside the', product.name]}
-        code={`EXP / ${product.code}`} />
-      
 
       <section aria-label="Other bearing categories" className="bg-ink-950 py-20">
         <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">

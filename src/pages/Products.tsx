@@ -15,7 +15,6 @@ import {
 } from 'lucide-react';
 import { PageHero } from '../components/layout/PageHero';
 import { BearingGlyph } from '../components/ui/BearingGlyph';
-import { ProductExplorer } from '../components/sections/ProductExplorer';
 import { CTASection } from '../components/sections/CTASection';
 import {
   PRODUCT_CATEGORIES_TREE,
@@ -706,7 +705,6 @@ export function Products() {
         </div>
       )}
 
-      <ProductExplorer />
       <CTASection />
     </main>
   );

@@ -1,6 +1,5 @@
 import { PageHero } from '../components/layout/PageHero';
 import { TechnologySection } from '../components/sections/TechnologySection';
-import { ProductExplorer } from '../components/sections/ProductExplorer';
 import { PerformanceSection } from '../components/sections/PerformanceSection';
 import { CTASection } from '../components/sections/CTASection';
 import { useSeo } from '../hooks/useSeo';
@@ -23,9 +22,6 @@ export function Technology() {
         breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Technology' }]} />
       
       <TechnologySection hideHeading />
-      <ProductExplorer
-        title={['Engineering', 'Every component']}
-        code="EXP / TECH" />
       
       <PerformanceSection />
       <CTASection />
