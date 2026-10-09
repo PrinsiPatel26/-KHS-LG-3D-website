@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
-import { ArrowUpRightIcon } from 'lucide-react';
+import { ArrowUpRightIcon, DownloadIcon } from 'lucide-react';
 import { SectionHeading } from '../ui/SectionHeading';
 import { Reveal } from '../ui/RevealText';
 import { BearingGlyph } from '../ui/BearingGlyph';
 import { Product, products } from '../../data/products';
-import { bearingImages } from '../../data/catalogues';
+import { bearingImages, getProductPdf } from '../../data/catalogues';
 
 const SHAPE: Record<string, 'ball' | 'roller' | 'linear'> = {
   'taper-roller-bearings': 'roller',
@@ -103,13 +103,33 @@ export function ProductCard({ product, index }: {product: Product;index: number;
             <p className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
               {product.applications[0]}
             </p>
-            <span className="mt-3 inline-flex items-center gap-2 font-display text-[13px] font-semibold uppercase tracking-[0.16em] text-signal">
-              Explore
-              <ArrowUpRightIcon
-                className="h-3.5 w-3.5 transition-transform duration-300 ease-precision group-hover:translate-x-1 group-hover:-translate-y-1"
-                aria-hidden />
-              
-            </span>
+            <div className="mt-3 flex items-center justify-between gap-3">
+              <span className="inline-flex items-center gap-2 font-display text-[13px] font-semibold uppercase tracking-[0.16em] text-signal">
+                Explore
+                <ArrowUpRightIcon
+                  className="h-3.5 w-3.5 transition-transform duration-300 ease-precision group-hover:translate-x-1 group-hover:-translate-y-1"
+                  aria-hidden />
+              </span>
+              {(() => {
+                const pdf = getProductPdf(product.slug);
+                if (!pdf || !pdf.pdfUrl) return null;
+                return (
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      window.open(pdf.pdfUrl, '_blank', 'noopener,noreferrer');
+                    }}
+                    className="relative z-20 inline-flex items-center gap-1.5 border border-signal/40 bg-signal/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-tech text-signal transition-colors hover:bg-signal hover:text-ink-950"
+                    title={`Download ${pdf.title}`}
+                  >
+                    <DownloadIcon className="h-3 w-3" aria-hidden />
+                    PDF
+                  </button>
+                );
+              })()}
+            </div>
           </div>
         </Link>
       </Reveal>

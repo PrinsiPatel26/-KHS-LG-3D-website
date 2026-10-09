@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom';
-import { ArrowLeftIcon, ArrowUpRightIcon, CheckIcon } from 'lucide-react';
+import { ArrowLeftIcon, ArrowUpRightIcon, CheckIcon, DownloadIcon } from 'lucide-react';
 import { ProductViewer } from '../components/sections/ProductViewer';
 import { ProductExplorer } from '../components/sections/ProductExplorer';
 import { MagneticButton } from '../components/ui/MagneticButton';
@@ -7,6 +7,7 @@ import { TechnicalLabel } from '../components/ui/SectionHeading';
 import { Reveal } from '../components/ui/RevealText';
 import { RollerShape } from '../components/3d/BearingModel';
 import { getProduct, products } from '../data/products';
+import { getProductPdf } from '../data/catalogues';
 import { useSeo } from '../hooks/useSeo';
 
 const SHAPE: Record<string, RollerShape> = {
@@ -122,10 +123,26 @@ export function ProductDetail() {
                   Dimensions, tolerances and load ratings are confirmed per order. Send us the
                   application and required size and the KHS-LG team will specify the bearing.
                 </p>
-                <div className="mt-6 flex flex-wrap gap-3">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <MagneticButton to="/contact" variant="yellow">
                     Request a Quote
                   </MagneticButton>
+                  {(() => {
+                    const pdf = getProductPdf(product.slug);
+                    if (!pdf || !pdf.pdfUrl) return null;
+                    return (
+                      <a
+                        href={pdf.pdfUrl}
+                        download={pdf.pdfFileName}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 border border-signal/60 bg-signal/15 px-5 py-3 font-display text-xs font-bold uppercase tracking-[0.14em] text-signal transition-all hover:bg-signal hover:text-ink-950"
+                      >
+                        <DownloadIcon className="h-4 w-4" aria-hidden />
+                        Download Brochure (PDF)
+                      </a>
+                    );
+                  })()}
                   <MagneticButton to="/applications" variant="ghost">
                     View Applications
                   </MagneticButton>

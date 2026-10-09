@@ -140,10 +140,8 @@ export function Navbar() {
                   {isProducts ? <>
                     <NavLink
                       to={item.to}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        if (productsOpen) setProductsOpen(false);
-                        else openProducts();
+                      onClick={() => {
+                        setProductsOpen(false);
                       }}
                       data-product-menu-trigger="true"
                       aria-expanded={productsOpen}
@@ -160,14 +158,18 @@ export function Navbar() {
                           isCurrent ? 'w-full' : 'w-0 group-hover:w-full'
                         )} />
                     </NavLink>
-                    <ProductMegaMenu open={productsOpen} onClose={() => setProductsOpen(false)} scrolled={scrolled} />
+                    <ProductMegaMenu
+                      open={productsOpen}
+                      onClose={() => setProductsOpen(false)}
+                      scrolled={scrolled}
+                      onMouseEnter={openProducts}
+                      onMouseLeave={scheduleProductsClose}
+                    />
                   </> : isBrands ? <>
                     <NavLink
                       to={item.to}
-                      onClick={(event) => {
-                        event.preventDefault();
-                        if (brandsOpen) setBrandsOpen(false);
-                        else openBrands();
+                      onClick={() => {
+                        setBrandsOpen(false);
                       }}
                       data-brand-menu-trigger="true"
                       aria-expanded={brandsOpen}
@@ -180,7 +182,13 @@ export function Navbar() {
                       <span className="hidden 2xl:inline">{item.label}</span>
                       <span className={cn('absolute -bottom-1.5 left-0 h-px bg-signal transition-[width] duration-300 ease-precision', isCurrent ? 'w-full' : 'w-0 group-hover:w-full')} />
                     </NavLink>
-                    <BrandMegaMenu open={brandsOpen} onClose={() => setBrandsOpen(false)} scrolled={scrolled} />
+                    <BrandMegaMenu
+                      open={brandsOpen}
+                      onClose={() => setBrandsOpen(false)}
+                      scrolled={scrolled}
+                      onMouseEnter={openBrands}
+                      onMouseLeave={scheduleBrandsClose}
+                    />
                   </> : <NavLink
                     to={item.to}
                     className={cn(

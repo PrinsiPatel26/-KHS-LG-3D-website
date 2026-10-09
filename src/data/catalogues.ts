@@ -109,22 +109,22 @@ type CatalogueDocument = Pick<CatalogueRecord, 'pdfAvailable' | 'pdfUrl' | 'pdfF
 
 const bearingDocuments: Record<string, CatalogueDocument> = {
   'taper-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1zO1KmbTLrYLaWoWLoegWXpUp3oTLBtH_/view?usp=sharing', pdfFileName: 'TRB_V4.pdf', downloadType: 'external' },
-  'spherical-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1YRcNxrLDpNZzICiGKU6rFogHk7KNsEnS/view?usp=sharing', pdfFileName: 'SRB_V3.pdf', downloadType: 'external' },
+  'spherical-roller-bearings': { pdfAvailable: true, pdfUrl: '/assets/iko-spherical-bushings-catalogue.pdf', pdfFileName: 'iko-spherical-bushings-catalogue.pdf', downloadType: 'pdf' },
   'deep-groove-ball-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/19wkE7Inu8U93486AShFwXdRTiTvUc-XJ/view?usp=sharing', pdfFileName: 'Deep Groove Ball Bearing_V7_1.pdf', downloadType: 'external' },
   'miniature-ball-bearings': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
   'cylindrical-roller-bearings': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
   'pillow-block-bearings': { pdfAvailable: true, pdfUrl: 'https://www.khslg.com/wp-content/uploads/2022/04/Pillow-block-bearing_V1_CORRECTIONS_MARKED-2_compressed.pdf', pdfFileName: 'Pillow-block-bearing_V1_CORRECTIONS_MARKED-2_compressed.pdf', downloadType: 'pdf' },
   'thrust-needle-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1ph9S7mUIvVcCztHV5dfix5Ax4aRZGK4B/view?usp=sharing', pdfFileName: 'Thrust needle roller bearings_V1 (1).pdf', downloadType: 'external' },
-  'stud-and-yoke-track-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1V7HrKUSc8gXyoqqgvNMUL6Mrcf7G65U0/view?usp=sharing', pdfFileName: 'Stud-yoke-type-track-roller-bearings_V4 (1).pdf', downloadType: 'external' },
-  'machined-type-needle-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/16Je1Rk6QT_NVN4f-UCDkEl5GaHB14bWk/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
-  'rod-end-bearings': { pdfAvailable: true, pdfUrl: 'https://khslg.com/wp-content/uploads/2026/08/ROD-END-Bearings_V2-1.pdf', pdfFileName: 'ROD-END-Bearings_V2-1.pdf', downloadType: 'pdf' },
-  'radial-spherical-plain-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1OROXPqiS_P-dIEuBDqK0cHMs8OWBni2p/view', pdfFileName: null, downloadType: 'external' },
+  'stud-and-yoke-track-roller-bearings': { pdfAvailable: true, pdfUrl: '/assets/iko-cam-and-roller-followers-catalogue.pdf', pdfFileName: 'iko-cam-and-roller-followers-catalogue.pdf', downloadType: 'pdf' },
+  'machined-type-needle-roller-bearings': { pdfAvailable: true, pdfUrl: '/assets/iko-needle-roller-cages-catalogue.pdf', pdfFileName: 'iko-needle-roller-cages-catalogue.pdf', downloadType: 'pdf' },
+  'rod-end-bearings': { pdfAvailable: true, pdfUrl: '/assets/iko-rod-ends-l-balls-catalogue.pdf', pdfFileName: 'iko-rod-ends-l-balls-catalogue.pdf', downloadType: 'pdf' },
+  'radial-spherical-plain-bearings': { pdfAvailable: true, pdfUrl: '/assets/iko-spherical-bushings-catalogue.pdf', pdfFileName: 'iko-spherical-bushings-catalogue.pdf', downloadType: 'pdf' },
   'one-way-clutch': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
   'cylindrical-roller-thrust-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/15s1fBLGxJ1lk43Yv--9ldww6RJLUOiCc/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
   'drawn-cup-needle-roller-clutches': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1kuPQzZtzUMa_NZRcFOLrTcLH1WO-Nmc8/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
   'permaglide-dry-bush': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
-  'needle-roller-and-cage-assemblies': { pdfAvailable: false, pdfUrl: null, pdfFileName: null, downloadType: null },
-  'track-roller-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1rGqm8PLsRDNLvrcjGvnsdVXTTEhEJ9L0/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
+  'needle-roller-and-cage-assemblies': { pdfAvailable: true, pdfUrl: '/assets/iko-needle-roller-cages-catalogue.pdf', pdfFileName: 'iko-needle-roller-cages-catalogue.pdf', downloadType: 'pdf' },
+  'track-roller-bearings': { pdfAvailable: true, pdfUrl: '/assets/iko-cam-and-roller-followers-catalogue.pdf', pdfFileName: 'iko-cam-and-roller-followers-catalogue.pdf', downloadType: 'pdf' },
   'flat-roller-cages': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1-4uxDpKL3yifw_X7LH0kd7a4EUVjZhh-/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
   'precision-angular-contact-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/11kvK6ozenEHBHCf4xlO-Wvyt8QXKqU0B/view', pdfFileName: null, downloadType: 'external' },
   'self-aligning-ball-bearings': { pdfAvailable: true, pdfUrl: 'https://drive.google.com/file/d/1rVcLmek8uJsImMbeOSW9S3EBmSHtgVGb/view?usp=sharing', pdfFileName: null, downloadType: 'external' },
@@ -177,8 +177,8 @@ export const linearShaftsCatalogues: CatalogueRecord[] = linearShaftsDefinitions
   series: [...series],
   productSlug: id,
   pdfAvailable: true,
-  pdfUrl: 'https://www.khslg.com/wp-content/uploads/2019/11/KHS-LG-dual-guides.pdf',
-  pdfFileName: `${id}.pdf`,
+  pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+  pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
   downloadType: 'pdf'
 }));
 
@@ -201,8 +201,8 @@ export const linearMotionCatalogues: CatalogueRecord[] = linearMotionDefinitions
   series: [...series],
   productSlug: id,
   pdfAvailable: true,
-  pdfUrl: id === 'dual-shaft-guides' ? 'https://www.khslg.com/wp-content/uploads/2019/11/KHS-LG-dual-guides.pdf' : 'https://drive.google.com/file/d/1xSpNU2KxiztdonxZ4tqvfKs4PgjksqA8/view?usp=sharing',
-  pdfFileName: `${id}.pdf`,
+  pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+  pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
   downloadType: 'pdf'
 }));
 
@@ -281,3 +281,192 @@ export function submitCatalogueLead(
   window.localStorage.setItem('khs-lg-catalogue-leads', JSON.stringify([...existing, lead]));
   return lead;
 }
+
+export interface ProductPdfInfo {
+  pdfUrl: string;
+  pdfFileName: string;
+  title: string;
+  downloadType: 'pdf' | 'external';
+}
+
+export const LOCAL_PDF_CATALOGUES: Record<string, ProductPdfInfo> = {
+  // 1. IKO Spherical Bushings
+  'spherical-roller-bearings': {
+    pdfUrl: '/assets/iko-spherical-bushings-catalogue.pdf',
+    pdfFileName: 'iko-spherical-bushings-catalogue.pdf',
+    title: 'IKO Spherical Bushings Catalogue',
+    downloadType: 'pdf'
+  },
+  'radial-spherical-plain-bearings': {
+    pdfUrl: '/assets/iko-spherical-bushings-catalogue.pdf',
+    pdfFileName: 'iko-spherical-bushings-catalogue.pdf',
+    title: 'IKO Spherical Bushings Catalogue',
+    downloadType: 'pdf'
+  },
+
+  // 2. IKO Rod Ends / L-Balls
+  'rod-end-bearings': {
+    pdfUrl: '/assets/iko-rod-ends-l-balls-catalogue.pdf',
+    pdfFileName: 'iko-rod-ends-l-balls-catalogue.pdf',
+    title: 'IKO Rod Ends & L-Balls Catalogue',
+    downloadType: 'pdf'
+  },
+
+  // 3. IKO Cam Followers & Roller Followers & Double Hex
+  'stud-and-yoke-track-roller-bearings': {
+    pdfUrl: '/assets/iko-cam-and-roller-followers-catalogue.pdf',
+    pdfFileName: 'iko-cam-and-roller-followers-catalogue.pdf',
+    title: 'IKO Cam & Roller Followers Catalogue',
+    downloadType: 'pdf'
+  },
+  'stud-type-track-roller-bearings': {
+    pdfUrl: '/assets/iko-double-hex-cam-followers-catalogue.pdf',
+    pdfFileName: 'iko-double-hex-cam-followers-catalogue.pdf',
+    title: 'IKO Double Hex Cam Followers Catalogue',
+    downloadType: 'pdf'
+  },
+  'yoke-type-track-roller-bearings': {
+    pdfUrl: '/assets/iko-cam-and-roller-followers-catalogue.pdf',
+    pdfFileName: 'iko-cam-and-roller-followers-catalogue.pdf',
+    title: 'IKO Roller Followers Catalogue',
+    downloadType: 'pdf'
+  },
+  'track-roller-bearings': {
+    pdfUrl: '/assets/iko-cam-and-roller-followers-catalogue.pdf',
+    pdfFileName: 'iko-cam-and-roller-followers-catalogue.pdf',
+    title: 'IKO Cam & Roller Followers Catalogue',
+    downloadType: 'pdf'
+  },
+
+  // 4. IKO Needle Rollers & Cages
+  'needle-roller-and-cage-assemblies': {
+    pdfUrl: '/assets/iko-needle-roller-cages-catalogue.pdf',
+    pdfFileName: 'iko-needle-roller-cages-catalogue.pdf',
+    title: 'IKO Needle Roller & Cage Assemblies Catalogue',
+    downloadType: 'pdf'
+  },
+  'machined-type-needle-roller-bearings': {
+    pdfUrl: '/assets/iko-needle-roller-cages-catalogue.pdf',
+    pdfFileName: 'iko-needle-roller-cages-catalogue.pdf',
+    title: 'IKO Needle Roller Bearings Catalogue',
+    downloadType: 'pdf'
+  },
+
+  // 5. WON ST Linear Motion Guide & Shafts Catalogue
+  'linear-motion-bearings': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Linear Motion Guide & Crossed Roller Catalogue',
+    downloadType: 'pdf'
+  },
+  'linear-motion-bearings-with-housing': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Linear Motion Guide Catalogue',
+    downloadType: 'pdf'
+  },
+  'dual-shaft-guides': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Dual Shaft Guides Catalogue',
+    downloadType: 'pdf'
+  },
+  'dual-shaft-guides-blocks': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Dual Shaft Guides Catalogue',
+    downloadType: 'pdf'
+  },
+  'cross-roller-guideway': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Crossed Roller Guideway Catalogue',
+    downloadType: 'pdf'
+  },
+  'hard-chrome-shafts': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Precision Shafts & Guideway Catalogue',
+    downloadType: 'pdf'
+  },
+  'shafts-with-support': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Shafts with Support Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-supporting-units': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Shaft Supporting Units Catalogue',
+    downloadType: 'pdf'
+  },
+  'linear-motion-shafts-with-support': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WON ST Supported Linear Shafts Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-custom-made': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'Precision Linear Shafts Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-s-st': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'S-ST Shaft Support Units Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-s-stu': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'S-STU Flanged Shaft Support Units Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-st': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'ST Supported Shaft Rails Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-stu': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'STU Supported Shaft Rails Catalogue',
+    downloadType: 'pdf'
+  },
+  'shaft-was-solid': {
+    pdfUrl: '/assets/won-st-linear-motion-guide-catalogue.pdf',
+    pdfFileName: 'won-st-linear-motion-guide-catalogue.pdf',
+    title: 'WAS Solid Induction Hardened Shafts Catalogue',
+    downloadType: 'pdf'
+  },
+
+  // 6. ISO 9001:2015 Certification
+  'khs-iso-9001-certification': {
+    pdfUrl: '/assets/khs-iso-9001-certification.pdf',
+    pdfFileName: 'khs-iso-9001-certification.pdf',
+    title: 'KHS Innovation & Engineering ISO 9001:2015 Registration Certificate',
+    downloadType: 'pdf'
+  }
+};
+
+export function getProductPdf(idOrSlug: string | undefined): ProductPdfInfo | null {
+  if (!idOrSlug) return null;
+  if (LOCAL_PDF_CATALOGUES[idOrSlug]) {
+    return LOCAL_PDF_CATALOGUES[idOrSlug];
+  }
+  const cat = getCatalogueById(idOrSlug);
+  if (cat && cat.pdfUrl && cat.pdfAvailable) {
+    return {
+      pdfUrl: cat.pdfUrl,
+      pdfFileName: cat.pdfFileName ?? `${cat.id}.pdf`,
+      title: cat.title,
+      downloadType: cat.downloadType ?? 'pdf'
+    };
+  }
+  return null;
+}
+
