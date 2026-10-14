@@ -29,7 +29,7 @@ export function RevealText({
           transition={{ duration: 0.62, delay: delay + i * 0.08, ease: [0.23, 1, 0.32, 1] }}
           className={cn(
             'block',
-            accentLast && i === lines.length - 1 && 'text-signal',
+            accentLast && i === lines.length - 1 && 'text-gradient-gold drop-shadow-[0_2px_20px_rgba(245,196,0,0.32)]',
             lineClassName
           )}>
           

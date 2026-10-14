@@ -9,7 +9,6 @@ import { Products } from './pages/Products';
 import { ProductFamily } from './pages/ProductFamily';
 import { Industries } from './pages/Industries';
 import { Applications } from './pages/Applications';
-import { Technology } from './pages/Technology';
 import { Quality } from './pages/Quality';
 import { About } from './pages/About';
 import { Contact } from './pages/Contact';
@@ -93,7 +92,6 @@ function Site({ onReady }: { onReady: () => void }) {
           <Route path="/products/:slug" element={<ProductFamily />} />
           <Route path="/industries" element={<Industries />} />
           <Route path="/applications" element={<Applications />} />
-          <Route path="/technology" element={<Technology />} />
           <Route path="/quality" element={<Quality />} />
           <Route path="/our-brands" element={<OurBrands />} />
           <Route path="/our-brands/:slug" element={<BrandPage />} />

@@ -15,13 +15,17 @@ export interface ApplicationSector {
   operatingConditions: string[];
   bearings: { name: string; slug: string }[];
   highlight: string;
+  equipmentImage?: string;
+  equipmentTitle?: string;
 }
 
 export const applicationSectors: ApplicationSector[] = [
   {
     id: 'construction-mining',
-    code: 'APP / 01',
+    code: '01',
     name: 'Construction & Mining Equipment',
+    equipmentImage: '/images/industries/mining-truck.webp',
+    equipmentTitle: 'Heavy Mining Dump Truck & Excavator Hydraulic Drivetrain',
     tagline: 'Endurance under extreme radial shock, heavy vibration, and abrasive dust',
     overview: 'Open-cast mines, quarries, and construction sites subject bearings to brutal shock loads, contamination, and 24/7 continuous duty. KHS-LG provides high-capacity spherical roller bearings, taper roller bearings, and heavy-duty plummer blocks engineered to prevent catastrophic downtime.',
     machinery: [
@@ -47,8 +51,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'steel-rolling-mills',
-    code: 'APP / 02',
+    code: '02',
     name: 'Steel Plants & Rolling Mills',
+    equipmentImage: '/images/industries/steel-rolling-mill.webp',
+    equipmentTitle: 'Continuous Caster & Steel Rolling Mill Stand CAD Schematic',
     tagline: 'Flawless rotation through radiant heat, cooling water ingress, and crushing roll forces',
     overview: 'Steel manufacturing requires bearings capable of enduring continuous casting temperatures, scale, cooling water, and extreme roll forces. KHS-LG bearings are proven across continuous casters, tube mills, hot rolling stands, and runout tables.',
     machinery: [
@@ -74,8 +80,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'cement-plants',
-    code: 'APP / 03',
+    code: '03',
     name: 'Cement Plants & Stone Crushers',
+    equipmentImage: '/images/industries/stone-crusher.webp',
+    equipmentTitle: 'Heavy Rotary Kiln & Stone Jaw Crusher CAD Schematic',
     tagline: 'Rugged solutions designed for massive radial weights and fine abrasive clinker dust',
     overview: 'From rotary kilns to grinding mills and clinker crushers, cement processing plants present continuous heavy loads and pervasive dust. KHS-LG heavy-duty spherical roller bearings and pillow block units deliver maximum uptime in these unforgiving environments.',
     machinery: [
@@ -101,8 +109,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'automotive-assemblies',
-    code: 'APP / 04',
+    code: '04',
     name: 'Automobile & Commercial Vehicles',
+    equipmentImage: '/images/industries/automotive-drivetrain.webp',
+    equipmentTitle: 'Automotive Transmission Gearbox & Differential Axle CAD Schematic',
     tagline: 'Precision engineered for high speeds, transmissions, steering, and heavy tractor axles',
     overview: 'KHS-LG is an established partner to automotive OEMs and Tier-1 suppliers. Our comprehensive bearing range powers automobile drivetrains, differentials, wheel hubs, steering linkages, and rugged tractor-trolley axles with reliable batch-after-batch consistency.',
     machinery: [
@@ -128,8 +138,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'electric-motors',
-    code: 'APP / 05',
+    code: '05',
     name: 'Electric Motors, Fans & Blowers',
+    equipmentImage: '/images/industries/electric-motor.webp',
+    equipmentTitle: 'Industrial Three-Phase Electric Motor & Centrifugal Blower CAD Schematic',
     tagline: 'Quiet running, low-friction and energy-efficient rotation for continuous industrial drives',
     overview: 'Electric motors, cooling tower fans, and high-volume industrial blowers require bearings that run smoothly, quietly, and with minimum energy consumption. KHS-LG deep groove ball bearings and cylindrical roller bearings maximize motor efficiency and operational life.',
     machinery: [
@@ -154,8 +166,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'material-handling-cranes',
-    code: 'APP / 06',
+    code: '06',
     name: 'Material Handling Equipment & Cranes',
+    equipmentImage: '/images/industries/overhead-crane.webp',
+    equipmentTitle: 'Industrial Overhead EOT Crane & Heavy Gantry Hoist CAD Schematic',
     tagline: 'Heavy load capacity and accurate track guidance for logistics, hoists and overhead cranes',
     overview: 'Material handling systems demand dependable movement under heavy suspended loads and repetitive lifting cycles. KHS-LG provides high-capacity track rollers, cam followers, and mounted bearing units that power overhead cranes, hoists, and automated conveyor systems.',
     machinery: [
@@ -181,8 +195,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'pumps-valves-compressors',
-    code: 'APP / 07',
+    code: '07',
     name: 'Pumps, Valves & Compressors',
+    equipmentImage: '/images/industries/industrial-pump.webp',
+    equipmentTitle: 'Centrifugal Multi-Stage Water Pump & Compressor CAD Schematic',
     tagline: 'Stiff shaft support preventing impellor deflection and protecting mechanical seal integrity',
     overview: 'Fluid machinery requires rigid shaft guidance to maintain micro-clearances between impellers and housings and safeguard mechanical seals. KHS-LG bearings deliver outstanding axial and radial stiffness across centrifugal pumps, vacuum pumps, and heavy-duty compressors.',
     machinery: [
@@ -208,8 +224,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'agriculture-machinery',
-    code: 'APP / 08',
+    code: '08',
     name: 'Agricultural Machinery & Equipment',
+    equipmentImage: '/images/industries/agriculture-tractor.webp',
+    equipmentTitle: 'Agricultural Tractor & Combine Harvester Drivetrain CAD Schematic',
     tagline: 'Field-tested protection against mud, fertilizer, water washdown, and seasonal duty',
     overview: 'Agricultural machines work in harsh outdoor conditions with dirt, wet mud, crop debris, and fertilizer. KHS-LG supplies specially sealed mounted units, disc harrow bearings, and taper roller bearings that keep tractors and harvesting equipment operating when seasons peak.',
     machinery: [
@@ -235,8 +253,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'packaging-textile',
-    code: 'APP / 09',
+    code: '09',
     name: 'Packaging, Printing & Textile Machinery',
+    equipmentImage: '/images/industries/packaging-machine.webp',
+    equipmentTitle: 'High-Speed Automated Packaging & Converting Line CAD Schematic',
     tagline: 'High-speed synchronization, low inertia, and micro-precision for high-throughput lines',
     overview: 'High-speed packaging, printing presses, and textile weaving frames require smooth motion, zero backlash, and clean operation. KHS-LG miniature ball bearings, needle assemblies, and one-way clutches deliver crisp indexing and high line throughput.',
     machinery: [
@@ -262,8 +282,10 @@ export const applicationSectors: ApplicationSector[] = [
   },
   {
     id: 'automation-machine-tools',
-    code: 'APP / 10',
+    code: '10',
     name: 'Industrial Automation & Machine Tools',
+    equipmentImage: '/images/industries/cnc-automation.webp',
+    equipmentTitle: '5-Axis CNC Machining Center & Robotic Automation Arm CAD Schematic',
     tagline: 'Sub-micron repeatability, rigid linear travel, and multi-axis robotic guidance',
     overview: 'Modern factory automation and CNC machine tools depend on smooth, high-precision motion along straight axes. KHS-LG linear motion bearings, dual shaft guides, and supported linear shafts provide rigid, backlash-free travel for automated Cartesian gantries, robotics, and machine tools.',
     machinery: [

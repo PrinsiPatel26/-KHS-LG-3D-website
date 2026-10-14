@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
 /** A number, or anything with a .get() — lets Framer MotionValues drive the 3D scene. */
 export type NumSource = number | {get(): number;};
@@ -84,10 +85,12 @@ export function ringProfile(
   return pts;
 }
 
-export function latheGeometry(points: THREE.Vector2[], segments: number): THREE.LatheGeometry {
-  // Built-in LatheGeometry normals are mathematically rotational-symmetric
-  // and closed seamlessly across phi = 0 / 2*PI. Do not call computeVertexNormals().
-  return new THREE.LatheGeometry(points, segments);
+export function latheGeometry(points: THREE.Vector2[], segments: number, creaseAngle = Math.PI / 5.5): THREE.BufferGeometry {
+  // Revolution of bearing profile. Using toCreasedNormals splits vertices at sharp crease angles
+  // (> 32 deg) such as 45 deg chamfers and 90 deg corners, keeping flat faces mathematically planar
+  // and chamfers razor-sharp while preserving silky smooth cylindrical and raceway curvature.
+  const geo = new THREE.LatheGeometry(points, segments);
+  return toCreasedNormals(geo, creaseAngle);
 }
 
 export function latLonToVector3(lat: number, lon: number, radius: number): THREE.Vector3 {

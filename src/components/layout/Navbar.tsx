@@ -17,13 +17,13 @@ export function Logo({ className }: {className?: string;}) {
       to="/"
       aria-label="KHS-LG home"
       className={cn(
-        'group inline-flex items-center transition-opacity duration-200 ease-precision hover:opacity-85',
+        'group inline-flex items-center transition-transform duration-300 ease-precision hover:scale-[1.02]',
         className
       )}>
       <img
         src="/khslogo-clean.png"
         alt="KHS-LG"
-        className="khs-logo block h-12 w-auto object-contain object-left transition-all duration-200 sm:h-14 lg:h-16"
+        className="khs-logo block h-12 w-auto object-contain object-left transition-all duration-300 drop-shadow-[0_2px_10px_rgba(245,196,0,0.22)] group-hover:drop-shadow-[0_4px_22px_rgba(245,196,0,0.45)] sm:h-14 lg:h-16"
         />
     </Link>);
 
@@ -109,8 +109,8 @@ export function Navbar() {
         className={cn(
           'fixed inset-x-0 top-0 z-navigation flex items-center justify-center border-b transition-[background-color,border-color,height,backdrop-filter] duration-300 ease-precision',
           scrolled ?
-          'h-16 border-signal/20 bg-ink-950/80 backdrop-blur-md lg:h-[70px]' :
-          'h-16 border-steel-500/10 bg-transparent lg:h-[84px]'
+          'h-16 border-signal/25 bg-ink-950/90 backdrop-blur-xl shadow-[0_4px_30px_rgba(0,0,0,0.7),0_1px_0_rgba(245,196,0,0.12)] lg:h-[72px]' :
+          'h-16 border-white/5 bg-transparent lg:h-[84px]'
         )}>
         
         <nav

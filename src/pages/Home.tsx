@@ -6,7 +6,6 @@ import { Products3D } from '../components/sections/Products3D';
 import { IndustriesSection } from '../components/sections/IndustriesSection';
 import { QualitySection } from '../components/sections/QualitySection';
 import { TechnologySection } from '../components/sections/TechnologySection';
-import { PerformanceSection } from '../components/sections/PerformanceSection';
 import { GlobalPresence } from '../components/sections/GlobalPresence';
 import { CTASection } from '../components/sections/CTASection';
 import { useSeo } from '../hooks/useSeo';
@@ -51,7 +50,6 @@ export function Home() {
       <QualitySection />
       <GlobalPresence code="07 / Global" />
       <TechnologySection code="08 / Technology" />
-      <PerformanceSection code="09 / Performance" />
       <CTASection />
     </main>);
 

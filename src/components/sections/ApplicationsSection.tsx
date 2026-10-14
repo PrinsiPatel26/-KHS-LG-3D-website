@@ -60,11 +60,11 @@ export function ApplicationsSection({ hideHeading = false }: { hideHeading?: boo
                     >
                       <div className="flex items-center gap-3 min-w-0">
                         <span
-                          className={`font-mono text-[10px] font-semibold tracking-tech transition-colors ${
-                            isActive ? 'text-signal' : 'text-steel-500 group-hover:text-steel-400'
+                          className={`font-mono text-xs font-bold tracking-tech transition-colors ${
+                            isActive ? 'text-signal' : 'text-steel-400 group-hover:text-steel-200'
                           }`}
                         >
-                          {sector.code}
+                          {sector.code.replace(/^APP\s*\/\s*/i, '')}
                         </span>
                         <span className="font-display text-sm font-semibold uppercase tracking-wider truncate sm:text-base">
                           {sector.name}
@@ -106,7 +106,7 @@ export function ApplicationsSection({ hideHeading = false }: { hideHeading?: boo
                 <div className="border border-ink-800 bg-ink-900/90 p-6 sm:p-8">
                   <div className="flex flex-wrap items-center justify-between gap-4">
                     <span className="font-mono text-[10px] font-bold uppercase tracking-tech text-signal">
-                      {current.code} &bull; Verified KHS-LG Application Sector
+                      {current.code.replace(/^APP\s*\/\s*/i, '')} &bull; Verified KHS-LG Industry Sector
                     </span>
                     <span className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
                       Standard ISO 9001:2015
@@ -130,6 +130,38 @@ export function ApplicationsSection({ hideHeading = false }: { hideHeading?: boo
                     {current.highlight}
                   </div>
                 </div>
+
+                {/* Equipment CAD Blueprint Drawing Card */}
+                {current.equipmentImage && (
+                  <div className="border border-ink-800 bg-ink-900/90 p-5 sm:p-7">
+                    <div className="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-ink-800 pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <span className="h-2 w-2 rounded-full bg-signal shadow-[0_0_8px_rgba(245,196,0,0.8)]" />
+                        <h3 className="font-mono text-xs font-bold uppercase tracking-tech text-steel-200">
+                          {current.code.replace(/^APP\s*\/\s*/i, '')} / Equipment CAD Blueprint Schematic
+                        </h3>
+                      </div>
+                      <span className="font-mono text-[10px] uppercase tracking-tech text-steel-400">
+                        Technical Line Illustration &bull; KHS-LG Motion Guidance
+                      </span>
+                    </div>
+
+                    <div className="group relative flex min-h-[220px] sm:min-h-[280px] md:min-h-[320px] items-center justify-center overflow-hidden rounded border border-ink-800 bg-white/95 p-4 sm:p-6 transition-colors dark:bg-[#0c1017]">
+                      <div className="industrial-grid pointer-events-none absolute inset-0 opacity-20" aria-hidden />
+                      <img
+                        src={current.equipmentImage}
+                        alt={current.equipmentTitle ?? `${current.name} Equipment Schematic`}
+                        className="relative z-10 max-h-[300px] w-auto max-w-full object-contain filter drop-shadow-[0_8px_20px_rgba(0,0,0,0.25)] transition-transform duration-500 group-hover:scale-[1.03]"
+                        loading="lazy"
+                      />
+                      {current.equipmentTitle && (
+                        <div className="absolute bottom-2.5 right-3.5 z-20 rounded bg-ink-950/80 px-2.5 py-1 font-mono text-[9px] uppercase tracking-tech text-steel-400 backdrop-blur-sm border border-ink-800/80">
+                          {current.equipmentTitle}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
 
                 {/* Machinery & Equipment List */}
                 <div className="border border-ink-800 bg-ink-900/80 p-6 sm:p-8">

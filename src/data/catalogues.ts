@@ -45,6 +45,7 @@ export const bearingImages: Record<string, string> = {
   'deep-groove-ball-bearings': '/assets/products/deep-groove-roller-bearing.png',
   'miniature-ball-bearings': '/assets/products/miniature-ball-bearing.png',
   'cylindrical-roller-bearings': '/assets/products/cylindrical-roller-bearing.png',
+  'cylindrical-ball-bearings': '/assets/products/cylindrical-roller-bearing.png',
   'linear-motion-shafts-with-support': '/assets/products/linear-motion-shaft-with-support.png',
   'linear-motion-bearings': '/assets/products/linear-motion-bearing.png',
   'pillow-block-bearings': '/assets/products/pillow-block-bearing.png',

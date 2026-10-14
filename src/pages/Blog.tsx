@@ -36,7 +36,7 @@ export function Blog() {
   };
 
   return <main>
-    <PageHero code="Insights / Blog" eyebrow="Engineering knowledge for better motion solutions" lines={['Precision', 'in practice.']} body="Field knowledge for bearings, linear motion, maintenance, industrial applications and OEM manufacturing." breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Blog' }]} />
+    <PageHero code="Insights / Blog" eyebrow="Engineering knowledge for better motion solutions" lines={['Precision', 'in practice.']} body="Field knowledge for bearings, linear motion, maintenance, industrial applications and OEM manufacturing." />
     <section className="bg-ink-950 py-10 lg:py-14">
       <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
         <div className="flex flex-col gap-7 border-b border-ink-700 pb-8 lg:flex-row lg:items-end lg:justify-between"><div><p className="font-mono text-[10px] uppercase tracking-tech text-signal">Latest insights</p><h2 className="mt-4 font-display text-4xl font-bold uppercase text-steel-50 sm:text-5xl">The working archive</h2></div><p className="max-w-md text-sm leading-relaxed text-steel-500">{posts.length} {posts.length === 1 ? 'article' : 'articles'} found</p></div>

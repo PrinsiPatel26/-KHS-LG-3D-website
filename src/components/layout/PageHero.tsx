@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-import { ChevronRightIcon } from 'lucide-react';
 import { RevealText, Reveal } from '../ui/RevealText';
 import { TechnicalLabel } from '../ui/SectionHeading';
 
@@ -7,15 +5,13 @@ export function PageHero({
   code,
   eyebrow,
   lines,
-  body,
-  breadcrumb
-
-
-
-
-
-
-}: {code: string;eyebrow: string;lines: string[];body?: string;breadcrumb?: {label: string;to?: string;}[];}) {
+  body
+}: {
+  code: string;
+  eyebrow: string;
+  lines: string[];
+  body?: string;
+}) {
   const showCatalogueBearing = code === 'KHS-LG / Catalogue';
 
   return (

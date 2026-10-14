@@ -5,7 +5,7 @@ import { RevealText } from '../ui/RevealText';
 import { RollerShape } from '../3d/BearingModel';
 import { useNearViewport } from '../../hooks/useNearViewport';
 
-const DEFAULT_PARTS = ['Outer Ring', 'Rolling Elements', 'Cage', 'Inner Ring'];
+const DEFAULT_PARTS = ['Outer Ring', 'Outer Raceway', 'Rolling Elements', 'Brass Cage', 'Inner Raceway', 'Inner Ring'];
 
 /**
  * Scroll-driven exploded bearing with technical labels — the anatomy of a
@@ -74,7 +74,7 @@ export function ProductExplorer({
           </div>
 
           <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8 pb-10 sm:pb-16 lg:pb-20">
-            <ol className="grid gap-px border border-ink-700 bg-ink-700 sm:grid-cols-2 lg:grid-cols-4">
+            <ol className="grid gap-px border border-ink-700 bg-ink-700 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
               {parts.map((part, i) =>
               <PartRow
                 key={part}

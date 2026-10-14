@@ -79,8 +79,7 @@ export function Contact() {
         code="Contact"
         eyebrow="Request a quote"
         lines={["Let's build", 'Better motion.']}
-        body="Send us the application, the size and the motion you need. The KHS-LG team will come back with the right bearing from the range."
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Contact' }]} />
+        body="Send us the application, the size and the motion you need. The KHS-LG team will come back with the right bearing from the range." />
       
 
       <section className="bg-ink-900 py-12 lg:py-16">

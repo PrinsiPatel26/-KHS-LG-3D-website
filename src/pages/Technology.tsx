@@ -1,6 +1,5 @@
 import { PageHero } from '../components/layout/PageHero';
 import { TechnologySection } from '../components/sections/TechnologySection';
-import { PerformanceSection } from '../components/sections/PerformanceSection';
 import { CTASection } from '../components/sections/CTASection';
 import { useSeo } from '../hooks/useSeo';
 
@@ -18,13 +17,9 @@ export function Technology() {
         code="Technology"
         eyebrow="Engineering behind the range"
         lines={['Precision is', 'A process']}
-        body="High technology products and services that support manufacturers from product design through to the bearing that ships."
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Technology' }]} />
+        body="High technology products and services that support manufacturers from product design through to the bearing that ships." />
       
       <TechnologySection hideHeading />
-      
-      <PerformanceSection />
       <CTASection />
     </main>);
-
 }

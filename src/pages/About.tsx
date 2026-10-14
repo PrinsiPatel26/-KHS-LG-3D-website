@@ -33,8 +33,7 @@ export function About() {
         code="About"
         eyebrow={`${company.legalName} · ${company.experience}`}
         lines={['The name behind', 'Unstoppable motion']}
-        body={company.intro}
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'About KHS-LG' }]} />
+        body={company.intro} />
       
 
       <section aria-label="Company story" className="relative bg-ink-900 py-10 lg:py-14">

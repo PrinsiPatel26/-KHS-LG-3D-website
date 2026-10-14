@@ -27,16 +27,19 @@ export function StatsSection() {
 
 function Dial({ stat, index, primary }: {stat: Stat;index: number;primary: boolean;}) {
   return (
-    <div className="group relative overflow-hidden bg-ink-950 p-7 lg:p-9">
+    <div className="group relative overflow-hidden bg-ink-950 p-7 transition-all duration-300 hover:bg-ink-900 lg:p-9">
       <div className="min-w-0">
-        <p className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
-          {String(index + 1).padStart(2, '0')}
-        </p>
+        <div className="flex items-center justify-between">
+          <p className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
+            {String(index + 1).padStart(2, '0')}
+          </p>
+          <span className="h-1.5 w-1.5 rounded-full bg-signal/30 transition-all duration-300 group-hover:bg-signal group-hover:shadow-[0_0_8px_#F5C400]" />
+        </div>
         <p
           className={
           primary ?
-          'mt-4 font-display text-[clamp(2.6rem,5vw,4rem)] font-bold leading-none text-steel-50 tabular-nums' :
-          'mt-4 font-display text-[clamp(2.2rem,4vw,3.2rem)] font-bold leading-none text-steel-50 tabular-nums'
+          'mt-4 font-display text-[clamp(2.6rem,5vw,4.2rem)] font-bold leading-none text-gradient-gold drop-shadow-[0_2px_18px_rgba(245,196,0,0.25)] tabular-nums' :
+          'mt-4 font-display text-[clamp(2.2rem,4vw,3.4rem)] font-bold leading-none text-steel-50 transition-colors duration-300 group-hover:text-signal tabular-nums'
           }>
           
           <CountUp value={stat.value} suffix={stat.suffix} />
@@ -47,9 +50,8 @@ function Dial({ stat, index, primary }: {stat: Stat;index: number;primary: boole
         <p className="mt-1.5 text-xs text-steel-500">{stat.note}</p>
       </div>
       <div
-        className="absolute inset-x-0 bottom-0 h-px w-0 bg-signal transition-[width] duration-500 ease-precision group-hover:w-full"
+        className="absolute inset-x-0 bottom-0 h-0.5 w-0 bg-signal shadow-[0_0_8px_#F5C400] transition-[width] duration-500 ease-precision group-hover:w-full"
         aria-hidden />
       
     </div>);
-
 }

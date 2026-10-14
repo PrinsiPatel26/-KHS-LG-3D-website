@@ -5,7 +5,7 @@ import { useSeo } from '../hooks/useSeo';
 
 export function Applications() {
   useSeo({
-    title: 'Applications',
+    title: 'Industry',
     description:
     'Where KHS-LG bearings work: industrial machinery, manufacturing equipment, automotive assemblies and automation systems.',
     path: '/applications'
@@ -14,16 +14,15 @@ export function Applications() {
   return (
     <main>
       <PageHero
-        code="Applications"
+        code="Industry"
         eyebrow="Verified KHS-LG application areas"
         lines={['Where motion', 'Matters']}
-        body="From plant machinery to automation systems, the KHS-LG range is specified around how the assembly actually moves."
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Applications' }]} />
+        body="From plant machinery to automation systems, the KHS-LG range is specified around how the assembly actually moves." />
       
       <ApplicationsSection hideHeading />
       
-      {/* Transitional spacer between exploded product view and contact CTA */}
-      <section className="relative border-t border-ink-800 bg-ink-950 py-24 sm:py-32 lg:py-40 overflow-hidden" aria-hidden>
+      {/* Transitional bar before contact CTA with clean, tight y-axis padding */}
+      <section className="relative border-t border-ink-800 bg-ink-950 py-6 sm:py-8 overflow-hidden" aria-hidden>
         <div className="industrial-grid pointer-events-none absolute inset-0 opacity-15" />
         <div className="relative mx-auto flex w-full max-w-[1600px] flex-col items-center justify-between gap-6 px-5 sm:flex-row sm:px-8">
           <div className="flex items-center gap-3">

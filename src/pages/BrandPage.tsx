@@ -214,14 +214,7 @@ function BrandPageContent({ brand }: { brand: typeof brands[number] }) {
         />
         <div className="relative mx-auto grid w-full max-w-[1600px] items-center gap-12 px-5 sm:px-8 lg:grid-cols-[1fr_0.9fr] lg:gap-20">
           <div>
-            <nav aria-label="Breadcrumb" className="font-mono text-[10px] uppercase tracking-[0.14em] text-steel-500">
-              <Link to="/" className="hover:text-signal">Home</Link>
-              <span className="mx-2 text-ink-600">/</span>
-              <Link to="/our-brands" className="hover:text-signal">Our brands</Link>
-              <span className="mx-2 text-ink-600">/</span>
-              <span className="text-signal">{brand.name}</span>
-            </nav>
-            <div className="mt-8 sm:mt-9">
+            <div className="mt-2 sm:mt-4">
               <TechnicalLabel code={brand.tag}>{brand.company}</TechnicalLabel>
               <div className="mt-5 flex items-center gap-4">
                 <span

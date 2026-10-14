@@ -37,6 +37,11 @@ export function Products() {
   // Subcategories expanded in tree (initially all collapsed)
   const [expandedSubcategories, setExpandedSubcategories] = useState<Record<string, boolean>>({});
 
+  // Check if any category or subcategory is currently expanded
+  const hasExpandedItems =
+    Object.values(expandedCategories).some(Boolean) ||
+    Object.values(expandedSubcategories).some(Boolean);
+
   // Active Category & Subcategory from URL or state
   const activeCategoryId = params.get('category') ?? '';
   const activeSubcategoryId = params.get('sub') ?? '';
@@ -74,7 +79,22 @@ export function Products() {
 
   // Toggle Category
   const toggleCategory = (categoryId: string) => {
-    setExpandedCategories((prev) => ({ ...prev, [categoryId]: !prev[categoryId] }));
+    setExpandedCategories((prev) => {
+      const willBeExpanded = !prev[categoryId];
+      if (!willBeExpanded) {
+        const cat = PRODUCT_CATEGORIES_TREE.find((c) => c.id === categoryId);
+        if (cat) {
+          setExpandedSubcategories((subPrev) => {
+            const next = { ...subPrev };
+            cat.subcategories.forEach((s) => {
+              delete next[s.id];
+            });
+            return next;
+          });
+        }
+      }
+      return { ...prev, [categoryId]: willBeExpanded };
+    });
   };
 
   // Toggle Subcategory
@@ -86,6 +106,16 @@ export function Products() {
     const isExpanded = expandedCategories[categoryId] ?? false;
     if (isExpanded) {
       setExpandedCategories((prev) => ({ ...prev, [categoryId]: false }));
+      const cat = PRODUCT_CATEGORIES_TREE.find((c) => c.id === categoryId);
+      if (cat) {
+        setExpandedSubcategories((prev) => {
+          const next = { ...prev };
+          cat.subcategories.forEach((s) => {
+            delete next[s.id];
+          });
+          return next;
+        });
+      }
     } else {
       setExpandedCategories((prev) => ({ ...prev, [categoryId]: true }));
       selectCategory(categoryId);
@@ -239,11 +269,21 @@ export function Products() {
           </div>
 
           {/* 2-Column Desktop Grid: Left Sidebar Tree + Right Product View */}
-          <div className="grid gap-8 lg:grid-cols-[330px_1fr] xl:grid-cols-[360px_1fr] lg:gap-10">
+          <div className="grid items-start gap-8 lg:grid-cols-[330px_1fr] xl:grid-cols-[360px_1fr] lg:gap-10">
             
             {/* Desktop Side Product Navbar (Tree View) */}
-            <aside className="hidden lg:block">
-              <div className="sticky top-24 max-h-[calc(100vh-120px)] overflow-y-auto border border-ink-800 bg-ink-900/90 p-5 backdrop-blur-md">
+            <aside
+              data-lenis-prevent
+              className="hidden lg:block lg:sticky lg:top-24 lg:self-start lg:z-10"
+            >
+              <div
+                data-lenis-prevent
+                className={`border border-ink-800 bg-ink-900/90 p-5 backdrop-blur-md transition-all duration-300 overscroll-contain ${
+                  hasExpandedItems
+                    ? 'catalogue-sidebar-scroll max-h-[calc(100vh-120px)] overflow-y-auto pr-2'
+                    : 'overflow-hidden'
+                }`}
+              >
                 
                 {/* Search Bar in Sidebar */}
                 <div className="mb-5">
@@ -271,18 +311,18 @@ export function Products() {
                 {/* Sidebar Header & All Products Reset */}
                 <div className="mb-4 flex items-center justify-between border-b border-ink-800 pb-3">
                   <div className="flex items-center gap-2">
-                    <LayersIcon className="h-3.5 w-3.5 text-signal" aria-hidden />
-                    <span className="font-mono text-[10px] font-bold uppercase tracking-tech text-steel-200">
+                    <LayersIcon className="h-4 w-4 text-signal" aria-hidden />
+                    <span className="font-mono text-xs font-bold uppercase tracking-tech text-steel-200">
                       Product Hierarchy
                     </span>
                   </div>
                   <button
                     type="button"
                     onClick={selectAll}
-                    className={`font-mono text-[10px] uppercase tracking-wider transition-colors ${
+                    className={`font-mono text-xs uppercase tracking-wider transition-colors ${
                       !activeCategoryId && !activeSubcategoryId && !activeProductSlug
                         ? 'text-signal font-semibold underline'
-                        : 'text-steel-500 hover:text-signal'
+                        : 'text-steel-400 hover:text-signal'
                     }`}
                   >
                     View All ({ALL_TREE_PRODUCTS.length})
@@ -290,7 +330,7 @@ export function Products() {
                 </div>
 
                 {/* Tree View: Categories -> Subcategories -> Products */}
-                <nav aria-label="Product Hierarchy Navigation" className="space-y-2">
+                <nav aria-label="Product Hierarchy Navigation" className="space-y-2.5">
                   {PRODUCT_CATEGORIES_TREE.map((category) => {
                     const isCategoryExpanded = expandedCategories[category.id] ?? false;
                     const isCategoryActive = activeCategoryId === category.id;
@@ -306,28 +346,28 @@ export function Products() {
                           type="button"
                           onClick={() => handleCategoryClick(category.id)}
                           aria-expanded={isCategoryExpanded}
-                          className={`group flex w-full items-center justify-between px-3 py-3 text-left transition-colors ${
+                          className={`group flex w-full items-center justify-between px-3.5 py-3 text-left transition-colors ${
                             isCategoryActive ? 'bg-ink-800/90 text-signal' : 'hover:bg-ink-800/50 text-steel-200'
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0">
-                            <span className="font-mono text-[9px] font-bold text-signal">
+                            <span className="font-mono text-xs font-bold text-signal">
                               {category.code}
                             </span>
-                            <span className="font-display text-xs font-bold uppercase tracking-wider truncate">
+                            <span className="font-display text-sm font-bold uppercase tracking-wider truncate">
                               {category.name}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-2 shrink-0">
-                            <span className="font-mono text-[9px] text-steel-500">
+                            <span className="font-mono text-xs font-semibold text-steel-400">
                               {catProductCount}
                             </span>
                             <span className="p-0.5 text-steel-400 group-hover:text-signal transition-colors">
                               {isCategoryExpanded ? (
-                                <ChevronDownIcon className="h-3.5 w-3.5 text-signal" />
+                                <ChevronDownIcon className="h-4 w-4 text-signal" />
                               ) : (
-                                <ChevronRightIcon className="h-3.5 w-3.5" />
+                                <ChevronRightIcon className="h-4 w-4" />
                               )}
                             </span>
                           </div>
@@ -335,36 +375,36 @@ export function Products() {
 
                         {/* 2. Subcategories List (Shown if Category is expanded) */}
                         {isCategoryExpanded && (
-                          <div className="border-t border-ink-800/60 py-1.5">
+                          <div className="border-t border-ink-800/60 py-2">
                             {category.subcategories.map((subcategory) => {
                               const isSubExpanded = expandedSubcategories[subcategory.id] ?? false;
                               const isSubActive = activeSubcategoryId === subcategory.id;
 
                               return (
-                                <div key={subcategory.id} className="ml-3 border-l border-ink-800 pl-2">
+                                <div key={subcategory.id} className="ml-3.5 border-l border-ink-800 pl-2.5">
                                   {/* Subcategory Row - Whole row is interactive button to toggle show/hide */}
                                   <button
                                     type="button"
                                     onClick={() => handleSubcategoryClick(category.id, subcategory.id)}
                                     aria-expanded={isSubExpanded}
                                     className={`group flex w-full items-center justify-between py-2 pr-2 text-left transition-colors ${
-                                      isSubActive ? 'text-signal font-semibold' : 'text-steel-400 hover:text-steel-200'
+                                      isSubActive ? 'text-signal font-semibold' : 'text-steel-300 hover:text-steel-100'
                                     }`}
                                   >
-                                    <div className="flex items-center gap-1.5 truncate min-w-0 font-display text-[11px] uppercase tracking-wide">
-                                      <span className="text-steel-600">&bull;</span>
+                                    <div className="flex items-center gap-2 truncate min-w-0 font-display text-[13px] font-semibold uppercase tracking-wide">
+                                      <span className="text-signal/70">&bull;</span>
                                       <span className="truncate">{subcategory.name}</span>
                                     </div>
 
                                     <div className="flex items-center gap-1.5 shrink-0">
-                                      <span className="font-mono text-[9px] text-steel-600">
+                                      <span className="font-mono text-[11px] text-steel-400">
                                         ({subcategory.products.length})
                                       </span>
-                                      <span className="p-0.5 text-steel-500 group-hover:text-signal transition-colors">
+                                      <span className="p-0.5 text-steel-400 group-hover:text-signal transition-colors">
                                         {isSubExpanded ? (
-                                          <ChevronDownIcon className="h-3 w-3 text-signal" />
+                                          <ChevronDownIcon className="h-3.5 w-3.5 text-signal" />
                                         ) : (
-                                          <ChevronRightIcon className="h-3 w-3" />
+                                          <ChevronRightIcon className="h-3.5 w-3.5" />
                                         )}
                                       </span>
                                     </div>
@@ -372,7 +412,7 @@ export function Products() {
 
                                   {/* 3. Products List (Shown if Subcategory is expanded) */}
                                   {isSubExpanded && (
-                                    <div className="ml-3 space-y-1 border-l border-ink-800/80 py-1 pl-2">
+                                    <div className="ml-3.5 space-y-1.5 border-l border-ink-800/80 py-1.5 pl-2.5">
                                       {subcategory.products.map((prod) => {
                                         const isProdActive = activeProductSlug === prod.id;
 
@@ -381,10 +421,10 @@ export function Products() {
                                             key={prod.id}
                                             type="button"
                                             onClick={() => selectProduct(prod)}
-                                            className={`group flex w-full items-center justify-between py-1 text-left font-mono text-[10px] transition-colors ${
+                                            className={`group flex w-full items-center justify-between py-1 text-left font-mono text-xs transition-colors ${
                                               isProdActive
                                                 ? 'font-bold text-signal'
-                                                : 'text-steel-500 hover:text-steel-200'
+                                                : 'text-steel-400 hover:text-steel-100'
                                             }`}
                                           >
                                             <span className="truncate pr-2">
@@ -395,7 +435,7 @@ export function Products() {
                                                 className="shrink-0 text-signal/80 group-hover:text-signal"
                                                 title="PDF available for download"
                                               >
-                                                <FileTextIcon className="h-2.5 w-2.5" />
+                                                <FileTextIcon className="h-3 w-3" />
                                               </span>
                                             )}
                                           </button>
@@ -645,7 +685,7 @@ export function Products() {
             onClick={() => setMobileTreeOpen(false)}
             aria-hidden
           />
-          <div className="relative ml-auto flex h-full w-full max-w-sm flex-col bg-ink-900 p-5 shadow-2xl">
+          <div data-lenis-prevent className="relative ml-auto flex h-full w-full max-w-sm flex-col bg-ink-900 p-5 shadow-2xl">
             <div className="flex items-center justify-between border-b border-ink-800 pb-3">
               <span className="font-display text-sm font-bold uppercase tracking-wider text-steel-50">
                 Products Hierarchy
@@ -659,11 +699,11 @@ export function Products() {
               </button>
             </div>
 
-            <div className="mt-4 flex-1 overflow-y-auto space-y-2">
+            <div className="mt-4 flex-1 overflow-y-auto space-y-2.5">
               <button
                 type="button"
                 onClick={selectAll}
-                className="w-full border border-ink-800 bg-ink-950 p-2 text-left font-display text-xs font-semibold uppercase text-signal"
+                className="w-full border border-ink-800 bg-ink-950 p-2.5 text-left font-display text-sm font-bold uppercase text-signal"
               >
                 View All Products ({ALL_TREE_PRODUCTS.length})
               </button>
@@ -672,11 +712,11 @@ export function Products() {
                 const isCatExpanded = expandedCategories[category.id] ?? false;
 
                 return (
-                  <div key={category.id} className="border border-ink-800 bg-ink-950/60 p-2">
+                  <div key={category.id} className="border border-ink-800 bg-ink-950/60 p-2.5">
                     <button
                       type="button"
                       onClick={() => toggleCategory(category.id)}
-                      className="flex w-full items-center justify-between py-1 text-left font-display text-xs font-bold uppercase text-steel-100"
+                      className="flex w-full items-center justify-between py-1.5 text-left font-display text-sm font-bold uppercase text-steel-100"
                     >
                       <span>{category.name}</span>
                       {isCatExpanded ? <ChevronDownIcon className="h-4 w-4 text-signal" /> : <ChevronRightIcon className="h-4 w-4" />}
@@ -689,7 +729,7 @@ export function Products() {
                             <button
                               type="button"
                               onClick={() => selectSubcategory(category.id, sub.id)}
-                              className="w-full py-1 text-left font-display text-[11px] uppercase text-steel-300 hover:text-signal"
+                              className="w-full py-1.5 text-left font-display text-xs font-semibold uppercase text-steel-300 hover:text-signal"
                             >
                               &bull; {sub.name} ({sub.products.length})
                             </button>

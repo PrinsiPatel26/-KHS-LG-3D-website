@@ -122,18 +122,13 @@ export function Catalogue() {
   const [sort, setSort] = useState<'az' | 'za' | 'default'>('default');
   const [selectedCatalogue, setSelectedCatalogue] = useState<CatalogueRecord | null>(null);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
-    bearings: true,
-    'linear-shafts': true,
-    'linear-motion': true,
-    'power-transmission': true,
-    brands: true
-  });
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({});
+  const hasExpandedCategory = Object.values(expandedCategories).some(Boolean);
 
   const downloadButtonRef = useRef<HTMLButtonElement | null>(null);
 
-  // Active category & subcategory from URL params
-  const activeCategory = params.get('category') ?? 'linear-shafts';
+  // Active category & subcategory from URL params (defaults to all catalogues)
+  const activeCategory = params.get('category') ?? 'all';
   const activeSub = params.get('sub') ?? '';
 
   useSeo({
@@ -144,6 +139,12 @@ export function Catalogue() {
 
   const toggleCategoryExpand = (catId: string) => {
     setExpandedCategories((prev) => ({ ...prev, [catId]: !prev[catId] }));
+  };
+
+  const handleCategoryHeaderClick = (catId: string) => {
+    const isCurrentlyExpanded = Boolean(expandedCategories[catId]);
+    setExpandedCategories((prev) => ({ ...prev, [catId]: !isCurrentlyExpanded }));
+    handleSelectCategory(catId);
   };
 
   const handleSelectCategory = (categoryId: string, subId = '') => {
@@ -315,43 +316,55 @@ export function Catalogue() {
       </div>
 
       <div className="mx-auto max-w-[1600px] px-5 py-8 sm:px-8 lg:py-12">
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-[290px_1fr] lg:gap-10 xl:grid-cols-[320px_1fr]">
-          {/* ================= LEFT SIDEBAR (CATEGORY TREE) ================= */}
+        <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[290px_1fr] lg:gap-10 xl:grid-cols-[320px_1fr]">
+          {/* ================= LEFT SIDEBAR (CATEGORY TREE - STICKY) ================= */}
           <aside
-            className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-ink-950 p-6 shadow-2xl transition-transform duration-300 ease-in-out lg:static lg:z-auto lg:w-full lg:transform-none lg:bg-transparent lg:p-0 lg:shadow-none ${
+            data-lenis-prevent
+            className={`fixed inset-y-0 left-0 z-50 w-80 transform bg-ink-950 p-6 shadow-2xl transition-transform duration-300 ease-in-out lg:sticky lg:top-24 lg:self-start lg:z-10 lg:w-full lg:transform-none lg:bg-transparent lg:p-0 lg:shadow-none ${
               mobileSidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
             }`}
           >
-            <div className="flex items-center justify-between border-b border-ink-800 pb-4 lg:hidden">
-              <span className="font-display text-sm font-bold uppercase tracking-wider text-steel-100">
-                Categories & Products
-              </span>
-              <button
-                type="button"
-                onClick={() => setMobileSidebarOpen(false)}
-                className="p-1 text-steel-400 hover:text-signal"
-                aria-label="Close sidebar"
-              >
-                <XIcon className="h-5 w-5" />
-              </button>
-            </div>
+            <div
+              data-lenis-prevent
+              className={`lg:border lg:border-ink-800 lg:bg-ink-900/90 lg:p-5 lg:backdrop-blur-md transition-all duration-300 overscroll-contain ${
+                hasExpandedCategory
+                  ? 'catalogue-sidebar-scroll lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto lg:pr-2'
+                  : 'lg:overflow-hidden'
+              }`}
+            >
+              <div className="flex items-center justify-between border-b border-ink-800 pb-4 lg:hidden">
+                <span className="font-display text-sm font-bold uppercase tracking-wider text-steel-100">
+                  Categories & Products
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setMobileSidebarOpen(false)}
+                  className="p-1 text-steel-400 hover:text-signal"
+                  aria-label="Close sidebar"
+                >
+                  <XIcon className="h-5 w-5" />
+                </button>
+              </div>
 
-            <div className="mt-4 flex flex-col gap-1.5 lg:mt-0">
+              <div className="mt-4 flex flex-col gap-1.5 lg:mt-0">
               {/* All Catalogues Button */}
               <button
                 type="button"
-                onClick={() => handleSelectCategory('all')}
-                className={`group flex w-full items-center justify-between rounded-md px-3.5 py-2.5 text-left transition-all ${
-                  activeCategory === 'all'
+                onClick={() => {
+                  handleSelectCategory('all');
+                  setExpandedCategories({});
+                }}
+                className={`group flex w-full items-center justify-between rounded-md px-3.5 py-3 text-left transition-all ${
+                  activeCategory === 'all' || !activeCategory
                     ? 'border-l-2 border-signal bg-ink-800/90 text-signal shadow-sm'
                     : 'text-steel-300 hover:bg-ink-900 hover:text-steel-100'
                 }`}
               >
-                <span className="flex items-center gap-2.5 font-display text-[13px] font-semibold uppercase tracking-wide">
+                <span className="flex items-center gap-2.5 font-display text-sm font-semibold uppercase tracking-wide">
                   <LayersIcon className="h-4 w-4 text-signal/80" />
                   All Catalogues
                 </span>
-                <span className="rounded bg-ink-900 px-2 py-0.5 font-mono text-[10px] text-steel-500 group-hover:text-steel-300">
+                <span className="rounded bg-ink-900 px-2 py-0.5 font-mono text-[11px] text-steel-500 group-hover:text-steel-300">
                   {catalogues.length}
                 </span>
               </button>
@@ -361,43 +374,34 @@ export function Catalogue() {
               {/* Tree Categories */}
               {CATEGORY_TREE.map((cat) => {
                 const isSelected = activeCategory === cat.id;
-                const isExpanded = expandedCategories[cat.id];
+                const isExpanded = Boolean(expandedCategories[cat.id]);
 
                 return (
                   <div key={cat.id} className="space-y-1">
-                    {/* Parent Category Header */}
-                    <div
-                      className={`group flex w-full items-center justify-between rounded-md px-3 py-2.5 transition-colors ${
+                    {/* Parent Category Header - Whole row toggles dropdown */}
+                    <button
+                      type="button"
+                      onClick={() => handleCategoryHeaderClick(cat.id)}
+                      aria-expanded={isExpanded}
+                      className={`group flex w-full items-center justify-between rounded-md px-3.5 py-3 text-left transition-colors ${
                         isSelected && !activeSub
                           ? 'border-l-2 border-signal bg-ink-800/80 text-signal'
-                          : 'text-steel-200 hover:bg-ink-900/80'
+                          : 'text-steel-200 hover:bg-ink-900/80 hover:text-steel-50'
                       }`}
                     >
-                      <button
-                        type="button"
-                        onClick={() => handleSelectCategory(cat.id)}
-                        className="flex flex-1 items-center gap-2.5 text-left font-display text-[13px] font-bold uppercase tracking-wider"
-                      >
-                        <span className="font-mono text-[10px] text-signal/70">{cat.code}</span>
-                        <span className={isSelected ? 'text-signal' : 'text-steel-100'}>{cat.label}</span>
-                      </button>
+                      <div className="flex flex-1 items-center gap-2.5 min-w-0 font-display text-sm font-bold uppercase tracking-wider">
+                        <span className="font-mono text-xs text-signal/70">{cat.code}</span>
+                        <span className={`truncate ${isSelected ? 'text-signal' : 'text-steel-100 group-hover:text-signal'}`}>{cat.label}</span>
+                      </div>
 
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          toggleCategoryExpand(cat.id);
-                        }}
-                        className="p-1 text-steel-500 hover:text-signal"
-                        aria-label={`Toggle ${cat.label} subcategories`}
-                      >
+                      <div className="p-1 text-steel-500 transition-colors group-hover:text-signal shrink-0">
                         {isExpanded ? (
-                          <ChevronDownIcon className="h-4 w-4 text-steel-400" />
+                          <ChevronDownIcon className="h-4 w-4 text-signal" />
                         ) : (
-                          <ChevronRightIcon className="h-4 w-4 text-steel-500" />
+                          <ChevronRightIcon className="h-4 w-4 text-steel-400 group-hover:text-signal" />
                         )}
-                      </button>
-                    </div>
+                      </div>
+                    </button>
 
                     {/* Subcategories */}
                     {isExpanded && cat.subcategories && (
@@ -410,7 +414,7 @@ export function Catalogue() {
                               key={sub.id}
                               type="button"
                               onClick={() => handleSelectCategory(cat.id, sub.id)}
-                              className={`group flex w-full items-center justify-between rounded px-2.5 py-1.5 text-left text-[12px] transition-colors ${
+                              className={`group flex w-full items-center justify-between rounded px-3 py-2 text-left text-xs sm:text-[13px] transition-colors ${
                                 isSubSelected
                                   ? 'bg-signal/15 font-semibold text-signal'
                                   : 'text-steel-400 hover:bg-ink-900 hover:text-steel-200'
@@ -418,7 +422,7 @@ export function Catalogue() {
                             >
                               <span className="truncate">{sub.label}</span>
                               <ChevronRightIcon
-                                className={`h-3 w-3 transition-transform ${
+                                className={`h-3.5 w-3.5 transition-transform ${
                                   isSubSelected ? 'translate-x-0.5 text-signal' : 'text-ink-600 group-hover:text-steel-500'
                                 }`}
                               />
@@ -432,21 +436,22 @@ export function Catalogue() {
               })}
             </div>
 
-            {/* Quick Contact Box in Sidebar */}
-            <div className="mt-8 border border-ink-800 bg-ink-900/60 p-4">
-              <span className="font-mono text-[9px] uppercase tracking-tech text-signal">Custom Engineering</span>
-              <p className="mt-1 font-display text-[12px] font-bold uppercase text-steel-100">
-                Need OEM Specifications?
-              </p>
-              <p className="mt-2 text-[11px] leading-relaxed text-steel-400">
-                Contact our engineering team for customized drawings, shaft machining, or non-standard dimensions.
-              </p>
-              <Link
-                to="/contact"
-                className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-tech text-signal hover:underline"
-              >
-                Inquire now →
-              </Link>
+              {/* Quick Contact Box in Sidebar */}
+              <div className="mt-5 border border-ink-800 bg-ink-900/60 p-3.5">
+                <span className="font-mono text-[9px] uppercase tracking-tech text-signal">Custom Engineering</span>
+                <p className="mt-1 font-display text-[12px] font-bold uppercase text-steel-100">
+                  Need OEM Specifications?
+                </p>
+                <p className="mt-2 text-[11px] leading-relaxed text-steel-400">
+                  Contact our engineering team for customized drawings, shaft machining, or non-standard dimensions.
+                </p>
+                <Link
+                  to="/contact"
+                  className="mt-3 inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-tech text-signal hover:underline"
+                >
+                  Inquire now →
+                </Link>
+              </div>
             </div>
           </aside>
 

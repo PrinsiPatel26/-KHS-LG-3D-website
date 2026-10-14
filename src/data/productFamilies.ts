@@ -45,13 +45,7 @@ export const productFamilyDefinitions: ProductFamilyDefinition[] = [
   family('linear-shafts', 'Linear Shafts', [
     ['hard-chrome-shafts', 'Hard-Chrome Shafts', 'hard-chrome-shafts'],
     ['shafts-with-support', 'Shafts with support', 'shafts-with-support'],
-    ['shaft-supporting-units', 'Shaft Supporting Units', 'shaft-supporting-units'],
-    ['shaft-custom-made', 'Custom-made Shafts', 'shaft-custom-made'],
-    ['shaft-s-st', 'S-ST Shaft Support Units', 'shaft-s-st'],
-    ['shaft-s-stu', 'S-STU Shaft Support Units', 'shaft-s-stu'],
-    ['shaft-st', 'ST Shaft with Support', 'shaft-st'],
-    ['shaft-stu', 'STU Shaft with Support', 'shaft-stu'],
-    ['shaft-was-solid', 'WAS Solid Shaft', 'shaft-was-solid']
+    ['shaft-supporting-units', 'Shaft Supporting Units', 'shaft-supporting-units']
   ]),
   family('rod-ends-track-rollers', 'Rod Ends, Spherical & Track Roller Bearings', [
     ['rod-end-bearings', 'Rod End Bearings'],

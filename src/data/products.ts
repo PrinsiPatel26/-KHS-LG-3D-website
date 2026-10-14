@@ -81,7 +81,7 @@ export const products: Product[] = [
 },
 {
   slug: 'cylindrical-ball-bearings',
-  name: 'Cylindrical Ball Bearings',
+  name: 'Cylindrical Roller Bearings',
   code: 'CRB',
   short: 'High radial capacity through line contact.',
   description:

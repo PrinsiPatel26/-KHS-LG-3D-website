@@ -18,8 +18,7 @@ export function Industries() {
         code="Industries"
         eyebrow="Manufacturing · Industrial · Automobile"
         lines={['Motion that', 'Industries trust']}
-        body="Bearings supplied to 12,000+ OEMs across manufacturing, industrial and automobile applications, backed by 50+ years of experience."
-        breadcrumb={[{ label: 'Home', to: '/' }, { label: 'Industries' }]} />
+        body="Bearings supplied to 12,000+ OEMs across manufacturing, industrial and automobile applications, backed by 50+ years of experience." />
       
       <IndustriesSection hideHeading />
       <ApplicationsSection />

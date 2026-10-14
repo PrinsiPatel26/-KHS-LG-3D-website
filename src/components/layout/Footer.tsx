@@ -21,8 +21,7 @@ const COLUMNS: {title: string;links: {label: string;to: string;}[];}[] = [
   title: 'Company',
   links: [
     { label: 'Catalogue', to: '/catalogue' },
-    { label: 'Applications', to: '/applications' },
-    { label: 'Technology', to: '/technology' },
+    { label: 'Industry', to: '/applications' },
     { label: 'Quality', to: '/quality' },
     { label: 'Careers', to: '/careers' },
     { label: 'About KHS-LG', to: '/about' }]
@@ -32,8 +31,13 @@ const COLUMNS: {title: string;links: {label: string;to: string;}[];}[] = [
 
 export function Footer() {
   return (
-    <footer className="relative border-t border-ink-700 bg-ink-950">
+    <footer className="relative border-t border-signal/20 bg-ink-950 overflow-hidden">
       <div className="industrial-grid pointer-events-none absolute inset-0 opacity-25" aria-hidden />
+      <div
+        className="pointer-events-none absolute -bottom-40 -left-40 h-[450px] w-[450px] rounded-full opacity-[0.08] blur-[100px]"
+        style={{ background: 'radial-gradient(circle, #F5C400 0%, transparent 70%)' }}
+        aria-hidden
+      />
       <div className="relative mx-auto w-full max-w-[1600px] px-5 py-12 sm:px-8 lg:py-16">
         <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
           <div>

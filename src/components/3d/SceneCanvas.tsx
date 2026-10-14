@@ -72,7 +72,7 @@ export function ThreeStage({
     const maxDpr = tier === 'low' ? 1 : tier === 'medium' ? 1.5 : 2;
     renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, maxDpr));
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.02;
+    renderer.toneMappingExposure = 1.05;
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.shadowMap.enabled = useShadows;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;

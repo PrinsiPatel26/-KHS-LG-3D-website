@@ -59,7 +59,6 @@ export function BearingScene({
 
   const setup = useCallback(
     (ctx: StageContext): StageHandle => {
-      ctx.scene.fog = new THREE.FogExp2('#050505', 0.036);
       ctx.scene.add(createIndustrialLights(ctx.shadows));
 
       const env = createStudioEnvironment(ctx.renderer);
@@ -114,8 +113,8 @@ export function BearingScene({
             {
               z: readNum(p.cameraZ, 4.8),
               y: readNum(p.cameraY, 1.1),
-              pointer: p.pointer?.current,
-              parallax: ctx.reduced ? 0 : 0.32,
+              pointer: undefined,
+              parallax: 0,
               lambda: p.cameraLambda
             },
             delta
