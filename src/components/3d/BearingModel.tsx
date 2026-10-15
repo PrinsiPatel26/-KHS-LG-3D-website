@@ -139,14 +139,14 @@ function createBrandedOuterRingTexture(): THREE.CanvasTexture {
   ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
   ctx.fill();
 
-  // 5. Laser-etched "KHS-LG" brand marking curved at 12 o'clock
+  // 5. Laser-etched "KHS-LG 6205" brand marking curved at 12 o'clock
   const textRadius = (innerR + outerR) * 0.5;
-  const brand = 'KHS-LG';
+  const brand = 'KHS-LG 6205';
   const chars = brand.split('');
-  const span = 0.24; // total arc span in radians (~13.7 degrees)
+  const span = 0.44; // total arc span in radians (~25.2 degrees)
   const step = span / (chars.length - 1);
 
-  ctx.font = 'bold 84px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
+  ctx.font = 'bold 76px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif';
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
 
@@ -159,8 +159,8 @@ function createBrandedOuterRingTexture(): THREE.CanvasTexture {
     ctx.translate(0, -textRadius);
 
     // Subtle laser bevel highlight underneath
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
-    ctx.fillText(chars[i], 0, 1.5);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+    ctx.fillText(chars[i], 0, 1.4);
 
     // Deep laser-etched dark steel mark
     ctx.fillStyle = '#0a0d14';
@@ -514,18 +514,18 @@ export function createBearing({
   spinGroup.add(rollersGroup);
 
   // ==========================================
-  // CAGE: Solid CNC-machined brass retainer with pockets
+  // CAGE: Realistic industrial pressed steel ball retainer cage (no artificial yellow)
   // ==========================================
   const cageGroup = new THREE.Group();
   const cageMat = trackMat(
     new THREE.MeshPhysicalMaterial({
-      color: '#dfa838',
-      metalness: 0.92,
-      roughness: 0.22,
+      color: '#c2cad4',
+      metalness: 0.94,
+      roughness: 0.28,
       clearcoat: 0.35,
       clearcoatRoughness: 0.08,
       reflectivity: 0.95,
-      envMapIntensity: 1.8
+      envMapIntensity: 1.85
     })
   );
   // Sturdy brass rings

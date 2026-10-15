@@ -4,8 +4,6 @@ import { MotionSection } from '../components/sections/MotionSection';
 import { StatsSection } from '../components/sections/StatsSection';
 import { Products3D } from '../components/sections/Products3D';
 import { IndustriesSection } from '../components/sections/IndustriesSection';
-import { QualitySection } from '../components/sections/QualitySection';
-import { TechnologySection } from '../components/sections/TechnologySection';
 import { GlobalPresence } from '../components/sections/GlobalPresence';
 import { CTASection } from '../components/sections/CTASection';
 import { useSeo } from '../hooks/useSeo';
@@ -13,9 +11,9 @@ import { company, stats } from '../data/company';
 
 export function Home() {
   useSeo({
-    title: 'Precision Bearing Solutions',
+    title: 'Precision in Motion — Bearings, Linear Motion & Power Transmission',
     description:
-    'KHS-LG — precision bearing solutions engineered for reliable motion. 50+ years of experience, 12,000+ OEMs served, 4,500+ products, exporting to 35+ countries.',
+      'KHS-LG — precision bearing solutions engineered for reliable motion. 50+ years of experience, 12,000+ customers served, 13,500+ KHS-LG SKUs, exporting to 25+ countries.',
     path: '/',
     structuredData: {
       '@context': 'https://schema.org',
@@ -47,10 +45,8 @@ export function Home() {
       <Products3D limit={6} />
       <BearingSearch />
       <IndustriesSection />
-      <QualitySection />
-      <GlobalPresence code="07 / Global" />
-      <TechnologySection code="08 / Technology" />
+      <GlobalPresence code="06 / Global" />
       <CTASection />
-    </main>);
-
+    </main>
+  );
 }

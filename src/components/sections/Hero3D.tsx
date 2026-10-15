@@ -35,7 +35,7 @@ const PART_ITEMS: PartItem[] = [
   },
   {
     code: 'C-04',
-    name: 'Brass Cage',
+    name: 'Cage',
     y: 49,
     targetX: 51.0
   },
@@ -159,11 +159,11 @@ export function Hero3D() {
           
           <div className="mx-auto w-full max-w-[1600px] px-5 sm:px-8">
             <div className="pointer-events-auto max-w-3xl">
-              <div className="inline-flex items-center gap-3 border border-signal/30 bg-ink-900/80 px-3.5 py-1.5 backdrop-blur-md shadow-[0_0_15px_rgba(245,196,0,0.12)]">
-                <span className="h-1.5 w-1.5 rounded-full bg-signal animate-pulse shadow-[0_0_8px_#F5C400]" />
-                <span className="font-mono text-[10px] uppercase tracking-tech text-signal font-semibold">{company.certification}</span>
-                <span className="text-white/20">|</span>
-                <span className="font-mono text-[10px] uppercase tracking-tech text-steel-400">{company.experience}</span>
+              <div className="inline-flex items-center gap-3 border border-signal/40 bg-ink-900/90 px-4 py-2 backdrop-blur-md shadow-[0_0_18px_rgba(245,196,0,0.16)]">
+                <span className="h-2 w-2 rounded-full bg-signal animate-pulse shadow-[0_0_8px_#F5C400]" />
+                <span className="font-mono text-xs sm:text-[13px] uppercase tracking-tech text-steel-200 font-semibold">
+                  ISO 9001:2015 <span className="text-signal mx-1.5">•</span> 50+ YEARS OF INDUSTRIAL EXPERIENCE
+                </span>
               </div>
               <h1 className="mt-5 font-display text-[clamp(3.4rem,11vw,9rem)] font-bold uppercase leading-[0.84] text-steel-50">
                 <span className="block overflow-hidden">
@@ -185,8 +185,8 @@ export function Hero3D() {
                   </motion.span>
                 </span>
               </h1>
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-steel-400 sm:text-lg">
-                {company.tagline}
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-steel-300 sm:text-lg">
+                Bearings, linear motion and power transmission solutions for OEMs, machine manufacturers, maintenance teams and industrial applications worldwide.
               </p>
               <motion.div
                 initial={{ opacity: 0, y: 15 }}
@@ -203,7 +203,7 @@ export function Hero3D() {
                   as="a"
                   href="/contact"
                   className="btn-magnetic border border-signal bg-signal px-6 py-3.5 font-display text-xs font-bold uppercase tracking-widest text-ink-950 shadow-[0_0_20px_rgba(245,196,0,0.35)] transition-all duration-300 hover:bg-ink-950 hover:text-signal hover:shadow-[0_0_25px_rgba(245,196,0,0.6)]">
-                  Request a Quote
+                  Request Quote
                 </MagneticButton>
               </motion.div>
             </div>

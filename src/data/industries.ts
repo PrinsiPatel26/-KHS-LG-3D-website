@@ -22,7 +22,7 @@ export const industries: Industry[] = [
   name: 'Industrial',
   code: 'IND / 02',
   headline: 'Heavy duty, continuous motion',
-  body: 'A broad industrial range covering gearboxes, material handling and heavy equipment, backed by a distributor network across 35+ export countries.',
+  body: 'A broad industrial range covering gearboxes, material handling and heavy equipment, backed by a distributor network across 25+ export countries.',
   points: ['Gearboxes and drives', 'Material handling', 'Heavy equipment']
 },
 {

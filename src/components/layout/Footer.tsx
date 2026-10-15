@@ -1,33 +1,43 @@
 import { Link } from 'react-router-dom';
-import { MailIcon, PhoneIcon } from 'lucide-react';
-import { company, markets } from '../../data/company';
+import { MailIcon, PhoneIcon, ArrowUpRightIcon } from 'lucide-react';
+import { company } from '../../data/company';
 import { Logo } from './Navbar';
 
-const COLUMNS: {title: string;links: {label: string;to: string;}[];}[] = [
-{
-  title: 'Products',
-  links: [
-    { label: 'Rolling Bearings', to: '/products/rolling-bearings' },
-    { label: 'Needle Roller Bearings', to: '/products/needle-roller-bearings' },
-    { label: 'Bearing Units & Housings', to: '/products/bearing-units-housings' },
-    { label: 'Linear Motion', to: '/products/linear-motion' },
-    { label: 'Linear Shafts', to: '/products/linear-shafts' },
-    { label: 'Rod Ends, Spherical & Track Roller Bearings', to: '/products/rod-ends-track-rollers' },
-    { label: 'Clutches & Bushes', to: '/products/clutches-bushes' },
-    { label: 'Power Transmission', to: '/products/power-transmission' }
-  ]
-},
-{
-  title: 'Company',
-  links: [
-    { label: 'Catalogue', to: '/catalogue' },
-    { label: 'Industry', to: '/applications' },
-    { label: 'Quality', to: '/quality' },
-    { label: 'Careers', to: '/careers' },
-    { label: 'About KHS-LG', to: '/about' }]
-
-}];
-
+const FOOTER_NAV = [
+  {
+    title: 'Products',
+    links: [
+      { label: 'Ball Bearings', to: '/products' },
+      { label: 'Roller Bearings', to: '/products' },
+      { label: 'Bearing Units & Housings', to: '/products' },
+      { label: 'Linear Motion', to: '/products' },
+      { label: 'Linear Shafts & Supports', to: '/products' },
+      { label: 'Rod Ends & Spherical Plain Bearings', to: '/products' },
+      { label: 'Bushes & One-Way Clutches', to: '/products' },
+      { label: 'Power Transmission', to: '/products' }
+    ]
+  },
+  {
+    title: 'Resources',
+    links: [
+      { label: 'Catalogue', to: '/catalogue' },
+      { label: 'Technical Datasheets', to: '/catalogue' },
+      { label: 'Product Search', to: '/products' },
+      { label: 'Industries', to: '/industries' },
+      { label: 'Blog', to: '/blog' }
+    ]
+  },
+  {
+    title: 'Company',
+    links: [
+      { label: 'About KHS-LG', to: '/about' },
+      { label: 'Quality', to: '/quality' },
+      { label: 'Partner Brands', to: '/our-brands' },
+      { label: 'Careers', to: '/careers' },
+      { label: 'Contact', to: '/contact' }
+    ]
+  }
+];
 
 export function Footer() {
   return (
@@ -39,71 +49,78 @@ export function Footer() {
         aria-hidden
       />
       <div className="relative mx-auto w-full max-w-[1600px] px-5 py-12 sm:px-8 lg:py-16">
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr]">
+        <div className="grid gap-10 lg:grid-cols-[1.2fr_1fr_0.9fr_0.9fr_1.2fr]">
           <div>
             <Logo />
-            <p className="mt-6 max-w-xs text-sm leading-relaxed text-steel-500">
-              {company.legalName} — precision bearing solutions trusted across industries
-              worldwide.
+            <p className="mt-6 max-w-xs text-sm leading-relaxed text-steel-400">
+              {company.legalName} — precision bearings, linear motion and power transmission solutions trusted across industries worldwide.
             </p>
-            <p className="mt-6 font-mono text-[10px] uppercase tracking-tech text-signal">
-              {company.certification}
-            </p>
+            <div className="mt-6 inline-flex items-center gap-2 border border-signal/30 bg-ink-900/80 px-3 py-1 font-mono text-[10px] uppercase tracking-tech text-signal">
+              <span className="h-1.5 w-1.5 rounded-full bg-signal shadow-[0_0_6px_#F5C400]" />
+              {company.certification} • 50+ Years Experience
+            </div>
           </div>
 
-          {COLUMNS.map((col) =>
-          <nav key={col.title} aria-label={col.title}>
-              <h2 className="font-mono text-[10px] uppercase tracking-tech text-steel-500">
+          {FOOTER_NAV.map((col) => (
+            <nav key={col.title} aria-label={col.title}>
+              <h2 className="font-mono text-[10px] uppercase tracking-tech text-signal font-semibold">
                 {col.title}
               </h2>
               <ul className="mt-5 space-y-2.5">
-                {col.links.map((link) =>
-              <li key={link.label + link.to}>
+                {col.links.map((link) => (
+                  <li key={link.label}>
                     <Link
-                  to={link.to}
-                  className="text-sm text-steel-300 transition-colors duration-200 hover:text-signal">
-                  
+                      to={link.to}
+                      className="text-xs sm:text-sm text-steel-400 transition-colors duration-200 hover:text-signal"
+                    >
                       {link.label}
                     </Link>
                   </li>
-              )}
+                ))}
               </ul>
             </nav>
-          )}
+          ))}
 
           <div>
-            <h2 className="font-mono text-[10px] uppercase tracking-tech text-steel-500">
-              Contact
+            <h2 className="font-mono text-[10px] uppercase tracking-tech text-signal font-semibold">
+              Contact & Locations
             </h2>
-            <ul className="mt-5 space-y-3 text-sm text-steel-300">
+            <ul className="mt-5 space-y-3 text-xs sm:text-sm text-steel-300">
               <li>
                 <a
-                  className="flex items-center gap-2.5 transition-colors hover:text-signal"
-                  href={company.emailHref}>
-                  
-                  <MailIcon className="h-4 w-4 text-signal" aria-hidden />
+                  className="flex items-center gap-2.5 transition-colors hover:text-signal text-steel-400"
+                  href={company.emailHref}
+                >
+                  <MailIcon className="h-4 w-4 text-signal shrink-0" aria-hidden />
                   {company.email}
                 </a>
               </li>
               <li>
                 <a
-                  className="flex items-center gap-2.5 transition-colors hover:text-signal"
-                  href={company.phoneHref}>
-                  
-                  <PhoneIcon className="h-4 w-4 text-signal" aria-hidden />
+                  className="flex items-center gap-2.5 transition-colors hover:text-signal text-steel-400"
+                  href={company.phoneHref}
+                >
+                  <PhoneIcon className="h-4 w-4 text-signal shrink-0" aria-hidden />
                   {company.phone}
                 </a>
               </li>
             </ul>
-            <p className="mt-6 whitespace-pre-line break-words text-xs leading-relaxed text-steel-500">
-              {company.factoryOffice}
-            </p>
-            <h2 className="mt-8 font-mono text-[10px] uppercase tracking-tech text-steel-500">
-              Export markets
-            </h2>
-            <p className="mt-4 text-xs leading-relaxed text-steel-500">
-              {markets.map((m) => m.country).join(' · ')}
-            </p>
+
+            <div className="mt-5 border-t border-ink-800 pt-4">
+              <p className="font-mono text-[9px] uppercase tracking-tech text-steel-500">
+                Head Office
+              </p>
+              <p className="mt-1 whitespace-pre-line text-xs leading-relaxed text-steel-400">
+                {company.factoryOffice}
+              </p>
+              <Link
+                to="/contact"
+                className="group mt-3 inline-flex items-center gap-1.5 font-display text-xs font-semibold uppercase tracking-wider text-signal hover:underline"
+              >
+                Our Locations
+                <ArrowUpRightIcon className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </div>
           </div>
         </div>
 

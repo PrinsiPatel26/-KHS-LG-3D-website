@@ -56,26 +56,42 @@ export const COMPANY_PHONE_RAW = '919175275964';
 export const COMPANY_WHATSAPP_URL = `https://wa.me/${COMPANY_PHONE_RAW}`;
 
 export const stats: Stat[] = [
-{ value: 12000, suffix: '+', label: 'OEMs', note: 'Served across industries' },
-{ value: 50, suffix: '+', label: 'Distributors', note: 'Supply network' },
-{ value: 35, suffix: '+', label: 'Export Countries', note: 'Global reach' },
-{ value: 4500, suffix: '+', label: 'Products', note: 'Bearing range' }];
+  { value: 12000, suffix: '+', label: 'Customers Served', note: 'Across industrial markets' },
+  { value: 50, suffix: '+', label: 'Years of Industry Experience', note: 'Built across generations' },
+  { value: 25, suffix: '+', label: 'Export Countries', note: 'International market reach' },
+  { value: 13500, suffix: '+', label: 'KHS-LG SKUs', note: 'Across industrial motion categories' }
+];
 
-
-export const markets: {country: string;lat: number;lon: number;}[] = [
-{ country: 'Bangladesh', lat: 23.685, lon: 90.3563 },
-{ country: 'Brazil', lat: -14.235, lon: -51.9253 },
-{ country: 'Egypt', lat: 26.8206, lon: 30.8025 },
-{ country: 'Hungary', lat: 47.1625, lon: 19.5033 },
-{ country: 'India', lat: 20.5937, lon: 78.9629 },
-{ country: 'Indonesia', lat: -0.7893, lon: 113.9213 },
-{ country: 'Lithuania', lat: 55.1694, lon: 23.8813 },
-{ country: 'Nepal', lat: 28.3949, lon: 84.124 },
-{ country: 'Nigeria', lat: 9.082, lon: 8.6753 },
-{ country: 'Qatar', lat: 25.3548, lon: 51.1839 },
-{ country: 'Saudi Arabia', lat: 23.8859, lon: 45.0792 },
-{ country: 'Turkey', lat: 38.9637, lon: 35.2433 },
-{ country: 'Zambia', lat: -13.1339, lon: 27.8493 }];
+export const markets: { country: string; lat: number; lon: number }[] = [
+  { country: 'India', lat: 20.5937, lon: 78.9629 },
+  { country: 'Bahrain', lat: 26.0667, lon: 50.5577 },
+  { country: 'Oman', lat: 21.4735, lon: 55.9754 },
+  { country: 'Bangladesh', lat: 23.685, lon: 90.3563 },
+  { country: 'Belarus', lat: 53.7098, lon: 27.9534 },
+  { country: 'Brazil', lat: -14.235, lon: -51.9253 },
+  { country: 'Bulgaria', lat: 42.7339, lon: 25.4858 },
+  { country: 'UAE', lat: 23.4241, lon: 53.8478 },
+  { country: 'Egypt', lat: 26.8206, lon: 30.8025 },
+  { country: 'Greece', lat: 39.0742, lon: 21.8243 },
+  { country: 'Hungary', lat: 47.1625, lon: 19.5033 },
+  { country: 'Kenya', lat: -0.0236, lon: 37.9062 },
+  { country: 'Lebanon', lat: 33.8547, lon: 35.8623 },
+  { country: 'Lithuania', lat: 55.1694, lon: 23.8813 },
+  { country: 'Poland', lat: 51.9194, lon: 19.1451 },
+  { country: 'Qatar', lat: 25.3548, lon: 51.1839 },
+  { country: 'Russia', lat: 55.7558, lon: 37.6173 },
+  { country: 'Saudi Arabia', lat: 23.8859, lon: 45.0792 },
+  { country: 'Serbia', lat: 44.0165, lon: 21.0059 },
+  { country: 'South Africa', lat: -30.5595, lon: 22.9375 },
+  { country: 'Sri Lanka', lat: 7.8731, lon: 80.7718 },
+  { country: 'Tanzania', lat: -6.369, lon: 34.8888 },
+  { country: 'Turkey', lat: 38.9637, lon: 35.2433 },
+  { country: 'Ukraine', lat: 48.3794, lon: 31.1656 },
+  { country: 'USA', lat: 37.0902, lon: -95.7129 },
+  { country: 'Nepal', lat: 28.3949, lon: 84.124 },
+  { country: 'Zimbabwe', lat: -19.0154, lon: 29.1549 },
+  { country: 'Nigeria', lat: 9.082, lon: 8.6753 }
+];
 
 
 export const timeline = [
@@ -96,13 +112,13 @@ export const timeline = [
 },
 {
   step: 'Expansion',
-  title: '12,000+ OEMs, 4,500+ products',
-  body: 'A widening range of bearings supported by a distributor network that keeps industrial lines running.'
+  title: '12,000+ Customers, 13,500+ SKUs',
+  body: 'A comprehensive range of bearings, linear motion and power transmission components supported by a dependable distribution network.'
 },
 {
   step: 'Global Presence',
-  title: 'Exporting to 35+ countries',
-  body: 'Bearings shipped to markets across Asia, Europe, Africa, the Middle East and South America.'
+  title: 'Exporting to 25+ countries',
+  body: 'Industrial motion solutions shipped to markets across Asia, Europe, Africa, the Middle East and the Americas.'
 }];
 
 
